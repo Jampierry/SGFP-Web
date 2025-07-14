@@ -1,0 +1,100 @@
+{% load br_filters %}
+<div class="row mb-4 align-items-stretch">
+    <div class="col-lg-7 mb-3">
+        <div class="card shadow h-100">
+            <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
+                <h5 class="mb-0"><i class="fas fa-list me-2"></i>Despesas de Cartões</h5>
+            </div>
+            <div class="card-body p-0" style="height: 320px; overflow: hidden;">
+                {% if despesas %}
+                <div class="table-responsive" style="height: 100%; overflow-y: auto;">
+                    <table class="table table-striped mb-0">
+                        <thead class="sticky-top bg-white" style="z-index: 10;">
+                            <tr>
+                                <th>Cartão</th>
+                                <th>Data</th>
+                                <th>Descrição</th>
+                                <th>Categoria</th>
+                                <th>Tipo</th>
+                                <th>Parcela</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for despesa in despesas %}
+                                <tr>
+                                    <td>{{ despesa.cartao.nome }}</td>
+                                    <td>{{ despesa.data|date:'d/m/Y' }}</td>
+                                    <td>{{ despesa.descricao }}</td>
+                                    <td>{{ despesa.categoria.nome }}</td>
+                                    <td>
+                                        {% if despesa.tipo_pagamento == 'cartao_credito_parcelado' %}Parcelado{% else %}À vista{% endif %}
+                                    </td>
+                                    <td>
+                                        {% if despesa.tipo_pagamento == 'cartao_credito_parcelado' %}
+                                            {{ despesa.parcela_atual }}/{{ despesa.parcelas }}
+                                        {% else %}
+                                            1
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ despesa.valor|br_currency }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="p-4 text-center text-muted">Nenhuma despesa lançada nesta fatura.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5 mb-3">
+        <div class="card shadow h-100">
+            <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Evolução das Faturas</h5>
+            </div>
+            <div class="card-body p-2" style="height:320px;">
+                <canvas id="graficoFaturasCartao" style="height:280px;max-height:300px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+(function() {
+    // Atualiza o gráfico de evolução das faturas
+    const ctx = document.getElementById('graficoFaturasCartao');
+    if (ctx) {
+        const labels = {{ grafico_labels|safe }};
+        const valores = {{ grafico_valores|safe }};
+        if (window.linhaChart) window.linhaChart.destroy();
+        window.linhaChart = new Chart(ctx.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Gastos Mensais',
+                    data: valores,
+                    borderColor: '#007bff',
+                    backgroundColor: 'rgba(0,123,255,0.1)',
+                    tension: 0.3,
+                    pointRadius: 3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { grid: { display: false } }, y: { beginAtZero: true, grid: { color: '#eee' } } }
+            }
+        });
+    }
+})();
+</script>
+
+
+<script>
+// Garante que o clique nas faturas funcione após AJAX
+if (typeof setupFaturaCardClickAjax === 'function') setupFaturaCardClickAjax();
+</script> 

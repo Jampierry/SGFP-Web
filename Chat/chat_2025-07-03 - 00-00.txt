@@ -1,0 +1,16 @@
+Resumo da conversa - 03/07/2025
+
+- Padronização visual dos cards do dashboard e relatórios.
+- Isolamento do CSS e HTML dos cards do dashboard para evitar conflito com relatórios.
+- Modernização dos cards do dashboard: barra lateral colorida, ícones, tipografia, responsividade e animação ao hover.
+- Ajuste de tamanhos, espaçamentos e proporções para igualar cards do dashboard e relatórios.
+- Redução da altura dos gráficos em ambas as telas.
+- Salvamento do histórico da conversa conforme padrão do projeto.
+
+Principais comandos/tarefas:
+- Refatoração de CSS: `.dashboard-card`, `.dashboard-card-bar`, `.dashboard-card-icon-bg`, etc.
+- Atualização do HTML dos cards do dashboard para novo padrão visual.
+- Ajuste de responsividade e animação.
+- Salvamento do histórico na pasta `Chat`.
+
+Se precisar do detalhamento de algum passo, comandos ou código, basta pedir! 

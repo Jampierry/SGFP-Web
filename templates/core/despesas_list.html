@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load br_filters %}
+
+{% block title %}Despesas - SGFP{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">
+            {% icone_colorido 'fas fa-minus-circle me-2' 'despesa' %}
+            Despesas
+        </h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <a href="{% url 'core:despesa_create' %}" class="btn btn-primary">
+                {% icone_colorido 'fas fa-plus me-2' 'receita' %}
+                Nova Despesa
+            </a>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3 align-items-end">
+                <div class="col-md-2">{{ form_filtro.data_inicial.label_tag }}{{ form_filtro.data_inicial }}</div>
+                <div class="col-md-2">{{ form_filtro.data_final.label_tag }}{{ form_filtro.data_final }}</div>
+                <div class="col-md-2">{{ form_filtro.categoria.label_tag }}{{ form_filtro.categoria }}</div>
+                <div class="col-md-2">{{ form_filtro.conta.label_tag }}{{ form_filtro.conta }}</div>
+                <div class="col-md-1">{{ form_filtro.valor_min.label_tag }}{{ form_filtro.valor_min }}</div>
+                <div class="col-md-1">{{ form_filtro.valor_max.label_tag }}{{ form_filtro.valor_max }}</div>
+                <div class="col-md-1">{{ form_filtro.recorrente.label_tag }}{{ form_filtro.recorrente }}</div>
+                <div class="col-md-2">{{ form_filtro.busca_texto.label_tag }}{{ form_filtro.busca_texto }}</div>
+                <div class="col-md-12 d-flex justify-content-end mt-2">
+                    <button type="submit" class="btn btn-primary me-2">
+                        {% icone_colorido 'fas fa-search me-1' 'padrao' %}Filtrar
+                    </button>
+                    <a href="{% url 'core:despesa_list' %}" class="btn btn-outline-secondary">
+                        {% icone_colorido 'fas fa-times me-1' 'delete' %}Limpar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lista de Despesas -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">
+                {% icone_colorido 'fas fa-list me-2' 'padrao' %}
+                Lista de Despesas
+            </h5>
+        </div>
+        <div class="card-body p-0" style="height: 500px; overflow: hidden;">
+            {% if despesas %}
+                <div class="table-responsive" style="height: 100%; overflow-y: auto;">
+                    <table class="table table-hover mb-0">
+                        <thead class="sticky-top bg-white" style="z-index: 10;">
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Valor</th>
+                                <th>Data</th>
+                                <th>Categoria</th>
+                                <th>Conta</th>
+                                <th class="acoes-col">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for despesa in despesas %}
+                            <tr>
+                                <td>{{ despesa.descricao }}</td>
+                                <td class="text-danger fw-bold">{{ despesa.valor|br_currency }}</td>
+                                <td>{{ despesa.data|date:"d/m/Y" }}</td>
+                                <td>
+                                    <span class="badge badge-categoria-{{ despesa.categoria.tipo|lower }}">
+                                        <i class="{{ despesa.categoria.icone }} me-1"></i>{{ despesa.categoria.nome }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-conta-{{ despesa.conta.tipo|lower }}">
+                                        <i class="{{ despesa.conta.icone }} me-1"></i>{{ despesa.conta.nome }}
+                                    </span>
+                                </td>
+                                <td class="acoes-col">
+                                    <a href="{% url 'core:despesa_edit' despesa.id %}" class="btn btn-sm btn-outline-primary" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="{% url 'core:despesa_delete' despesa.id %}" class="btn btn-sm btn-outline-danger" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir esta despesa?');">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-4">
+                    {% icone_colorido 'fas fa-inbox fa-3x mb-3' 'padrao' %}
+                    <p class="text-muted">Nenhuma despesa registrada.</p>
+                    <a href="{% url 'core:despesa_create' %}" class="btn btn-primary">
+                        {% icone_colorido 'fas fa-plus me-2' 'receita' %}
+                        Registrar Primeira Despesa
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %} 

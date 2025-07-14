@@ -1,0 +1,1375 @@
+/* Temas do Dashboard */
+
+/* --- REMOVIDO: Temas antigos para evitar conflito --- */
+/*
+body.theme-dark { ... }
+body.theme-dark .dashboard-grid { ... }
+body.theme-dark .dashboard-header, ...
+body.theme-light .dashboard-grid { ... }
+body.theme-light .dashboard-header, ...
+body.theme-colorful .dashboard-grid { ... }
+body.theme-colorful .dashboard-header, ...
+body.dark-mode { ... }
+body.dark-mode .dashboard-grid { ... }
+body.dark-mode .dashboard-header, ...
+*/
+
+/* Tema Escuro */
+body.theme-dark {
+    background: #1a1a1a;
+    color: #ffffff;
+}
+
+body.theme-dark .dashboard-grid {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+}
+
+body.theme-dark .dashboard-header,
+body.theme-dark .grid-stack-item-content,
+body.theme-dark .config-panel {
+    background: rgba(44, 62, 80, 0.95);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.theme-dark .dashboard-header h1 {
+    color: #ffffff;
+}
+
+body.theme-dark .dashboard-header .user-info {
+    color: #bdc3c7;
+}
+
+body.theme-dark .metric-card .metric-title,
+body.theme-dark .chart-card .chart-title,
+body.theme-dark .list-card .list-title {
+    color: #ecf0f1;
+}
+
+body.theme-dark .table th {
+    background: #34495e;
+    color: #ecf0f1;
+}
+
+body.theme-dark .table tbody tr:hover {
+    background-color: #34495e;
+}
+
+body.theme-dark .list-card .list-content::-webkit-scrollbar-track {
+    background: #34495e;
+}
+
+body.theme-dark .list-card .list-content::-webkit-scrollbar-thumb {
+    background: #7f8c8d;
+}
+
+body.theme-dark .list-card .list-content::-webkit-scrollbar-thumb:hover {
+    background: #95a5a6;
+}
+
+/* Tema Claro */
+body.theme-light .dashboard-grid {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+body.theme-light .dashboard-header,
+body.theme-light .grid-stack-item-content,
+body.theme-light .config-panel {
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.theme-light .dashboard-header h1 {
+    color: #495057;
+}
+
+body.theme-light .dashboard-header .user-info {
+    color: #6c757d;
+}
+
+body.theme-light .metric-card .metric-title,
+body.theme-light .chart-card .chart-title,
+body.theme-light .list-card .list-title {
+    color: #495057;
+}
+
+/* Tema Colorido */
+body.theme-colorful .dashboard-grid {
+    background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 50%, #45b7d1 100%);
+}
+
+body.theme-colorful .dashboard-header,
+body.theme-colorful .grid-stack-item-content,
+body.theme-colorful .config-panel {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+body.theme-colorful .metric-card .metric-icon {
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4) !important;
+}
+
+body.theme-colorful .trend-up {
+    background: linear-gradient(45deg, #4ecdc4, #44a08d) !important;
+}
+
+body.theme-colorful .trend-down {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a52) !important;
+}
+
+body.theme-colorful .trend-stable {
+    background: linear-gradient(45deg, #fdcb6e, #e17055) !important;
+}
+
+/* Animações Desabilitadas */
+body.no-animations * {
+    animation: none !important;
+    transition: none !important;
+}
+
+body.no-animations .grid-stack-item {
+    animation: none !important;
+}
+
+body.no-animations .grid-stack-item-content:hover {
+    transform: none !important;
+}
+
+body.no-animations .dashboard-controls .btn:hover {
+    transform: none !important;
+}
+
+body.no-animations .action-buttons .btn:hover {
+    transform: none !important;
+}
+
+/* Responsividade para Temas */
+@media (max-width: 768px) {
+    body.theme-dark .dashboard-grid,
+    body.theme-light .dashboard-grid,
+    body.theme-colorful .dashboard-grid {
+        padding: 10px;
+    }
+    
+    body.theme-dark .dashboard-header,
+    body.theme-light .dashboard-header,
+    body.theme-colorful .dashboard-header {
+        padding: 15px;
+    }
+}
+
+/* Transições Suaves para Mudança de Tema */
+.dashboard-grid,
+.dashboard-header,
+.grid-stack-item-content,
+.config-panel,
+.metric-card,
+.chart-card,
+.list-card {
+    transition: all 0.3s ease;
+}
+
+/* Efeitos de Hover Melhorados */
+.grid-stack-item-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+body.theme-dark .grid-stack-item-content:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+body.theme-light .grid-stack-item-content:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+body.theme-colorful .grid-stack-item-content:hover {
+    box-shadow: 0 15px 40px rgba(255, 107, 107, 0.2);
+}
+
+/* Melhorias nos Botões */
+.btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+/* Efeitos de Loading */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    border-radius: 15px;
+}
+
+body.theme-dark .loading-overlay {
+    background: rgba(44, 62, 80, 0.8);
+}
+
+/* Tooltips Personalizados */
+.custom-tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.custom-tooltip.show {
+    opacity: 1;
+}
+
+/* Scrollbar Personalizada para Todos os Temas */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+body.theme-dark ::-webkit-scrollbar-track {
+    background: #34495e;
+}
+
+body.theme-dark ::-webkit-scrollbar-thumb {
+    background: #7f8c8d;
+}
+
+body.theme-dark ::-webkit-scrollbar-thumb:hover {
+    background: #95a5a6;
+}
+
+/* Efeitos de Partículas (Opcional) */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+        opacity: 1;
+    }
+}
+
+/* Melhorias na Acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Foco Melhorado para Navegação por Teclado */
+.btn:focus,
+select:focus,
+input:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+body.theme-dark .btn:focus,
+body.theme-dark select:focus,
+body.theme-dark input:focus {
+    outline-color: #4ecdc4;
+}
+
+/* Estados de Carregamento */
+.loading-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    color: #6c757d;
+}
+
+body.theme-dark .loading-state {
+    color: #bdc3c7;
+}
+
+.loading-state .spinner-border {
+    margin-right: 10px;
+}
+
+/* Melhorias nos Gráficos */
+.chart-container {
+    position: relative;
+    height: 240px;
+    min-height: 160px;
+    width: 100%;
+}
+
+.chart-container canvas {
+    border-radius: 10px;
+}
+
+/* Efeitos de Glassmorphism */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+body.theme-dark .glass-effect {
+    background: rgba(44, 62, 80, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- Corona Dark --- */
+body.corona-dark, body.corona-dark .card, body.corona-dark .navbar, body.corona-dark .sidebar, body.corona-dark .dropdown-menu {
+    color: #f1f3f4 !important;
+    background: #23243a !important;
+}
+body.corona-dark a, body.corona-dark .nav-link {
+    color: #7ecbff !important;
+}
+body.corona-dark a:hover, body.corona-dark .nav-link:hover {
+    color: #fff !important;
+    text-decoration: underline;
+}
+body.corona-dark h1, body.corona-dark h2, body.corona-dark h3 {
+    color: #fff !important;
+}
+body.corona-dark .form-control, body.corona-dark .form-select {
+    background: #23243a !important;
+    color: #f1f3f4 !important;
+    border-color: #3a8dff !important;
+}
+body.corona-dark .form-control::placeholder {
+    color: #b0b3b8 !important;
+}
+body.corona-dark .text-muted, body.corona-dark .small {
+    color: #b0b3b8 !important;
+}
+body.corona-dark .table, body.corona-dark .table th, body.corona-dark .table td {
+    color: #f1f3f4 !important;
+    background: #23243a !important;
+}
+body.corona-dark .card-header {
+    background: #23243a !important;
+    color: #3a8dff !important;
+    border-bottom: 2px solid #3a8dff !important;
+    font-weight: 600;
+}
+
+/* --- Vanta Dark --- */
+body.vanta-dark, body.vanta-dark .card, body.vanta-dark .navbar, body.vanta-dark .sidebar, body.vanta-dark .dropdown-menu {
+    color: #e0e6ed !important;
+    background: #1a1f38 !important;
+}
+body.vanta-dark a, body.vanta-dark .nav-link {
+    color: #7ecbff !important;
+}
+body.vanta-dark a:hover, body.vanta-dark .nav-link:hover {
+    color: #fff !important;
+    text-decoration: underline;
+}
+body.vanta-dark h1, body.vanta-dark h2, body.vanta-dark h3 {
+    color: #fff !important;
+}
+body.vanta-dark .form-control, body.vanta-dark .form-select {
+    background: #23243a !important;
+    color: #e0e6ed !important;
+    border-color: #5a5cf0 !important;
+}
+body.vanta-dark .form-control::placeholder {
+    color: #b0b3b8 !important;
+}
+body.vanta-dark .text-muted, body.vanta-dark .small {
+    color: #b0b3b8 !important;
+}
+body.vanta-dark .table, body.vanta-dark .table th, body.vanta-dark .table td {
+    color: #e0e6ed !important;
+    background: #23243a !important;
+}
+body.vanta-dark .card-header {
+    background: #1a1f38 !important;
+    color: #a084ee !important;
+    border-bottom: 2px solid #5a5cf0 !important;
+    font-weight: 600;
+}
+
+/* --- Future UI Colorido --- */
+body.futureui-color, body.futureui-color .card, body.futureui-color .navbar, body.futureui-color .sidebar, body.futureui-color .dropdown-menu {
+    color: #fff !important;
+    background: #23243a !important;
+}
+body.futureui-color a, body.futureui-color .nav-link {
+    color: #43cea2 !important;
+}
+body.futureui-color a:hover, body.futureui-color .nav-link:hover {
+    color: #fff !important;
+    text-decoration: underline;
+}
+body.futureui-color h1, body.futureui-color h2, body.futureui-color h3 {
+    color: #fff !important;
+}
+body.futureui-color .form-control, body.futureui-color .form-select {
+    background: #23243a !important;
+    color: #fff !important;
+    border-color: #43cea2 !important;
+}
+body.futureui-color .form-control::placeholder {
+    color: #b0b3b8 !important;
+}
+body.futureui-color .text-muted, body.futureui-color .small {
+    color: #b0b3b8 !important;
+}
+body.futureui-color .table, body.futureui-color .table th, body.futureui-color .table td {
+    color: #fff !important;
+    background: #23243a !important;
+}
+body.futureui-color .card-header {
+    background: #23243a !important;
+    color: #43cea2 !important;
+    border-bottom: 2px solid #43cea2 !important;
+    font-weight: 600;
+}
+
+/* --- Material Light --- */
+body.material-light, body.material-light .card, body.material-light .navbar, body.material-light .sidebar, body.material-light .dropdown-menu {
+    color: #23272f !important;
+    background: #fff !important;
+}
+body.material-light a, body.material-light .nav-link {
+    color: #1976d2 !important;
+}
+body.material-light a:hover, body.material-light .nav-link:hover {
+    color: #23272f !important;
+    text-decoration: underline;
+}
+body.material-light h1, body.material-light h2, body.material-light h3 {
+    color: #23272f !important;
+}
+body.material-light .form-control, body.material-light .form-select {
+    background: #fff !important;
+    color: #23272f !important;
+    border-color: #1976d2 !important;
+}
+body.material-light .form-control::placeholder {
+    color: #6c757d !important;
+}
+body.material-light .text-muted, body.material-light .small {
+    color: #6c757d !important;
+}
+body.material-light .table, body.material-light .table th, body.material-light .table td {
+    color: #23272f !important;
+    background: #fff !important;
+}
+body.material-light .card-header {
+    background: #fff !important;
+    color: #1976d2 !important;
+    border-bottom: 2px solid #1976d2 !important;
+    font-weight: 600;
+}
+
+/* --- Future UI Colorido --- */
+body.futureui-color, body.futureui-color .card, body.futureui-color .navbar, body.futureui-color .sidebar, body.futureui-color .dropdown-menu {
+    color: #fff !important;
+    background: #23243a !important;
+}
+body.futureui-color a, body.futureui-color .nav-link {
+    color: #43cea2 !important;
+}
+body.futureui-color a:hover, body.futureui-color .nav-link:hover {
+    color: #fff !important;
+    text-decoration: underline;
+}
+body.futureui-color h1, body.futureui-color h2, body.futureui-color h3 {
+    color: #fff !important;
+}
+body.futureui-color .form-control, body.futureui-color .form-select {
+    background: #23243a !important;
+    color: #fff !important;
+    border-color: #43cea2 !important;
+}
+body.futureui-color .form-control::placeholder {
+    color: #b0b3b8 !important;
+}
+body.futureui-color .text-muted, body.futureui-color .small {
+    color: #b0b3b8 !important;
+}
+body.futureui-color .table, body.futureui-color .table th, body.futureui-color .table td {
+    color: #fff !important;
+    background: #23243a !important;
+}
+body.futureui-color .card-header {
+    background: #23243a !important;
+    color: #43cea2 !important;
+    border-bottom: 2px solid #43cea2 !important;
+    font-weight: 600;
+}
+
+/* --- Material Light --- */
+body.material-light, body.material-light .card, body.material-light .navbar, body.material-light .sidebar, body.material-light .dropdown-menu {
+    color: #23272f !important;
+    background: #fff !important;
+}
+body.material-light a, body.material-light .nav-link {
+    color: #1976d2 !important;
+}
+body.material-light a:hover, body.material-light .nav-link:hover {
+    color: #23272f !important;
+    text-decoration: underline;
+}
+body.material-light h1, body.material-light h2, body.material-light h3 {
+    color: #23272f !important;
+}
+body.material-light .form-control, body.material-light .form-select {
+    background: #fff !important;
+    color: #23272f !important;
+    border-color: #1976d2 !important;
+}
+body.material-light .form-control::placeholder {
+    color: #6c757d !important;
+}
+body.material-light .text-muted, body.material-light .small {
+    color: #6c757d !important;
+}
+body.material-light .table, body.material-light .table th, body.material-light .table td {
+    color: #23272f !important;
+    background: #fff !important;
+}
+body.material-light .card-header {
+    background: #fff !important;
+    color: #1976d2 !important;
+    border-bottom: 2px solid #1976d2 !important;
+    font-weight: 600;
+}
+
+/* Ícones coloridos globais */
+body.icones-coloridos i[class*="fa"] {
+    color: var(--icone-color, #43cea2) !important;
+    filter: none !important;
+    background: none !important;
+    transition: color 0.2s;
+}
+body.icones-coloridos .sidebar .nav-link .sidebar-icon {
+    color: var(--icone-color, #43cea2) !important;
+}
+body.icones-coloridos .btn-danger i[class*="fa"],
+body.icones-coloridos .btn-primary i[class*="fa"],
+body.icones-coloridos .btn-warning i[class*="fa"],
+body.icones-coloridos .btn-success i[class*="fa"] {
+    color: #fff !important;
+}
+body.icones-coloridos .btn-warning i[class*="fa"] {
+    color: #212529 !important;
+}
+/* Remover sobrescrita de cor por text-* */
+body.icones-coloridos i[class*="fa"].text-primary,
+body.icones-coloridos i[class*="fa"].text-danger,
+body.icones-coloridos i[class*="fa"].text-success,
+body.icones-coloridos i[class*="fa"].text-warning,
+body.icones-coloridos i[class*="fa"].text-info,
+body.icones-coloridos i[class*="fa"].text-secondary,
+body.icones-coloridos i[class*="fa"].text-muted {
+    color: var(--icone-color, #43cea2) !important;
+}
+body.icones-coloridos i[class*="fa"][style*="color:"] {
+    color: var(--icone-color, #43cea2) !important;
+}
+/* Sidebar PeopleNet: destaque item ativo (apenas fundo/borda, não muda cor do texto/ícone) */
+.sidebar .nav-link.active {
+    background: rgba(58,141,255,0.18) !important;
+    border-left: 4px solid #3A8DFF;
+    border-radius: 0 0.375rem 0.375rem 0;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    color: inherit !important;
+}
+.sidebar .nav-link.active .sidebar-icon {
+    color: inherit !important;
+}
+/* Sidebar colapsável */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 220px;
+    background: #23272F;
+    color: #fff;
+    z-index: 1030;
+    transition: width 0.3s cubic-bezier(.4,2,.6,1), background 0.3s, color 0.3s;
+    overflow-y: auto;
+}
+.sidebar.collapsed {
+    width: 60px;
+}
+.main-content {
+    margin-left: 220px;
+    padding-top: 70px;
+    transition: margin-left 0.3s cubic-bezier(.4,2,.6,1);
+}
+.main-content.sidebar-collapsed {
+    margin-left: 60px;
+}
+.sidebar-label {
+    transition: opacity 0.3s cubic-bezier(.4,2,.6,1);
+}
+.sidebar.collapsed .sidebar-label {
+    opacity: 0;
+    width: 0;
+    display: none;
+}
+.sidebar.collapsed .nav-link {
+    justify-content: center !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+.sidebar.collapsed .sidebar-icon {
+    margin: 0 !important;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ícones coloridos individuais (restaurado e aprimorado) */
+body.icones-coloridos .sidebar .nav-link .fa-arrow-up,
+body.icones-coloridos .fa-arrow-up { color: #4ADE80 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-arrow-down,
+body.icones-coloridos .fa-arrow-down { color: #F87171 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-exchange-alt,
+body.icones-coloridos .fa-exchange-alt { color: #3A8DFF !important; }
+body.icones-coloridos .sidebar .nav-link .fa-tags,
+body.icones-coloridos .fa-tags { color: #FACC15 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-wallet,
+body.icones-coloridos .fa-wallet { color: #A78BFA !important; }
+body.icones-coloridos .sidebar .nav-link .fa-credit-card,
+body.icones-coloridos .fa-credit-card { color: #6a82fb !important; }
+body.icones-coloridos .sidebar .nav-link .fa-bullseye,
+body.icones-coloridos .fa-bullseye { color: #F472B6 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-chart-bar,
+body.icones-coloridos .fa-chart-bar { color: #38BDF8 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-cog,
+body.icones-coloridos .fa-cog { color: #FBBF24 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-tachometer-alt,
+body.icones-coloridos .fa-tachometer-alt { color: #2196f3 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-list,
+body.icones-coloridos .fa-list { color: #f7b731 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-user,
+body.icones-coloridos .fa-user,
+body.icones-coloridos .sidebar .nav-link .fa-users,
+body.icones-coloridos .fa-users { color: #00b894 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-sign-out-alt,
+body.icones-coloridos .fa-sign-out-alt { color: #e17055 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-bell,
+body.icones-coloridos .fa-bell { color: #f1c40f !important; }
+body.icones-coloridos .sidebar .nav-link .fa-info-circle,
+body.icones-coloridos .fa-info-circle { color: #00b894 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-database,
+body.icones-coloridos .fa-database { color: #fdcb6e !important; }
+body.icones-coloridos .sidebar .nav-link .fa-upload,
+body.icones-coloridos .fa-upload { color: #00b894 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-download,
+body.icones-coloridos .fa-download { color: #0984e3 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-folder-open,
+body.icones-coloridos .fa-folder-open { color: #00b894 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-trash,
+body.icones-coloridos .fa-trash,
+body.icones-coloridos .sidebar .nav-link .fa-trash-alt,
+body.icones-coloridos .fa-trash-alt { color: #d63031 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-magic,
+body.icones-coloridos .fa-magic { color: #e17055 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-broom,
+body.icones-coloridos .fa-broom { color: #fdcb6e !important; }
+body.icones-coloridos .sidebar .nav-link .fa-flag-checkered,
+body.icones-coloridos .fa-flag-checkered { color: #a084ee !important; }
+body.icones-coloridos .sidebar .nav-link .fa-chart-pie,
+body.icones-coloridos .fa-chart-pie { color: #00b894 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-tools,
+body.icones-coloridos .fa-tools { color: #8e44ad !important; }
+body.icones-coloridos .sidebar .nav-link .fa-sign-out,
+body.icones-coloridos .fa-sign-out { color: #e17055 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-check-circle,
+body.icones-coloridos .fa-check-circle { color: #4ADE80 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-exclamation-triangle,
+body.icones-coloridos .fa-exclamation-triangle { color: #f7b731 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-exclamation-circle,
+body.icones-coloridos .fa-exclamation-circle { color: #F87171 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-save,
+body.icones-coloridos .fa-save { color: #3A8DFF !important; }
+body.icones-coloridos .sidebar .nav-link .fa-plus,
+body.icones-coloridos .fa-plus,
+body.icones-coloridos .sidebar .nav-link .fa-plus-circle,
+body.icones-coloridos .fa-plus-circle { color: #43cea2 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-minus,
+body.icones-coloridos .fa-minus,
+body.icones-coloridos .sidebar .nav-link .fa-minus-circle,
+body.icones-coloridos .fa-minus-circle { color: #e17055 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-edit,
+body.icones-coloridos .fa-edit { color: #3A8DFF !important; }
+body.icones-coloridos .sidebar .nav-link .fa-eye,
+body.icones-coloridos .fa-eye { color: #00b894 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-university,
+body.icones-coloridos .fa-university { color: #6a82fb !important; }
+body.icones-coloridos .sidebar .nav-link .fa-tag,
+body.icones-coloridos .fa-tag { color: #f7b731 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-star,
+body.icones-coloridos .fa-star { color: #f7b731 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-palette,
+body.icones-coloridos .fa-palette { color: #8e44ad !important; }
+body.icones-coloridos .sidebar .nav-link .fa-clock,
+body.icones-coloridos .fa-clock { color: #3A8DFF !important; }
+body.icones-coloridos .sidebar .nav-link .fa-chart-line,
+body.icones-coloridos .fa-chart-line { color: #38BDF8 !important; }
+body.icones-coloridos .sidebar .nav-link .fa-balance-scale,
+body.icones-coloridos .fa-balance-scale { color: #6a82fb !important; }
+body.icones-coloridos .sidebar .nav-link .fa-crystal-ball,
+body.icones-coloridos .fa-crystal-ball { color: #A78BFA !important; }
+body.icones-coloridos .sidebar .nav-link .fa-calculator,
+body.icones-coloridos .fa-calculator { color: #43cea2 !important; } 
+
+/* Correção: Ícones coloridos no menu lateral mesmo quando ativo */
+body.icones-coloridos .sidebar .nav-link.active .fa-arrow-up { color: #4ADE80 !important; }
+body.icones-coloridos .sidebar .nav-link.active .fa-arrow-down { color: #F87171 !important; }
+body.icones-coloridos .sidebar .nav-link.active .fa-exchange-alt { color: #3A8DFF !important; }
+body.icones-coloridos .sidebar .nav-link.active .fa-tags { color: #FACC15 !important; }
+body.icones-coloridos .sidebar .nav-link.active .fa-wallet { color: #A78BFA !important; }
+body.icones-coloridos .sidebar .nav-link.active .fa-credit-card { color: #6a82fb !important; }
+body.icones-coloridos .sidebar .nav-link.active .fa-bullseye { color: #F472B6 !important; }
+body.icones-coloridos .sidebar .nav-link.active .fa-chart-bar { color: #38BDF8 !important; }
+body.icones-coloridos .sidebar .nav-link.active .fa-cog { color: #FBBF24 !important; }
+body.icones-coloridos .sidebar .nav-link.active .fa-tachometer-alt { color: #2196f3 !important; }
+body.icones-coloridos .sidebar .nav-link.active .fa-sign-out-alt { color: #e17055 !important; } 
+
+/* SGFP Light Sidebar Theme */
+body.sgfp-light-sidebar {
+    background: #f4f6fa !important;
+    color: #23272F !important;
+}
+body.sgfp-light-sidebar .sidebar {
+    background: #23272F !important;
+    color: #fff !important;
+    box-shadow: 2px 0 16px 0 rgba(36,41,51,0.08);
+    border-right: 1.5px solid #3A8DFF22;
+}
+body.sgfp-light-sidebar .sidebar .nav-link {
+    color: #fff !important;
+}
+body.sgfp-light-sidebar .sidebar .nav-link.active {
+    background: #23243a !important;
+    color: #43cea2 !important;
+    border-left: 4px solid #43cea2 !important;
+    border-radius: 0 0.375rem 0.375rem 0;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+body.sgfp-light-sidebar .sidebar .nav-link.active .sidebar-icon {
+    color: inherit !important;
+}
+body.sgfp-light-sidebar .sidebar .sidebar-label {
+    color: #fff !important;
+}
+body.sgfp-light-sidebar .main-content {
+    background: #f4f6fa !important;
+}
+body.sgfp-light-sidebar .card,
+body.sgfp-light-sidebar .table,
+body.sgfp-light-sidebar .dropdown-menu {
+    background-color: #fff !important;
+    color: #23272F !important;
+    border-color: #e9ecef !important;
+    box-shadow: 0 0.5rem 1rem rgba(36,41,51,0.08);
+}
+body.sgfp-light-sidebar .card-header {
+    background-color: #fff !important;
+    color: #23272F !important;
+    border-bottom: 1px solid #e9ecef !important;
+}
+/* 1. Navbar superior e inferior com a mesma cor da sidebar */
+body.sgfp-light-sidebar .navbar,
+body.sgfp-light-sidebar .navbar-light,
+body.sgfp-light-sidebar .bg-light,
+body.sgfp-light-sidebar .footer-fixed {
+    background-color: #23272F !important;
+    color: #fff !important;
+    border-color: #23272F !important;
+}
+body.sgfp-light-sidebar .navbar .navbar-brand,
+body.sgfp-light-sidebar .navbar .nav-link,
+body.sgfp-light-sidebar .navbar .fa-user-circle,
+body.sgfp-light-sidebar .navbar .fa-bell {
+    color: #fff !important;
+}
+body.sgfp-light-sidebar .navbar .nav-link.dropdown-toggle {
+    color: #fff !important;
+}
+body.sgfp-light-sidebar .navbar .dropdown-menu {
+    background-color: #23272F !important;
+    color: #fff !important;
+    border-color: #23272F !important;
+}
+body.sgfp-light-sidebar .navbar .dropdown-item {
+    color: #fff !important;
+}
+body.sgfp-light-sidebar .navbar .dropdown-item:hover {
+    background-color: #2c2f36 !important;
+}
+body.sgfp-light-sidebar .footer-fixed {
+    background-color: #23272F !important;
+    color: #fff !important;
+    border-top: none !important;
+}
+body.sgfp-light-sidebar .footer-fixed .text-muted {
+    color: #fff !important;
+}
+
+/* 2. Ícone do menu lateral não muda de cor ao selecionar */
+body.sgfp-light-sidebar .sidebar .nav-link.active .sidebar-icon {
+    color: inherit !important;
+}
+
+/* 3. Ícone do botão Gerar Notificações na tela de configurações fica preto */
+body.sgfp-light-sidebar .card-body .btn-info .fa-bell {
+    color: #23272F !important;
+} 
+
+/* Corrigir: manter ícone colorido no menu lateral mesmo quando ativo */
+body.sgfp-light-sidebar.icones-coloridos .sidebar .nav-link.active .fa-arrow-up { color: #4ADE80 !important; }
+body.sgfp-light-sidebar.icones-coloridos .sidebar .nav-link.active .fa-arrow-down { color: #F87171 !important; }
+body.sgfp-light-sidebar.icones-coloridos .sidebar .nav-link.active .fa-exchange-alt { color: #3A8DFF !important; }
+body.sgfp-light-sidebar.icones-coloridos .sidebar .nav-link.active .fa-tags { color: #FACC15 !important; }
+body.sgfp-light-sidebar.icones-coloridos .sidebar .nav-link.active .fa-wallet { color: #A78BFA !important; }
+body.sgfp-light-sidebar.icones-coloridos .sidebar .nav-link.active .fa-credit-card { color: #6a82fb !important; }
+body.sgfp-light-sidebar.icones-coloridos .sidebar .nav-link.active .fa-bullseye { color: #F472B6 !important; }
+body.sgfp-light-sidebar.icones-coloridos .sidebar .nav-link.active .fa-chart-bar { color: #38BDF8 !important; }
+body.sgfp-light-sidebar.icones-coloridos .sidebar .nav-link.active .fa-cog { color: #FBBF24 !important; }
+body.sgfp-light-sidebar.icones-coloridos .sidebar .nav-link.active .fa-tachometer-alt { color: #2196f3 !important; }
+body.sgfp-light-sidebar.icones-coloridos .sidebar .nav-link.active .fa-sign-out-alt { color: #e17055 !important; } 
+
+/* BADGES FINANCEIROS - PADRÃO GLOBAL */
+.badge-categoria-receita, .badge-conta-receita        { background: #4ADE80; color: #111; }
+.badge-categoria-despesa, .badge-conta-despesa        { background: #e57373; color: #111; }
+.badge-categoria-investimento, .badge-conta-investimento { background: #f5c400; color: #111; }
+.badge-categoria-poupanca, .badge-conta-poupanca      { background: #00cfff; color: #111; }
+.badge-categoria-cartao_credito, .badge-conta-cartao_credito { background: #3A8DFF; color: #111; }
+.badge-categoria-corrente, .badge-conta-corrente      { background: #a78bfa; color: #111; }
+.badge-categoria-dinheiro, .badge-conta-dinheiro      { background: #43cea2; color: #111; }
+.badge-categoria-outros, .badge-conta-outros          { background: #757575; color: #111; }
+.badge-categoria-ambos, .badge-conta-ambos            { background: #e5e5e5; color: #111; }
+/* Meta (caso use badge dinâmica para tipo de meta) */
+.badge-meta-economia        { background: #4ADE80; color: #111; }
+.badge-meta-investimento    { background: #f5c400; color: #111; }
+.badge-meta-pagamento       { background: #e57373; color: #111; }
+.badge-meta-compra          { background: #3A8DFF; color: #111; }
+.badge-meta-outros          { background: #757575; color: #111; }
+/* Fallback */
+.badge-categoria-default, .badge-conta-default, .badge-meta-default {
+  background: #e5e5e5;
+  color: #111;
+}
+.badge[class*="badge-categoria-"], .badge[class*="badge-conta-"], .badge[class*="badge-meta-"] {
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 0.35em 0.9em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 1em;
+}
+.badge[class*="badge-categoria-"] i,
+.badge[class*="badge-conta-"] i,
+.badge[class*="badge-meta-"] i,
+.badge[class*="badge-categoria-"] svg,
+.badge[class*="badge-conta-"] svg,
+.badge[class*="badge-meta-"] svg,
+.badge[class*="badge-categoria-"] svg *,
+.badge[class*="badge-conta-"] svg *,
+.badge[class*="badge-meta-"] svg * {
+  color: #111 !important;
+  fill: #111 !important;
+  stroke: #111 !important;
+} 
+
+/* Forçar ícones pretos em tabelas e badges, inclusive dentro de botões */
+table i[class*="fa"],
+table .btn i[class*="fa"],
+table .btn-outline-primary i[class*="fa"],
+table .btn-outline-danger i[class*="fa"],
+table .btn-outline-success i[class*="fa"],
+table .btn-outline-secondary i[class*="fa"],
+table .btn-outline-warning i[class*="fa"],
+table .btn-outline-info i[class*="fa"],
+table .btn-outline-dark i[class*="fa"],
+table .btn-outline-light i[class*="fa"],
+.badge i[class*="fa"],
+table i[class^="fa"],
+table .btn i[class^="fa"],
+table .btn-outline-primary i[class^="fa"],
+table .btn-outline-danger i[class^="fa"],
+table .btn-outline-success i[class^="fa"],
+table .btn-outline-secondary i[class^="fa"],
+table .btn-outline-warning i[class^="fa"],
+table .btn-outline-info i[class^="fa"],
+table .btn-outline-dark i[class^="fa"],
+table .btn-outline-light i[class^="fa"],
+.badge i[class^="fa"] {
+  color: #111 !important;
+  fill: #111 !important;
+  stroke: #111 !important;
+} 
+
+body.icones-coloridos .badge i[class*="fa"],
+body.icones-coloridos .badge i[class^="fa"],
+body.sgfp-light-sidebar .badge i[class*="fa"],
+body.sgfp-light-sidebar .badge i[class^="fa"] {
+  color: #111 !important;
+  fill: #111 !important;
+  stroke: #111 !important;
+} 
+
+/* Badges de recorrência (receitas/despesas) */
+.badge-recorrencia-unica {
+  background: #757575;
+  color: #111;
+}
+.badge-recorrencia-mensal {
+  background: #ffc107;
+  color: #111;
+}
+.badge-recorrencia-quinzenal {
+  background: #ffc107;
+  color: #111;
+}
+.badge-recorrencia-semanal {
+  background: #ffc107;
+  color: #111;
+}
+.badge-recorrencia-bimestral {
+  background: #ffc107;
+  color: #111;
+}
+.badge-recorrencia-trimestral {
+  background: #ffc107;
+  color: #111;
+}
+.badge-recorrencia-semestral {
+  background: #ffc107;
+  color: #111;
+}
+.badge-recorrencia-anual {
+  background: #ffc107;
+  color: #111;
+}
+.badge[class*="badge-recorrencia-"] i {
+  color: #111 !important;
+  fill: #111 !important;
+  stroke: #111 !important;
+} 
+
+/* Coluna de ações: alinhamento à direita e centralização vertical dos ícones, mantendo-os lado a lado */
+.table th.acoes-col, .table td.acoes-col {
+  text-align: right;
+  vertical-align: middle;
+  padding-right: 10px !important;
+  width: 90px;
+}
+/* Garantir que os botões de ação fiquem lado a lado (inline) na horizontal */
+.table td.acoes-col {
+  white-space: nowrap;
+}
+.table td.acoes-col .btn {
+  display: inline-flex;
+  margin: 0 2px;
+  vertical-align: middle;
+} 
+
+.table th.acoes-col {
+  text-align: center;
+} 
+
+/* --- Cards do Dashboard e Relatório --- */
+.dashboard-grid .card-dashboard {
+    background: rgba(34, 40, 49, 0.97) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18) !important;
+    color: #f1f1f1 !important;
+    border: 2px solid transparent !important;
+    transition: box-shadow 0.2s, transform 0.2s !important;
+    position: relative !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+}
+.dashboard-grid .card-dashboard.card-receita {
+    border-color: #4ADE80 !important;
+    box-shadow: 0 0 16px 0 #4ADE8033, 0 4px 24px rgba(0,0,0,0.18) !important;
+    color: #4ADE80 !important;
+}
+.dashboard-grid .card-dashboard.card-despesa {
+    border-color: #e57373 !important;
+    box-shadow: 0 0 16px 0 #e5737333, 0 4px 24px rgba(0,0,0,0.18) !important;
+    color: #e57373 !important;
+}
+.dashboard-grid .card-dashboard.card-saldo {
+    border-color: #3A8DFF !important;
+    box-shadow: 0 0 16px 0 #3A8DFF33, 0 4px 24px rgba(0,0,0,0.18) !important;
+    color: #3A8DFF !important;
+}
+.dashboard-grid .card-dashboard.card-meta {
+    border-color: #FACC15 !important;
+    box-shadow: 0 0 16px 0 #FACC1533, 0 4px 24px rgba(0,0,0,0.18) !important;
+    color: #FACC15 !important;
+}
+.dashboard-grid .card-dashboard .card-body {
+    padding: 19px 16px 14px 16px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    position: relative !important;
+}
+.dashboard-grid .card-dashboard .card-title {
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    color: #b2bec3 !important;
+    margin-bottom: 6px !important;
+}
+.dashboard-grid .card-dashboard .card-value {
+    font-size: 1.36rem !important;
+    font-weight: 800 !important;
+    margin-bottom: 3px !important;
+    color: inherit !important;
+    letter-spacing: -0.8px !important;
+}
+.dashboard-grid .card-dashboard .card-desc {
+    font-size: 0.76rem !important;
+    color: #b2bec3 !important;
+    margin-bottom: 0 !important;
+}
+.dashboard-grid .card-dashboard .card-icon-bg {
+    width: 32px !important;
+    height: 32px !important;
+    position: absolute !important;
+    right: 10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: rgba(255,255,255,0.10) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.12) !important;
+    margin-left: 0 !important;
+    flex-shrink: 0 !important;
+}
+.dashboard-grid .card-dashboard .card-icon {
+    font-size: 1.04rem !important;
+}
+@media (max-width: 900px) {
+    .dashboard-grid .card-dashboard .card-body {
+        padding: 13px 8px 10px 8px !important;
+    }
+    .dashboard-grid .card-dashboard .card-title {
+        font-size: 0.76rem !important;
+    }
+    .dashboard-grid .card-dashboard .card-value {
+        font-size: 0.88rem !important;
+    }
+    .dashboard-grid .card-dashboard .card-icon {
+        font-size: 0.8rem !important;
+    }
+    .dashboard-grid .card-dashboard .card-icon-bg {
+        width: 22px !important;
+        height: 22px !important;
+    }
+}
+body.theme-light .dashboard-grid .card-dashboard {
+    background: #fff !important;
+    color: #222 !important;
+}
+body.theme-light .dashboard-grid .card-dashboard.card-receita {
+    color: #22c55e !important;
+    border-color: #22c55e !important;
+    box-shadow: 0 0 16px 0 #22c55e33 !important;
+}
+body.theme-light .dashboard-grid .card-dashboard.card-despesa {
+    color: #e11d48 !important;
+    border-color: #e11d48 !important;
+    box-shadow: 0 0 16px 0 #e11d4833 !important;
+}
+body.theme-light .dashboard-grid .card-dashboard.card-saldo {
+    color: #2563eb !important;
+    border-color: #2563eb !important;
+    box-shadow: 0 0 16px 0 #2563eb33 !important;
+}
+body.theme-light .dashboard-grid .card-dashboard.card-meta {
+    color: #eab308 !important;
+    border-color: #eab308 !important;
+    box-shadow: 0 0 16px 0 #eab30833 !important;
+} 
+
+.dashboard-grid .card-dashboard:hover {
+    transform: scale(1.04);
+    box-shadow: 0 8px 32px 0 rgba(0,0,0,0.22), 0 0 24px 0 currentColor;
+    z-index: 2;
+} 
+
+.dashboard-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.dashboard-card {
+  background: #23272f;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 0 16px 0 0;
+  min-height: 80px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 13px;
+  transition: transform 0.15s, box-shadow 0.15s;
+  border: 2.5px solid transparent;
+}
+.dashboard-card-receita {
+  border-color: #38b2ac;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 0 16px 2px #38b2ac33;
+}
+.dashboard-card-despesa {
+  border-color: #e53e3e;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 0 16px 2px #e53e3e33;
+}
+.dashboard-card-saldo {
+  border-color: #3182ce;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 0 16px 2px #3182ce33;
+}
+.dashboard-card-meta {
+  border-color: #ecc94b;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 0 16px 2px #ecc94b55;
+}
+.dashboard-card:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.dashboard-card-bar {
+  width: 6px;
+  border-radius: 8px 0 0 8px;
+  margin-right: 14px;
+  background: linear-gradient(180deg, #4fd1c5 0%, #38b2ac 100%);
+}
+.dashboard-card-receita .dashboard-card-bar { background: linear-gradient(180deg, #38b2ac 0%, #319795 100%); }
+.dashboard-card-despesa .dashboard-card-bar { background: linear-gradient(180deg, #e53e3e 0%, #c53030 100%); }
+.dashboard-card-saldo .dashboard-card-bar { background: linear-gradient(180deg, #3182ce 0%, #2b6cb0 100%); }
+.dashboard-card-meta .dashboard-card-bar { background: linear-gradient(180deg, #ecc94b 0%, #d69e2e 100%); }
+.dashboard-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 14px 0;
+}
+.dashboard-card-title {
+  font-size: 0.8rem;
+  color: #b0b8c1;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+.dashboard-card-receita .dashboard-card-value,
+.dashboard-card-receita .dashboard-card-icon {
+  color: #38b2ac;
+}
+.dashboard-card-despesa .dashboard-card-value,
+.dashboard-card-despesa .dashboard-card-icon {
+  color: #e53e3e;
+}
+.dashboard-card-saldo .dashboard-card-value,
+.dashboard-card-saldo .dashboard-card-icon {
+  color: #3182ce;
+}
+.dashboard-card-meta .dashboard-card-value,
+.dashboard-card-meta .dashboard-card-icon {
+  color: #ecc94b;
+}
+.dashboard-card-value {
+  font-size: 1.08rem;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.dashboard-card-desc {
+  font-size: 0.75rem;
+  color: #b0b8c1;
+}
+.dashboard-card-icon-bg {
+  background: #2d3748;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+}
+.dashboard-card-icon {
+  font-size: 1.08rem;
+  color: #4fd1c5;
+}
+@media (max-width: 991px) {
+  .dashboard-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 8px 0 0;
+    min-height: 64px;
+  }
+  .dashboard-card-bar {
+    margin-right: 0;
+    margin-bottom: 8px;
+    width: 100%;
+    height: 5px;
+    border-radius: 8px 8px 0 0;
+  }
+  .dashboard-card-body {
+    flex-direction: row;
+    width: 100%;
+    gap: 6px;
+    padding: 10px 0;
+  }
+  .dashboard-card-icon-bg {
+    width: 24px;
+    height: 24px;
+    margin-left: 5px;
+  }
+  .dashboard-card-value {
+    font-size: 0.85rem;
+  }
+} 
+
+.aviso-vencimento .badge.bg-info {
+  color: #fff !important;
+  font-weight: bold !important;
+} 
+
+@media (max-width: 600px) {
+  .dashboard-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 6px 4px !important;
+    min-height: 56px !important;
+    margin-bottom: 8px !important;
+    border-radius: 10px !important;
+  }
+  .dashboard-card-bar {
+    display: none !important;
+  }
+  .dashboard-card-body {
+    flex-direction: column !important;
+    gap: 4px !important;
+    padding: 6px 0 !important;
+  }
+  .dashboard-card-title {
+    font-size: 0.85rem !important;
+    margin-bottom: 1px !important;
+  }
+  .dashboard-card-value {
+    font-size: 1.05rem !important;
+    margin-bottom: 1px !important;
+  }
+  .dashboard-card-desc {
+    font-size: 0.75rem !important;
+  }
+  .dashboard-card-icon-bg {
+    width: 22px !important;
+    height: 22px !important;
+    margin-left: 4px !important;
+  }
+  .dashboard-card-icon {
+    font-size: 1rem !important;
+  }
+  .trend-indicator {
+    font-size: 0.7rem !important;
+    padding: 1px 4px !important;
+    margin-bottom: 2px !important;
+  }
+  .dashboard-cards-row-fixed {
+    flex-direction: column !important;
+    min-height: unset !important;
+    height: auto !important;
+  }
+  .dashboard-cards-row-fixed > .col-lg-6 {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 10px !important;
+    height: auto !important;
+  }
+  .dashboard-cards-row-fixed .card.shadow {
+    min-height: 0 !important;
+    height: auto !important;
+  }
+  .dashboard-cards-row-fixed .avisos-grid {
+    flex-direction: column !important;
+    gap: 6px !important;
+    height: auto !important;
+    max-height: 220px !important;
+  }
+  .dashboard-cards-row-fixed .aviso-vencimento {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: 70px !important;
+  }
+} 

@@ -1,0 +1,952 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SGFP - Sistema de Gestão Financeira Pessoal{% endblock %}</title>
+    
+    <!-- CSRF Token -->
+    {% csrf_token %}
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{% static 'core/css/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'core/css/dashboard-themes-v2.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <!-- O CSS de ícones coloridos deve ser o último para garantir prioridade sobre temas -->
+    <link href="{% static 'core/css/dashboard-themes.css' %}" rel="stylesheet">
+    <style>
+        /* Tema Dark Colorido e Moderno */
+        .dark-theme {
+            background-color: #242933 !important;
+            color: #F1F3F4 !important;
+        }
+        .dark-theme body {
+            background-color: #242933 !important;
+            color: #F1F3F4 !important;
+        }
+        .dark-theme .main-content {
+            background-color: #242933 !important;
+        }
+        .dark-theme .sidebar {
+            background: linear-gradient(180deg, #22304A 0%, #23272F 100%) !important;
+            color: #F1F3F4 !important;
+        }
+        .dark-theme .sidebar .nav-link {
+            color: #F1F3F4 !important;
+            font-weight: 500;
+        }
+        .dark-theme .sidebar .nav-link i {
+            color: inherit;
+            filter: brightness(1.2);
+        }
+        .dark-theme .sidebar .nav-link.active {
+            background: rgba(58,141,255,0.18) !important;
+            color: #3A8DFF !important;
+            border-left: 4px solid #3A8DFF;
+            border-radius: 0 0.375rem 0.375rem 0;
+        }
+        .dark-theme .sidebar .nav-link.active i {
+            color: #3A8DFF !important;
+        }
+        .dark-theme .sidebar .nav-link .fa-arrow-up { color: #4ADE80 !important; }
+        .dark-theme .sidebar .nav-link .fa-arrow-down { color: #F87171 !important; }
+        .dark-theme .sidebar .nav-link .fa-exchange-alt { color: #3A8DFF !important; }
+        .dark-theme .sidebar .nav-link .fa-tags { color: #FACC15 !important; }
+        .dark-theme .sidebar .nav-link .fa-wallet { color: #A78BFA !important; }
+        .dark-theme .sidebar .nav-link .fa-bullseye { color: #F472B6 !important; }
+        .dark-theme .sidebar .nav-link .fa-chart-bar { color: #38BDF8 !important; }
+        .dark-theme .sidebar .nav-link .fa-cog { color: #FBBF24 !important; }
+        .dark-theme .sidebar .sidebar-label { color: #F1F3F4 !important; }
+        .dark-theme .sidebar .fw-bold { color: #fff !important; }
+        .dark-theme .sidebar .sidebar-toggle { color: #B0B3B8 !important; }
+        .dark-theme .sidebar .sidebar-toggle:hover { background: #22304A !important; }
+        .dark-theme .navbar, .dark-theme .navbar-light, .dark-theme .bg-light {
+            background-color: #23272F !important;
+            color: #F1F3F4 !important;
+            border-color: #333639 !important;
+        }
+        .dark-theme .navbar .navbar-brand, .dark-theme .navbar .nav-link, .dark-theme .navbar .fa-user-circle, .dark-theme .navbar .fa-bell {
+            color: #F1F3F4 !important;
+        }
+        .dark-theme .navbar .nav-link.dropdown-toggle {
+            color: #F1F3F4 !important;
+        }
+        .dark-theme .navbar .dropdown-menu {
+            background-color: #23272F !important;
+            color: #F1F3F4 !important;
+            border-color: #333639 !important;
+        }
+        .dark-theme .navbar .dropdown-item {
+            color: #F1F3F4 !important;
+        }
+        .dark-theme .navbar .dropdown-item:hover {
+            background-color: #22304A !important;
+        }
+        .dark-theme .notification-badge {
+            background: #FACC15 !important;
+            color: #23272F !important;
+            border: 2px solid #23272F;
+        }
+        .dark-theme .btn-close {
+            filter: invert(1);
+        }
+        .dark-theme .card, .dark-theme .table, .dark-theme .dropdown-menu {
+            background-color: #23272F !important;
+            color: #F1F3F4 !important;
+            border-color: #333639 !important;
+        }
+        .dark-theme .card-header, .dark-theme .table-light {
+            background-color: #22304A !important;
+            color: #F1F3F4 !important;
+            border-color: #333639 !important;
+        }
+        .dark-theme .form-control {
+            background-color: #23272F !important;
+            border-color: #333639 !important;
+            color: #F1F3F4 !important;
+        }
+        .dark-theme .form-control:focus {
+            background-color: #23272F !important;
+            border-color: #3A8DFF !important;
+            color: #F1F3F4 !important;
+        }
+        .dark-theme .text-muted, .dark-theme .small {
+            color: #B0B3B8 !important;
+        }
+        .dark-theme .border-bottom, .dark-theme .border-end {
+            border-color: #333639 !important;
+        }
+        .dark-theme .dropdown-item {
+            color: #F1F3F4 !important;
+        }
+        .dark-theme .dropdown-item:hover {
+            background-color: #22304A !important;
+        }
+        .dark-theme .btn-primary, .dark-theme .btn-outline-primary {
+            background-color: #3A8DFF !important;
+            border-color: #3A8DFF !important;
+            color: #fff !important;
+        }
+        .dark-theme .btn-primary:hover, .dark-theme .btn-outline-primary:hover {
+            background-color: #60AFFF !important;
+            border-color: #60AFFF !important;
+        }
+        .dark-theme .btn-outline-danger {
+            border-color: #F87171 !important;
+            color: #F87171 !important;
+        }
+        .dark-theme .btn-outline-danger:hover {
+            background-color: #F87171 !important;
+            color: #fff !important;
+        }
+        .dark-theme .alert {
+            background-color: #23272F !important;
+            border-color: #333639 !important;
+            color: #F1F3F4 !important;
+        }
+        .dark-theme .badge {
+            background-color: #22304A !important;
+            color: #F1F3F4 !important;
+            border: 1px solid #3A8DFF;
+        }
+        .dark-theme .badge.bg-success {
+            background-color: #4ADE80 !important;
+            color: #23272F !important;
+        }
+        .dark-theme .badge.bg-danger {
+            background-color: #F87171 !important;
+            color: #23272F !important;
+        }
+        .dark-theme .badge.bg-primary, .dark-theme .badge.bg-info {
+            background-color: #3A8DFF !important;
+            color: #23272F !important;
+        }
+        .dark-theme .table-striped > tbody > tr:nth-of-type(odd) {
+            background-color: #23272F !important;
+        }
+        .dark-theme .table-hover > tbody > tr:hover {
+            background-color: #22304A !important;
+        }
+        /* Seletor de cor no dark */
+        .dark-theme input[type="color"] {
+            border: 2px solid #3A8DFF !important;
+            background: #23272F !important;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            cursor: pointer;
+        }
+        .dark-theme input[type="color"]::-webkit-color-swatch {
+            border-radius: 50%;
+            border: none;
+        }
+        .dark-theme input[type="color"]::-moz-color-swatch {
+            border-radius: 50%;
+            border: none;
+        }
+        .dark-theme input[type="color"]::-ms-color-swatch {
+            border-radius: 50%;
+            border: none;
+        }
+        /* Fim do seletor de cor */
+        /* Estilos gerais e responsividade mantidos */
+        body {
+            min-height: 100vh;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 220px;
+            background: rgba(36, 41, 51, 0.92); /* igual ao footer, translúcido */
+            color: #fff;
+            z-index: 1030;
+            transition: width 0.3s cubic-bezier(.4,2,.6,1), background 0.3s, color 0.3s;
+            overflow-y: auto;
+            backdrop-filter: blur(6px) saturate(1.2);
+            -webkit-backdrop-filter: blur(6px) saturate(1.2);
+        }
+        .sidebar.collapsed {
+            width: 60px;
+        }
+        .sidebar .nav-link {
+            color: #fff !important;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            margin: 0.125rem 0.5rem;
+            transition: all 0.2s ease;
+        }
+        .sidebar .nav-link:hover {
+            background: rgba(58,141,255,0.10);
+            transform: translateX(2px);
+        }
+        .sidebar .nav-link.active {
+            background: rgba(58,141,255,0.18) !important;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link i {
+            color: #fff;
+            width: 20px;
+            text-align: center;
+            margin-right: 0.5rem;
+        }
+        .sidebar .sidebar-toggle {
+            background: none;
+            border: none;
+            color: #fff;
+            width: 100%;
+            text-align: right;
+            font-size: 1.2rem;
+            padding: 0.5rem 1rem;
+        }
+        .sidebar .sidebar-toggle:hover {
+            background: rgba(58,141,255,0.10);
+        }
+        .main-content {
+            margin-left: 220px;
+            padding-top: 70px;
+            transition: margin-left 0.3s cubic-bezier(.4,2,.6,1);
+            position: relative;
+            min-height: calc(100vh - 70px);
+            padding-bottom: 38px;
+        }
+        .main-content.sidebar-collapsed {
+            margin-left: 60px;
+        }
+        .sidebar-label {
+            transition: opacity 0.3s cubic-bezier(.4,2,.6,1), width 0.3s cubic-bezier(.4,2,.6,1);
+            white-space: nowrap;
+        }
+        .sidebar.collapsed .sidebar-label {
+            opacity: 0;
+            width: 0;
+            display: none;
+        }
+        .sidebar .nav-link {
+            color: inherit !important;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            margin: 0.125rem 0.5rem;
+            transition: all 0.2s cubic-bezier(.4,2,.6,1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .sidebar .nav-link:hover {
+            background: rgba(58,141,255,0.10);
+            transform: translateX(2px);
+        }
+        .sidebar .nav-link.active {
+            background: rgba(58,141,255,0.18) !important;
+            border-left: 4px solid #3A8DFF;
+            border-radius: 0 0.375rem 0.375rem 0;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            color: inherit !important;
+        }
+        .sidebar .nav-link.active .sidebar-icon {
+            color: inherit !important;
+        }
+        .sidebar .nav-link .sidebar-icon {
+            width: 20px;
+            text-align: center;
+            margin-right: 0.5rem;
+            font-size: 1.15em;
+            transition: color 0.2s;
+        }
+        @media (max-width: 991px) {
+            .sidebar {
+                left: -220px;
+                width: 220px;
+                transform: translateX(0);
+            }
+            .sidebar.show {
+                left: 0;
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding-top: 70px;
+            }
+            .sidebar.collapsed {
+                width: 60px;
+            }
+            .sidebar-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 1025;
+                display: none;
+            }
+            .sidebar-overlay.show {
+                display: block;
+            }
+        }
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .notification-dropdown {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        /* --- NAVBAR FIXA PEOPLENET --- */
+        .navbar.peoplenet {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100vw;
+            z-index: 1040;
+            background: #23272F;
+            color: #F1F3F4;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-bottom: none;
+            min-height: 64px;
+            transition: background 0.2s;
+        }
+        .navbar.peoplenet .navbar-brand {
+            font-weight: 700;
+            font-size: 1.35rem;
+            color: #3A8DFF !important;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+        }
+        .navbar.peoplenet .navbar-brand img {
+            height: 36px;
+            margin-right: 10px;
+        }
+        .navbar.peoplenet .nav-link, .navbar.peoplenet .fa-user-circle, .navbar.peoplenet .fa-bell, .navbar.peoplenet .fa-palette {
+            color: #F1F3F4 !important;
+            font-size: 1.1rem;
+            margin-right: 0.5rem;
+        }
+        .navbar.peoplenet .nav-link.dropdown-toggle {
+            color: #F1F3F4 !important;
+        }
+        .navbar.peoplenet .dropdown-menu {
+            background: #23272F;
+            color: #F1F3F4;
+            border: 1px solid #333639;
+        }
+        .navbar.peoplenet .dropdown-item {
+            color: #F1F3F4;
+        }
+        .navbar.peoplenet .dropdown-item:hover {
+            background: #22304A;
+        }
+        .navbar.peoplenet .notification-badge {
+            background: #FACC15;
+            color: #23272F;
+            border: 2px solid #23272F;
+            font-weight: bold;
+        }
+        .navbar.peoplenet .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 0.5rem;
+            border: 2px solid #3A8DFF;
+        }
+        .navbar.peoplenet .dropdown-toggle::after {
+            margin-left: 0.4em;
+        }
+        @media (max-width: 991px) {
+            .navbar.peoplenet .navbar-brand {
+                font-size: 1.1rem;
+            }
+            .navbar.peoplenet .nav-link, .navbar.peoplenet .fa-user-circle, .navbar.peoplenet .fa-bell, .navbar.peoplenet .fa-palette {
+                font-size: 1rem;
+            }
+        }
+        /* --- FIM NAVBAR PEOPLENET --- */
+        .footer-fixed {
+            position: fixed;
+            left: 220px;
+            bottom: 0;
+            width: calc(100% - 220px);
+            height: 38px;
+            background: rgba(36, 41, 51, 0.92); /* fundo padrão igual ao body.dark-theme */
+            color: #F1F3F4;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.10);
+            z-index: 1040;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            font-size: 0.98em;
+            transition: left 0.3s cubic-bezier(.4,2,.6,1), width 0.3s cubic-bezier(.4,2,.6,1), background 0.3s;
+            backdrop-filter: blur(6px) saturate(1.2);
+            -webkit-backdrop-filter: blur(6px) saturate(1.2);
+        }
+        .sidebar.collapsed ~ .main-content .footer-fixed {
+            left: 60px;
+            width: calc(100% - 60px);
+        }
+        @media (max-width: 991px) {
+            .footer-fixed {
+                left: 0;
+                width: 100%;
+                padding: 0 8px;
+                font-size: 0.95em;
+            }
+        }
+        .dark-theme .footer-fixed,
+        body.corona-dark .footer-fixed,
+        body.vanta-dark .footer-fixed,
+        body.staradmin-color .footer-fixed,
+        body.futureui-color .footer-fixed {
+            background: rgba(36, 41, 51, 0.92) !important; /* igual ao body.corona-dark, vanta-dark, etc */
+            color: #F1F3F4 !important;
+        }
+        body.material-light .footer-fixed {
+            background: rgba(248, 250, 253, 0.92) !important; /* igual ao body.material-light */
+            color: #23272F !important;
+        }
+        body.celestial-light .footer-fixed {
+            background: rgba(224, 234, 252, 0.92) !important; /* igual ao body.celestial-light */
+            color: #23272F !important;
+        }
+        body:not(.corona-dark):not(.vanta-dark):not(.staradmin-color):not(.futureui-color):not(.dark-theme):not(.material-light):not(.celestial-light) .footer-fixed {
+            background: rgba(244, 246, 250, 0.92); /* fallback para temas claros */
+            color: #23272F;
+        }
+        .main-content {
+            margin-left: 220px;
+            padding-top: 70px;
+            transition: margin-left 0.3s cubic-bezier(.4,2,.6,1);
+            position: relative;
+            min-height: calc(100vh - 70px);
+            padding-bottom: 38px;
+        }
+        .main-content.sidebar-collapsed {
+            margin-left: 60px;
+        }
+        .navbar.peoplenet {
+            background: rgba(36, 41, 51, 0.92);
+            box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10), 0 1.5px 0 rgba(58,141,255,0.04);
+            border-bottom: 1.5px solid rgba(58,141,255,0.08);
+            backdrop-filter: blur(8px) saturate(1.2);
+            -webkit-backdrop-filter: blur(8px) saturate(1.2);
+        }
+        .dark-theme .navbar.peoplenet {
+            background: rgba(28, 32, 40, 0.93);
+            box-shadow: 0 2px 18px 0 rgba(0,0,0,0.13), 0 1.5px 0 rgba(58,141,255,0.10);
+            border-bottom: 1.5px solid rgba(58,141,255,0.13);
+        }
+        .light-theme .navbar.peoplenet {
+            background: rgba(244, 246, 250, 0.92);
+            box-shadow: 0 2px 16px 0 rgba(36,41,51,0.08), 0 1.5px 0 rgba(58,141,255,0.04);
+            border-bottom: 1.5px solid rgba(58,141,255,0.06);
+        }
+        .d-dark-inline { display: none; }
+        .d-dark-none { display: inline; }
+        .dark-theme .d-dark-inline { display: inline !important; }
+        .dark-theme .d-dark-none { display: none !important; }
+        .navbar-login, .footer-login {
+            background: inherit;
+            box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10), 0 1.5px 0 rgba(58,141,255,0.04);
+            border-bottom: 1.5px solid rgba(58,141,255,0.08);
+            backdrop-filter: blur(8px) saturate(1.2);
+            -webkit-backdrop-filter: blur(8px) saturate(1.2);
+            width: 100vw;
+            left: 0;
+            right: 0;
+            display: block;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar-login { min-height: 64px; }
+        .footer-login {
+            min-height: 38px;
+            border-bottom: none;
+            border-top: 1.5px solid rgba(58,141,255,0.08);
+            box-shadow: 0 -2px 16px 0 rgba(0,0,0,0.10), 0 -1.5px 0 rgba(58,141,255,0.04);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 1em;
+            color: var(--footer-text, #b0b3b8);
+        }
+        .dark-theme .navbar-login, .dark-theme .footer-login {
+            background: #23273a;
+            color: #b0b3b8;
+        }
+        .light-theme .navbar-login, .light-theme .footer-login {
+            background: #f4f6fa;
+            color: #23272f;
+        }
+        body > .navbar-login, body > .footer-login { position: fixed !important; }
+        @media (max-width: 991px) {
+  .sidebar {
+    position: fixed;
+    left: -220px;
+    top: 0;
+    width: 220px;
+    height: 100vh;
+    background: #23272f;
+    z-index: 1050;
+    transition: left 0.25s;
+    box-shadow: 2px 0 12px #0002;
+    overflow-y: auto;
+  }
+  .sidebar.open {
+    left: 0;
+  }
+  .sidebar-backdrop {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.25);
+    z-index: 1049;
+  }
+  .sidebar.open + .sidebar-backdrop {
+    display: block;
+  }
+  .sidebar-toggle {
+    display: block !important;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 1100;
+    background: #23272f;
+    border: none;
+    color: #38b2ac;
+    font-size: 2rem;
+    border-radius: 6px;
+    padding: 4px 10px;
+    box-shadow: 0 2px 8px #0002;
+  }
+}
+@media (min-width: 992px) {
+  .sidebar-toggle {
+    display: none !important;
+  }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="{% if tema_usuario %}{{ tema_usuario }}{% endif %}{% if icones_coloridos %} icones-coloridos{% endif %}">
+    {% if user.is_authenticated %}
+    <!-- Botão hambúrguer sempre visível, fora do sidebar -->
+    <button class="sidebar-toggle me-2" style="z-index:1060; background:transparent; border:none; outline:none; box-shadow:none; color:inherit; font-size:1.3em;" onclick="toggleSidebar()" aria-label="Expandir/Colapsar menu" tabindex="0">
+        <i class="fas fa-bars"></i>
+    </button>
+    <!-- Overlay para mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    
+    <!-- Sidebar -->
+    <nav id="sidebar" class="sidebar{% if not request.COOKIES.sidebar_expanded %} collapsed{% endif %}" aria-label="Menu principal" style="z-index: 1051; overflow-x: hidden;">
+        <div class="d-flex flex-column align-items-stretch px-2 pt-2 pb-1" style="position:relative; z-index:2;">
+            <div class="d-flex align-items-center justify-content-between mb-2" style="position:relative;">
+                <div id="sidebar-logo" class="sidebar-logo d-flex flex-column align-items-center justify-content-center w-100" style="margin-left: 40px;">
+                    <img src="{% static 'icones/logo_Menu.png' %}" alt="Logo SGFP" style="height: 92px; width: 92px; object-fit:contain; display:block; margin-left:auto; margin-right:auto;" onerror="this.style.display='none'; this.parentNode.innerHTML='<span style=\'color:#fff;font-size:2em;\'>Logo SGFP</span>';">
+                    <span class="fw-bold d-block text-center" style="color: {% if tema_escuro %}#F1F3F4{% else %}#23272A{% endif %}; font-size: 1.2em; letter-spacing: 1px;">SGFP</span>
+                </div>
+            </div>
+        </div>
+        <ul class="nav flex-column px-2" id="sidebarMenu">
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'core:dashboard' %}" tabindex="0">
+                    <i class="fas fa-tachometer-alt sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard" aria-label="Dashboard"></i> <span class="sidebar-label">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center {% if 'receita' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:receita_list' %}" tabindex="0">
+                    <i class="fas fa-arrow-up sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Receitas" aria-label="Receitas"></i> <span class="sidebar-label">Receitas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center {% if 'despesa' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:despesa_list' %}" tabindex="0">
+                    <i class="fas fa-arrow-down sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Despesas" aria-label="Despesas"></i> <span class="sidebar-label">Despesas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center {% if 'transferencia' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:transferencia_list' %}" tabindex="0">
+                    <i class="fas fa-exchange-alt sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Transferências" aria-label="Transferências"></i> <span class="sidebar-label">Transferências</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center {% if 'categoria' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:categoria_list' %}" tabindex="0">
+                    <i class="fas fa-tags sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Categorias" aria-label="Categorias"></i> <span class="sidebar-label">Categorias</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center {% if 'conta' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:conta_list' %}" tabindex="0">
+                    <i class="fas fa-wallet sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Contas" aria-label="Contas"></i> <span class="sidebar-label">Contas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center {% if 'cartao' in request.resolver_match.url_name or 'cartoes' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:cartoes_dashboard' %}" tabindex="0">
+                    <i class="fas fa-credit-card sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Cartões" aria-label="Cartões"></i> <span class="sidebar-label">Cartões</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center {% if 'meta' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:meta_list' %}" tabindex="0">
+                    <i class="fas fa-bullseye sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Metas" aria-label="Metas"></i> <span class="sidebar-label">Metas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center {% if 'relatorio' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:relatorio_financeiro' %}" tabindex="0">
+                    <i class="fas fa-chart-bar sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Relatórios" aria-label="Relatórios"></i> <span class="sidebar-label">Relatórios</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center {% if request.resolver_match.app_name == 'configuracoes' %}active{% endif %}" href="{% url 'configuracoes:home' %}" tabindex="0">
+                    <i class="fas fa-cog sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Configurações" aria-label="Configurações"></i> <span class="sidebar-label">Configurações</span>
+                </a>
+            </li>
+        </ul>
+        <div class="mt-auto mb-3 px-2 w-100" style="position:absolute; bottom:10px; left:0; right:0;">
+            <form method="post" action="{% url 'logout' %}" style="display:inline; width:100%;{% if request.COOKIES.sidebar_expanded %} position:absolute; right:2px; left:auto;{% endif %}">
+                    {% csrf_token %}
+                <button type="submit" class="nav-link btn btn-link p-0 d-flex align-items-center justify-content-center w-100" style="color:inherit;text-align:left;" tabindex="0">
+                    <i class="fas fa-sign-out-alt sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Sair" aria-label="Sair"></i> <span class="sidebar-label">Sair</span>
+                    </button>
+                </form>
+        </div>
+    </nav>
+    {% endif %}
+
+    <!-- Conteúdo Principal -->
+    <div class="main-content{% if not request.COOKIES.sidebar_expanded %} sidebar-collapsed{% endif %}">
+        <!-- Navbar superior -->
+        {% if user.is_authenticated %}
+        <nav class="navbar peoplenet navbar-expand-lg w-100" style="width:100vw; left:0; right:0;">
+            <div class="container-fluid px-3">
+                <div class="d-flex align-items-center">
+                    <a class="navbar-brand mb-0 h1 d-flex align-items-center" href="{% url 'core:dashboard' %}">
+                        <div id="navbar-logo" class="navbar-logo" style="height: 48px; width: 48px; display: flex; align-items: center; justify-content: center; background: transparent; margin-left: 8px;">
+                            <img src="{% static 'icones/logo_Menu.png' %}" alt="Logo SGFP" style="height: 48px; width: 48px; object-fit:contain; display:block;" onerror="this.style.display='none'; this.parentNode.innerHTML='<span style=\'color:#fff;font-size:1.2em;\'>Logo SGFP</span>';">
+                        </div>
+                    </a>
+                </div>
+                <div class="navbar-nav ms-auto flex-row align-items-center gap-2">
+                    <!-- Notificações -->
+                    <div class="nav-item dropdown me-2">
+                        <a class="nav-link dropdown-toggle position-relative" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge" id="notification-count" style="display: none;">0</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end notification-dropdown" style="width: 300px;">
+                            <h6 class="dropdown-header">Notificações</h6>
+                            <div id="notifications-list">
+                                <div class="dropdown-item text-muted">Carregando...</div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-center" href="{% url 'core:notificacoes_list' %}">
+                                Ver todas as notificações
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Usuário -->
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                            <img src="https://ui-avatars.com/api/?name={{ user.get_full_name|default:user.username }}&background=3A8DFF&color=fff&rounded=true&size=36" class="avatar me-2" alt="Avatar">
+                            <span class="d-none d-md-inline" style="color: #F1F3F4;">{{ user.get_full_name|default:user.username }}</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="{% url 'configuracoes:home' %}">
+                                <i class="fas fa-cog me-2"></i>Configurações
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-item" style="color:inherit;text-align:left;width:100%;">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Sair
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        {% else %}
+        <nav class="navbar-login" style="position:fixed; top:0; left:0; right:0; width:100vw; min-height:64px; z-index:1050;"></nav>
+        <!-- Footer login -->
+        <footer class="footer-login" style="position:fixed; bottom:0; left:0; right:0; width:100vw; min-height:38px; z-index:1050;">
+            <div class="container-fluid d-flex justify-content-between align-items-center p-0">
+                <div class="d-flex align-items-center" style="padding-left:10px;">
+                    <span class="text-muted">SGFP - Sistema de Gestão Financeira Pessoal</span>
+                </div>
+                <div class="text-end" style="padding-right:10px;">
+                    <span class="text-muted">&copy; {% now "Y" %} Todos os direitos reservados</span>
+                </div>
+            </div>
+        </footer>
+        {% endif %}
+
+        <!-- Mensagens -->
+        {% if messages %}
+        <div class="container-fluid mt-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {% if message.tags == 'success' %}
+                <i class="fas fa-check-circle me-2"></i>
+                {% elif message.tags == 'error' %}
+                <i class="fas fa-exclamation-circle me-2"></i>
+                {% elif message.tags == 'warning' %}
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                {% elif message.tags == 'info' %}
+                <i class="fas fa-info-circle me-2"></i>
+                {% endif %}
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <main class="py-4">
+            {% block content %}{% endblock %}
+        </main>
+
+        <!-- Footer -->
+        {% if user.is_authenticated %}
+            <!-- Footer padrão -->
+            <footer class="footer-fixed">
+                <div class="container-fluid d-flex justify-content-between align-items-center p-0">
+                    <div class="d-flex align-items-center">
+                        <img src="{% static 'icones/logo_claro.png' %}" alt="Logo" style="height: 22px; margin-right: 8px;">
+                        <span class="text-muted">SGFP - Sistema de Gestão Financeira Pessoal</span>
+                    </div>
+                    <div class="text-end">
+                        <span class="text-muted">&copy; {% now "Y" %} Todos os direitos reservados</span>
+                    </div>
+                </div>
+            </footer>
+        {% else %}
+            <!-- Footer login -->
+            <footer class="footer-login" style="position:fixed; bottom:0; left:0; right:0; width:100vw; min-height:38px; z-index:1050;">
+                <div class="container-fluid d-flex justify-content-between align-items-center p-0">
+                    <div class="d-flex align-items-center" style="padding-left:10px;">
+                        <span class="text-muted">SGFP - Sistema de Gestão Financeira Pessoal</span>
+                    </div>
+                    <div class="text-end" style="padding-right:10px;">
+                        <span class="text-muted">&copy; {% now "Y" %} Todos os direitos reservados</span>
+                </div>
+            </div>
+        </footer>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Sidebar colapsável estilo PeopleNet
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const mainContent = document.querySelector('.main-content');
+            if (window.innerWidth <= 991) {
+                sidebar.classList.toggle('show');
+                overlay.classList.toggle('show');
+            } else {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('sidebar-collapsed');
+                if (sidebar.classList.contains('collapsed')) {
+                    localStorage.setItem('sidebar-collapsed', '1');
+                } else {
+                    localStorage.removeItem('sidebar-collapsed');
+                }
+                setTimeout(initSidebarTooltips, 350);
+            }
+        }
+        
+        // Aplica estado salvo do sidebar ao carregar
+        window.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.querySelector('.main-content');
+            if (window.innerWidth > 991 && localStorage.getItem('sidebar-collapsed')) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('sidebar-collapsed');
+            }
+            // Acessibilidade: navegação por teclado
+            document.querySelectorAll('#sidebarMenu .nav-link').forEach(link => {
+                link.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        const next = this.parentElement.nextElementSibling;
+                        if (next) next.querySelector('.nav-link').focus();
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const prev = this.parentElement.previousElementSibling;
+                        if (prev) prev.querySelector('.nav-link').focus();
+                    }
+                });
+            });
+        });
+        
+        // Fechar sidebar no mobile ao clicar em um link
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarLinks = document.querySelectorAll('.sidebar .nav-link');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 991) {
+                        document.getElementById('sidebar').classList.remove('show');
+                        overlay.classList.remove('show');
+                    }
+                });
+            });
+        });
+        
+        // Fechar sidebar ao redimensionar para desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 991) {
+                document.getElementById('sidebarOverlay').classList.remove('show');
+            }
+        });
+        
+        // Carregar notificações
+        function carregarNotificacoes() {
+            fetch('/core/api/notificacoes/recentes/')
+                .then(response => response.json())
+                .then(data => {
+                    const notificationsList = document.getElementById('notifications-list');
+                    const notificationCount = document.getElementById('notification-count');
+                    
+                    if (data.notificacoes.length === 0) {
+                        notificationsList.innerHTML = '<div class="dropdown-item text-muted">Nenhuma notificação</div>';
+                    } else {
+                        notificationsList.innerHTML = data.notificacoes.map(notif => `
+                            <a class="dropdown-item ${notif.lida ? '' : 'fw-bold'}" href="${notif.link || '#'}">
+                                <div class="d-flex align-items-center">
+                                    <i class="${notif.icone} me-2 text-${notif.tipo === 'alerta' ? 'danger' : notif.tipo === 'sucesso' ? 'success' : 'info'}"></i>
+                                    <div>
+                                        <div class="small">${notif.titulo}</div>
+                                        <div class="text-muted small">${notif.tempo_atras}</div>
+                                    </div>
+                                </div>
+                            </a>
+                        `).join('');
+                    }
+                });
+        }
+        
+        function carregarContadorNotificacoes() {
+            fetch('/core/api/notificacoes/count/')
+                .then(response => response.json())
+                .then(data => {
+                    const notificationCount = document.getElementById('notification-count');
+                    if (data.count > 0) {
+                        notificationCount.textContent = data.count;
+                        notificationCount.style.display = 'flex';
+                    } else {
+                        notificationCount.style.display = 'none';
+                    }
+                });
+        }
+        
+        // Carregar notificações em todas as páginas autenticadas
+        if (document.getElementById('notifications-list')) {
+            carregarNotificacoes();
+            carregarContadorNotificacoes();
+            // Atualizar a cada 30 segundos
+            setInterval(carregarNotificacoes, 30000);
+            setInterval(carregarContadorNotificacoes, 30000);
+        }
+
+        // Inicializar tooltips Bootstrap para os ícones do menu lateral
+        function initSidebarTooltips() {
+            const sidebar = document.getElementById('sidebar');
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            const iconEls = sidebar.querySelectorAll('.sidebar-icon');
+            iconEls.forEach(function(icon) {
+                if (isCollapsed) {
+                    icon.setAttribute('data-bs-toggle', 'tooltip');
+                    icon.setAttribute('data-bs-placement', 'right');
+                } else {
+                    icon.removeAttribute('data-bs-toggle');
+                    icon.removeAttribute('data-bs-placement');
+                }
+            });
+            if (isCollapsed) {
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('.sidebar-icon[data-bs-toggle="tooltip"]'));
+                tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                    new bootstrap.Tooltip(tooltipTriggerEl);
+                });
+            } else {
+                // Remover tooltips
+                var tooltips = document.querySelectorAll('.sidebar-icon');
+                tooltips.forEach(function (el) {
+                    if (el._tooltip) { el._tooltip.dispose(); }
+                });
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            // ... existing code ...
+            initSidebarTooltips();
+            document.querySelector('.sidebar-toggle').addEventListener('click', function() {
+                setTimeout(initSidebarTooltips, 350); // Espera animação
+            });
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html> 

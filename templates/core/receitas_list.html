@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load br_filters %}
+
+{% block title %}Receitas - SGFP{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0">Receitas</h1>
+            <p class="text-muted">Gerencie suas receitas</p>
+        </div>
+        <a href="{% url 'core:receita_create' %}" class="btn btn-success">
+            <i class="fas fa-plus me-2"></i>Nova Receita
+        </a>
+    </div>
+
+    <!-- Filtros -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3 align-items-end">
+                <div class="col-md-2">{{ form_filtro.data_inicial.label_tag }}{{ form_filtro.data_inicial }}</div>
+                <div class="col-md-2">{{ form_filtro.data_final.label_tag }}{{ form_filtro.data_final }}</div>
+                <div class="col-md-2">{{ form_filtro.categoria.label_tag }}{{ form_filtro.categoria }}</div>
+                <div class="col-md-2">{{ form_filtro.conta.label_tag }}{{ form_filtro.conta }}</div>
+                <div class="col-md-1">{{ form_filtro.valor_min.label_tag }}{{ form_filtro.valor_min }}</div>
+                <div class="col-md-1">{{ form_filtro.valor_max.label_tag }}{{ form_filtro.valor_max }}</div>
+                <div class="col-md-1">{{ form_filtro.recorrente.label_tag }}{{ form_filtro.recorrente }}</div>
+                <div class="col-md-2">{{ form_filtro.busca_texto.label_tag }}{{ form_filtro.busca_texto }}</div>
+                <div class="col-md-12 d-flex justify-content-end mt-2">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="fas fa-search me-1"></i>Filtrar
+                    </button>
+                    <a href="{% url 'core:receita_list' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-times me-1"></i>Limpar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabela de Receitas -->
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Data</th>
+                            <th>Descrição</th>
+                            <th>Categoria</th>
+                            <th>Conta</th>
+                            <th>Valor</th>
+                            <th>Recorrente</th>
+                            <th class="acoes-col">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for receita in receitas %}
+                        <tr>
+                            <td>{{ receita.data|date:"d/m/Y" }}</td>
+                            <td>
+                                <strong>{{ receita.descricao }}</strong>
+                                {% if receita.observacoes %}
+                                <br><small class="text-muted">{{ receita.observacoes|truncatechars:50 }}</small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge badge-categoria-{{ receita.categoria.tipo|lower }}">
+                                    <i class="{{ receita.categoria.icone }} me-1"></i>{{ receita.categoria.nome }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge badge-conta-{{ receita.conta.tipo|lower }}">
+                                    <i class="{{ receita.conta.icone }} me-1"></i>{{ receita.conta.nome }}
+                                </span>
+                            </td>
+                            <td class="text-success fw-bold">{{ receita.valor|br_currency }}</td>
+                            <td>
+                                {% if receita.recorrente %}
+                                <span class="badge badge-recorrencia-{{ receita.frequencia|default:'padrao'|lower }}">
+                                    <i class="fas fa-redo me-1"></i>{{ receita.get_frequencia_display }}
+                                </span>
+                                {% else %}
+                                <span class="badge badge-recorrencia-unica">Única</span>
+                                {% endif %}
+                            </td>
+                            <td class="acoes-col">
+                                <a href="{% url 'core:receita_update' receita.id %}" class="btn btn-sm btn-outline-primary" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'core:receita_delete' receita.id %}" class="btn btn-sm btn-outline-danger" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir esta receita?');">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">
+                                <i class="fas fa-inbox fa-3x mb-3"></i>
+                                <p>Nenhuma receita encontrada.</p>
+                                <a href="{% url 'core:receita_create' %}" class="btn btn-success">
+                                    <i class="fas fa-plus me-2"></i>Adicionar primeira receita
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

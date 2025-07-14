@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login - SGFP{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-4">
+                    <div class="text-center mb-3">
+                        <!-- Logo adaptativa para tema -->
+                        <img src="{% static 'icones/logo_escuro.png' %}" alt="Logo" class="d-none d-dark-inline" style="height: 150px; background: transparent;">
+                        <img src="{% static 'icones/logo_claro.png' %}" alt="Logo" class="d-dark-none" style="height: 150px; background: transparent;">
+                        <p class="text-muted mb-2">Sistema de Gestão Financeira Pessoal</p>
+                    </div>
+                    <form method="post" id="loginForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="tema_login" id="tema_login">
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" name="username" class="form-control" id="id_username" required placeholder="Usuário">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" name="password" class="form-control" id="id_password" required placeholder="Senha">
+                            </div>
+                        </div>
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Usuário ou senha incorretos.
+                        </div>
+                        {% endif %}
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-sign-in-alt me-2"></i>Entrar
+                            </button>
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6 d-grid">
+                                <a href="{% url 'password_reset' %}" class="btn btn-outline-info">
+                                    <i class="fas fa-key me-2"></i>Recuperar Senha
+                                </a>
+                            </div>
+                            <div class="col-6 d-grid">
+                        <a href="{% url 'register' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-user-plus me-2"></i>Criar conta
+                        </a>
+                    </div>
+                        </div>
+                        <div class="mb-2 text-center">
+                            <label class="form-label small">Escolha o tema:</label>
+                            <select class="form-select w-auto d-inline-block" id="theme-selector-login">
+                                <option value="corona-dark">Corona Dark</option>
+                                <option value="vanta-dark">Vanta Dark</option>
+                                <option value="staradmin-color">Star Admin Colorido</option>
+                                <option value="futureui-color">Future UI Colorido</option>
+                                <option value="material-light">Material Light</option>
+                                <option value="celestial-light">Celestial Light</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const themeOptions = [
+        'corona-dark',
+        'vanta-dark',
+        'staradmin-color',
+        'futureui-color',
+        'material-light',
+        'celestial-light'
+    ];
+    const THEME_KEY = 'sgfp_theme';
+    // Aplica o tema salvo no localStorage ao body
+    const savedTheme = localStorage.getItem(THEME_KEY) || 'corona-dark';
+    document.body.classList.remove(...themeOptions);
+    document.body.classList.add(savedTheme);
+    // Sincroniza o seletor
+    const loginSelector = document.getElementById('theme-selector-login');
+    if (loginSelector) {
+        loginSelector.value = savedTheme;
+        loginSelector.addEventListener('change', function() {
+            localStorage.setItem(THEME_KEY, this.value);
+            document.body.classList.remove(...themeOptions);
+            document.body.classList.add(this.value);
+        });
+    }
+    // Preenche o campo hidden com o tema ao submeter o formulário
+    const loginForm = document.getElementById('loginForm');
+    const temaLoginField = document.getElementById('tema_login');
+    if (loginForm && temaLoginField) {
+        loginForm.addEventListener('submit', function() {
+            temaLoginField.value = localStorage.getItem(THEME_KEY) || 'corona-dark';
+        });
+    }
+});
+</script>
+{% endblock %} 

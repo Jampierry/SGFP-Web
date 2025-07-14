@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load br_filters %}
+{% block title %}Remover Cartão de Crédito - SGFP{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Confirmar Remoção
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-credit-card fa-3x text-danger mb-3"></i>
+                        <h4>Remover Cartão</h4>
+                        <p class="text-muted">Tem certeza que deseja remover o cartão <strong>{{ cartao.nome }}</strong>?</p>
+                    </div>
+                    <div class="alert alert-warning">
+                        <h6><i class="fas fa-info-circle me-2"></i>Detalhes do Cartão</h6>
+                        <ul class="mb-0">
+                            <li><strong>Bandeira:</strong> {{ cartao.get_bandeira_display }}</li>
+                            <li><strong>Titular:</strong> {{ cartao.titular }}</li>
+                            <li><strong>Final:</strong> {{ cartao.numero|default:'****' }}</li>
+                            <li><strong>Limite:</strong> {{ cartao.limite_total|br_currency }}</li>
+                        </ul>
+                    </div>
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Atenção:</strong> Esta ação não pode ser desfeita. O cartão será marcado como inativo.
+                    </div>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="{% url 'core:cartao_credito_list' %}" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i>Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash me-2"></i>Confirmar Remoção
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
