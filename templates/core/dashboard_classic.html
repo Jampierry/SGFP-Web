@@ -576,19 +576,20 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Data</th>
                                     <th>Descrição</th>
+                                    <th>Valor</th>
+                                    <th>Data</th>
                                     <th>Categoria</th>
                                     <th>Conta</th>
-                                    <th>Valor</th>
                                     <th>Tipo</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for transacao in transacoes_recentes %}
                                 <tr>
-                                    <td>{{ transacao.data|date:"d/m/Y" }}</td>
                                     <td>{{ transacao.descricao|truncatechars:30 }}</td>
+                                    <td class="{% if transacao.tipo == 'receita' %}text-success{% elif transacao.tipo == 'despesa' %}text-danger{% else %}text-info{% endif %}">{{ transacao.valor|br_currency }}</td>
+                                    <td>{{ transacao.data|date:"d/m/Y" }}</td>
                                     <td>
                                         {% if transacao.tipo == 'transferencia' %}
                                             <span class="badge bg-info">Transferência</span>
@@ -607,9 +608,6 @@
                                             {{ transacao.conta.nome }}
                                         {% endif %}
                                     </td>
-                                    <td class="{% if transacao.tipo == 'receita' %}text-success{% elif transacao.tipo == 'despesa' %}text-danger{% else %}text-info{% endif %}">
-                                        {{ transacao.valor|br_currency }}
-                                    </td>
                                     <td>
                                         {% if transacao.tipo == 'receita' %}
                                         <i class="fas fa-arrow-up tipo-receita"></i>
@@ -622,8 +620,9 @@
                                 </tr>
                                 {% empty %}
                                 <tr>
-                                    <td colspan="6" class="text-center text-muted">
-                                        Nenhuma transação encontrada
+                                    <td colspan="6" class="text-center text-muted py-4">
+                                        <i class="fas fa-inbox fa-3x mb-3"></i>
+                                        <p>Nenhuma transação recente</p>
                                     </td>
                                 </tr>
                                 {% endfor %}

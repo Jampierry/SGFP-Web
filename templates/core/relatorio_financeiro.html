@@ -241,34 +241,34 @@
     <div class="row">
         <!-- Top Receitas -->
         <div class="col-md-6">
-            <div class="card shadow">
+            <div class="card shadow" style="height: 320px; display: flex; flex-direction: column;">
                 <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-list me-2"></i>Top 10 Receitas
                     </h5>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
+                <div class="card-body categorias-table-container">
+                    <div class="table-responsive" style="flex: 1 1 auto; overflow-y: auto; min-height: 0;">
                         <table class="table table-sm">
                             <thead>
                                 <tr>
                                     <th>Descrição</th>
-                                    <th>Categoria</th>
                                     <th>Valor</th>
                                     <th>Data</th>
+                                    <th>Categoria</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for receita in top_receitas %}
                                 <tr>
                                     <td>{{ receita.descricao|truncatechars:20 }}</td>
+                                    <td class="text-success">{{ receita.valor|br_currency }}</td>
+                                    <td>{{ receita.data|date:"d/m/Y" }}</td>
                                     <td>
                                         <span class="badge badge-categoria-{{ receita.categoria.tipo|lower }}">
                                             {% if receita.categoria.icone %}<i class="{{ receita.categoria.icone }} me-1"></i>{% endif %}{{ receita.categoria.nome }}
                                         </span>
                                     </td>
-                                    <td class="text-success">{{ receita.valor|br_currency }}</td>
-                                    <td>{{ receita.data|date:"d/m/Y" }}</td>
                                 </tr>
                                 {% empty %}
                                 <tr>
@@ -284,34 +284,34 @@
 
         <!-- Top Despesas -->
         <div class="col-md-6">
-            <div class="card shadow">
+            <div class="card shadow" style="height: 320px; display: flex; flex-direction: column;">
                 <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-list me-2"></i>Top 10 Despesas
                     </h5>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
+                <div class="card-body categorias-table-container">
+                    <div class="table-responsive" style="flex: 1 1 auto; overflow-y: auto; min-height: 0;">
                         <table class="table table-sm">
                             <thead>
                                 <tr>
                                     <th>Descrição</th>
-                                    <th>Categoria</th>
                                     <th>Valor</th>
                                     <th>Data</th>
+                                    <th>Categoria</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for despesa in top_despesas %}
                                 <tr>
                                     <td>{{ despesa.descricao|truncatechars:20 }}</td>
+                                    <td class="text-danger">{{ despesa.valor|br_currency }}</td>
+                                    <td>{{ despesa.data|date:"d/m/Y" }}</td>
                                     <td>
                                         <span class="badge badge-categoria-{{ despesa.categoria.tipo|lower }}">
                                             {% if despesa.categoria.icone %}<i class="{{ despesa.categoria.icone }} me-1"></i>{% endif %}{{ despesa.categoria.nome }}
                                         </span>
                                     </td>
-                                    <td class="text-danger">{{ despesa.valor|br_currency }}</td>
-                                    <td>{{ despesa.data|date:"d/m/Y" }}</td>
                                 </tr>
                                 {% empty %}
                                 <tr>

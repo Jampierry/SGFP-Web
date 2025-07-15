@@ -9,14 +9,14 @@
 {% block content %}
 <div class="container-fluid">
     <div class="card shadow">
-        <div class="card-body">
-            <div class="table-responsive">
+        <div class="card-body p-0" style="max-height: 60vh; overflow-y: auto;">
+            <div class="table-responsive" style="height: 100%;">
                 <table class="table table-hover">
                     <thead class="table-light">
                         <tr>
                             <th>Nome</th>
-                            <th>Tipo</th>
                             <th>Saldo Atual</th>
+                            <th>Tipo</th>
                             <th>Cor</th>
                             <th>Ícone</th>
                             <th class="acoes-col">Ações</th>
@@ -26,12 +26,12 @@
                         {% for conta in contas %}
                         <tr>
                             <td>{{ conta.nome }}</td>
+                            <td class="fw-bold {% if conta.saldo_atual >= 0 %}text-success{% else %}text-danger{% endif %}">{{ conta.saldo_atual|br_currency }}</td>
                             <td>
                                 <span class="badge badge-conta-{{ conta.tipo|lower }}">
                                     {{ conta.get_tipo_display }}
                                 </span>
                             </td>
-                            <td class="fw-bold {% if conta.saldo_atual >= 0 %}text-success{% else %}text-danger{% endif %}">{{ conta.saldo_atual|br_currency }}</td>
                             <td>
                                 <input type="color" id="input-cor-{{ conta.id }}" value="{{ conta.cor }}" style="width:24px; height:24px; border:none; background:none; padding:0; border-radius:50%; cursor:pointer;" onchange="atualizarCorConta({{ conta.id }}, this.value)">
                             </td>
