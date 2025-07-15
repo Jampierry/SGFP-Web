@@ -792,6 +792,30 @@ body.icones-coloridos .sidebar .nav-link.active .fa-cog { color: #FBBF24 !import
 body.icones-coloridos .sidebar .nav-link.active .fa-tachometer-alt { color: #2196f3 !important; }
 body.icones-coloridos .sidebar .nav-link.active .fa-sign-out-alt { color: #e17055 !important; } 
 
+/* --- CORREÇÃO FINAL: Ícones coloridos SEMPRE visíveis no menu lateral, independente do tema ou tela --- */
+body.icones-coloridos .sidebar .nav-link .sidebar-icon,
+body.icones-coloridos .sidebar .nav-link.active .sidebar-icon,
+body.icones-coloridos .sidebar .nav-link:hover .sidebar-icon {
+    color: inherit !important;
+}
+body.icones-coloridos .sidebar .fa-arrow-up { color: #4ADE80 !important; }
+body.icones-coloridos .sidebar .fa-arrow-down { color: #F87171 !important; }
+body.icones-coloridos .sidebar .fa-exchange-alt { color: #3A8DFF !important; }
+body.icones-coloridos .sidebar .fa-tags { color: #FACC15 !important; }
+body.icones-coloridos .sidebar .fa-wallet { color: #A78BFA !important; }
+body.icones-coloridos .sidebar .fa-credit-card { color: #6a82fb !important; }
+body.icones-coloridos .sidebar .fa-bullseye { color: #F472B6 !important; }
+body.icones-coloridos .sidebar .fa-chart-bar { color: #38BDF8 !important; }
+body.icones-coloridos .sidebar .fa-cog { color: #FBBF24 !important; }
+body.icones-coloridos .sidebar .fa-tachometer-alt { color: #2196f3 !important; }
+body.icones-coloridos .sidebar .fa-sign-out-alt { color: #e17055 !important; } 
+
+/* Sobrescrever regras dos temas para ícones do menu lateral */
+body.icones-coloridos .sidebar .nav-link i,
+body.icones-coloridos .sidebar .nav-link.active i {
+    color: inherit !important;
+}
+
 /* SGFP Light Sidebar Theme */
 body.sgfp-light-sidebar {
     background: #f4f6fa !important;

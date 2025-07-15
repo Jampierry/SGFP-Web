@@ -582,90 +582,129 @@
 }
 @media (min-width: 992px) {
   .sidebar-toggle {
-    display: none !important;
+    display: block !important;
   }
         }
+    </style>
+    <style>
+.sidebar .nav-link,
+.sidebar.collapsed .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* ou flex-start, se preferir alinhado à esquerda */
+    gap: 0.5rem;
+    height: 48px;
+}
+.sidebar .sidebar-icon,
+.sidebar.collapsed .sidebar-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    font-size: 1.15em;
+}
+    </style>
+    <style>
+    body.icones-coloridos .sidebar .nav-link .sidebar-icon,
+    body.icones-coloridos .sidebar .nav-link.active .sidebar-icon,
+    body.icones-coloridos .sidebar .nav-link:hover .sidebar-icon {
+        color: inherit !important;
+    }
+    body.icones-coloridos .sidebar .fa-arrow-up,
+    body.icones-coloridos .sidebar .nav-link.active .fa-arrow-up { color: #4ADE80 !important; }
+    body.icones-coloridos .sidebar .fa-arrow-down,
+    body.icones-coloridos .sidebar .nav-link.active .fa-arrow-down { color: #F87171 !important; }
+    body.icones-coloridos .sidebar .fa-exchange-alt,
+    body.icones-coloridos .sidebar .nav-link.active .fa-exchange-alt { color: #3A8DFF !important; }
+    body.icones-coloridos .sidebar .fa-tags,
+    body.icones-coloridos .sidebar .nav-link.active .fa-tags { color: #FACC15 !important; }
+    body.icones-coloridos .sidebar .fa-wallet,
+    body.icones-coloridos .sidebar .nav-link.active .fa-wallet { color: #A78BFA !important; }
+    body.icones-coloridos .sidebar .fa-credit-card,
+    body.icones-coloridos .sidebar .nav-link.active .fa-credit-card { color: #6a82fb !important; }
+    body.icones-coloridos .sidebar .fa-bullseye,
+    body.icones-coloridos .sidebar .nav-link.active .fa-bullseye { color: #F472B6 !important; }
+    body.icones-coloridos .sidebar .fa-chart-bar,
+    body.icones-coloridos .sidebar .nav-link.active .fa-chart-bar { color: #38BDF8 !important; }
+    body.icones-coloridos .sidebar .fa-cog,
+    body.icones-coloridos .sidebar .nav-link.active .fa-cog { color: #FBBF24 !important; }
+    body.icones-coloridos .sidebar .fa-tachometer-alt,
+    body.icones-coloridos .sidebar .nav-link.active .fa-tachometer-alt { color: #2196f3 !important; }
+    body.icones-coloridos .sidebar .fa-sign-out-alt,
+    body.icones-coloridos .sidebar .nav-link.active .fa-sign-out-alt { color: #e17055 !important; }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body class="{% if tema_usuario %}{{ tema_usuario }}{% endif %}{% if icones_coloridos %} icones-coloridos{% endif %}">
     {% if user.is_authenticated %}
-    <!-- Botão hambúrguer sempre visível, fora do sidebar -->
-    <button class="sidebar-toggle me-2" style="z-index:1060; background:transparent; border:none; outline:none; box-shadow:none; color:inherit; font-size:1.3em;" onclick="toggleSidebar()" aria-label="Expandir/Colapsar menu" tabindex="0">
-        <i class="fas fa-bars"></i>
-    </button>
-    <!-- Overlay para mobile -->
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-    
-    <!-- Sidebar -->
+    <!-- Remover botão hambúrguer -->
+    <!-- Logo do sistema agora é clicável para expandir/colapsar o menu -->
     <nav id="sidebar" class="sidebar{% if not request.COOKIES.sidebar_expanded %} collapsed{% endif %}" aria-label="Menu principal" style="z-index: 1051; overflow-x: hidden;">
-        <div class="d-flex flex-column align-items-stretch px-2 pt-2 pb-1" style="position:relative; z-index:2;">
-            <div class="d-flex align-items-center justify-content-between mb-2" style="position:relative;">
-                <div id="sidebar-logo" class="sidebar-logo d-flex flex-column align-items-center justify-content-center w-100" style="margin-left: 40px;">
-                    <img src="{% static 'icones/logo_Menu.png' %}" alt="Logo SGFP" style="height: 92px; width: 92px; object-fit:contain; display:block; margin-left:auto; margin-right:auto;" onerror="this.style.display='none'; this.parentNode.innerHTML='<span style=\'color:#fff;font-size:2em;\'>Logo SGFP</span>';">
-                    <span class="fw-bold d-block text-center" style="color: {% if tema_escuro %}#F1F3F4{% else %}#23272A{% endif %}; font-size: 1.2em; letter-spacing: 1px;">SGFP</span>
-                </div>
+        <div class="sidebar-logo-container">
+            <div id="sidebar-logo" class="sidebar-logo" style="cursor:pointer; user-select:none;" onclick="toggleSidebar()" aria-label="Expandir/Colapsar menu" tabindex="0">
+                <img src="{% static 'icones/logo_Menu.png' %}" alt="Logo SGFP" class="sidebar-logo-img">
             </div>
         </div>
-        <ul class="nav flex-column px-2" id="sidebarMenu">
-            <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'core:dashboard' %}" tabindex="0">
-                    <i class="fas fa-tachometer-alt sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard" aria-label="Dashboard"></i> <span class="sidebar-label">Dashboard</span>
+        <ul class="sidebar-menu" id="sidebarMenu">
+            <li class="sidebar-item">
+                <a class="sidebar-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'core:dashboard' %}" tabindex="0">
+                    <i class="fas fa-tachometer-alt sidebar-icon"></i> <span class="sidebar-label">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {% if 'receita' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:receita_list' %}" tabindex="0">
-                    <i class="fas fa-arrow-up sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Receitas" aria-label="Receitas"></i> <span class="sidebar-label">Receitas</span>
+            <li class="sidebar-item">
+                <a class="sidebar-link {% if 'receita' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:receita_list' %}" tabindex="0">
+                    <i class="fas fa-arrow-up sidebar-icon"></i> <span class="sidebar-label">Receitas</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {% if 'despesa' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:despesa_list' %}" tabindex="0">
-                    <i class="fas fa-arrow-down sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Despesas" aria-label="Despesas"></i> <span class="sidebar-label">Despesas</span>
+            <li class="sidebar-item">
+                <a class="sidebar-link {% if 'despesa' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:despesa_list' %}" tabindex="0">
+                    <i class="fas fa-arrow-down sidebar-icon"></i> <span class="sidebar-label">Despesas</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {% if 'transferencia' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:transferencia_list' %}" tabindex="0">
-                    <i class="fas fa-exchange-alt sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Transferências" aria-label="Transferências"></i> <span class="sidebar-label">Transferências</span>
+            <li class="sidebar-item">
+                <a class="sidebar-link {% if 'transferencia' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:transferencia_list' %}" tabindex="0">
+                    <i class="fas fa-exchange-alt sidebar-icon"></i> <span class="sidebar-label">Transferências</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {% if 'categoria' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:categoria_list' %}" tabindex="0">
-                    <i class="fas fa-tags sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Categorias" aria-label="Categorias"></i> <span class="sidebar-label">Categorias</span>
+            <li class="sidebar-item">
+                <a class="sidebar-link {% if 'categoria' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:categoria_list' %}" tabindex="0">
+                    <i class="fas fa-tags sidebar-icon"></i> <span class="sidebar-label">Categorias</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {% if 'conta' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:conta_list' %}" tabindex="0">
-                    <i class="fas fa-wallet sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Contas" aria-label="Contas"></i> <span class="sidebar-label">Contas</span>
+            <li class="sidebar-item">
+                <a class="sidebar-link {% if 'conta' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:conta_list' %}" tabindex="0">
+                    <i class="fas fa-wallet sidebar-icon"></i> <span class="sidebar-label">Contas</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {% if 'cartao' in request.resolver_match.url_name or 'cartoes' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:cartoes_dashboard' %}" tabindex="0">
-                    <i class="fas fa-credit-card sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Cartões" aria-label="Cartões"></i> <span class="sidebar-label">Cartões</span>
+            <li class="sidebar-item">
+                <a class="sidebar-link {% if 'cartao' in request.resolver_match.url_name or 'cartoes' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:cartoes_dashboard' %}" tabindex="0">
+                    <i class="fas fa-credit-card sidebar-icon"></i> <span class="sidebar-label">Cartões</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {% if 'meta' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:meta_list' %}" tabindex="0">
-                    <i class="fas fa-bullseye sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Metas" aria-label="Metas"></i> <span class="sidebar-label">Metas</span>
+            <li class="sidebar-item">
+                <a class="sidebar-link {% if 'meta' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:meta_list' %}" tabindex="0">
+                    <i class="fas fa-bullseye sidebar-icon"></i> <span class="sidebar-label">Metas</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {% if 'relatorio' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:relatorio_financeiro' %}" tabindex="0">
-                    <i class="fas fa-chart-bar sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Relatórios" aria-label="Relatórios"></i> <span class="sidebar-label">Relatórios</span>
+            <li class="sidebar-item">
+                <a class="sidebar-link {% if 'relatorio' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:relatorio_financeiro' %}" tabindex="0">
+                    <i class="fas fa-chart-bar sidebar-icon"></i> <span class="sidebar-label">Relatórios</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {% if request.resolver_match.app_name == 'configuracoes' %}active{% endif %}" href="{% url 'configuracoes:home' %}" tabindex="0">
-                    <i class="fas fa-cog sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Configurações" aria-label="Configurações"></i> <span class="sidebar-label">Configurações</span>
+            <li class="sidebar-item">
+                <a class="sidebar-link {% if request.resolver_match.app_name == 'configuracoes' %}active{% endif %}" href="{% url 'configuracoes:home' %}" tabindex="0">
+                    <i class="fas fa-cog sidebar-icon"></i> <span class="sidebar-label">Configurações</span>
                 </a>
             </li>
         </ul>
-        <div class="mt-auto mb-3 px-2 w-100" style="position:absolute; bottom:10px; left:0; right:0;">
-            <form method="post" action="{% url 'logout' %}" style="display:inline; width:100%;{% if request.COOKIES.sidebar_expanded %} position:absolute; right:2px; left:auto;{% endif %}">
-                    {% csrf_token %}
-                <button type="submit" class="nav-link btn btn-link p-0 d-flex align-items-center justify-content-center w-100" style="color:inherit;text-align:left;" tabindex="0">
-                    <i class="fas fa-sign-out-alt sidebar-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Sair" aria-label="Sair"></i> <span class="sidebar-label">Sair</span>
-                    </button>
-                </form>
+        <div class="sidebar-logout">
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="sidebar-link sidebar-logout-link" tabindex="0">
+                    <i class="fas fa-sign-out-alt sidebar-icon"></i> <span class="sidebar-label">Sair</span>
+                </button>
+            </form>
         </div>
     </nav>
     {% endif %}
@@ -948,5 +987,25 @@
     </script>
     
     {% block extra_js %}{% endblock %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Lista de temas possíveis
+    var themeOptions = [
+        'corona-dark','vanta-dark','staradmin-color','futureui-color','material-light','celestial-light'
+    ];
+    // Variáveis vindas do contexto Django
+    var iconesColoridos = {{ icones_coloridos|yesno:"true,false" }};
+    var temaUsuario = "{{ tema_usuario|default:'corona-dark' }}";
+    // Remove todos os temas e aplica o do usuário
+    document.body.classList.remove(...themeOptions);
+    document.body.classList.add(temaUsuario);
+    // Garante a classe de ícones coloridos
+    if (iconesColoridos) {
+        document.body.classList.add('icones-coloridos');
+    } else {
+        document.body.classList.remove('icones-coloridos');
+    }
+});
+</script>
 </body>
 </html> 
