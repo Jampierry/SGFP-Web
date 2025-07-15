@@ -434,3 +434,15 @@ Desenvolvido como projeto de sistema de gestão financeira pessoal.
 ---
 
 **SGFP** - Transformando o controle financeiro em uma experiência simples e eficiente! 💰✨ 
+
+## 🆕 Novidades e Melhorias Recentes
+
+### UI/UX Moderno e Padronizado (2025)
+- Filtros de busca em Receitas e Despesas totalmente responsivos, com campos de data compactos e largura fixa.
+- Botões de ação (Filtrar/Limpar) em nova linha, alinhados à esquerda, para melhor usabilidade.
+- Tabelas de Receitas e Despesas com altura fixa (ajustável), scroll interno e linhas padronizadas (40px de altura).
+- Colunas das tabelas padronizadas na mesma ordem para facilitar comparação e navegação.
+- Remoção de observações extras na coluna Descrição para visual limpo e consistente.
+- Espaçamento e alinhamento refinados entre cards de filtro e tabelas.
+- Total responsividade: layout se adapta perfeitamente a qualquer tamanho de tela.
+- Melhorias de acessibilidade e navegação por teclado. 
