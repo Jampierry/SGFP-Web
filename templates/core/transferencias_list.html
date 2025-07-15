@@ -2,18 +2,12 @@
 {% load br_filters %}
 {% block title %}Transferências - SGFP{% endblock %}
 
+{% block page_icon %}<i class="fas fa-exchange-alt"></i>{% endblock %}
+{% block page_title %}Transferências{% endblock %}
+{% block page_greeting %}Gerencie suas transferências entre contas{% endblock %}
+
 {% block content %}
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h3 mb-0">Transferências</h1>
-            <p class="text-muted">Gerencie suas transferências entre contas</p>
-        </div>
-        <a href="{% url 'core:transferencia_create' %}" class="btn btn-primary">
-            <i class="fas fa-plus me-2"></i>Nova Transferência
-        </a>
-    </div>
-
     <div class="card mb-4">
         <div class="card-body">
             <form method="get" class="row g-3 align-items-end">

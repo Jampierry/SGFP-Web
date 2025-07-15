@@ -1397,3 +1397,24 @@ body.theme-light .dashboard-grid .card-dashboard.card-meta {
     height: 70px !important;
   }
 } 
+
+/* --- ÍCONES DE TIPO NA TABELA DE TRANSAÇÕES RECENTES (DASHBOARD) --- */
+table i.tipo-receita {
+  color: #4ADE80 !important;
+}
+table i.tipo-despesa {
+  color: #F87171 !important;
+}
+table i.tipo-transferencia {
+  color: #3A8DFF !important;
+} 
+
+/* COR FINAL ULTRA-ESPECÍFICA: Ícones de tipo na tabela de transações recentes devem ser coloridos, não pretos */
+table tr td:last-child i.tipo-receita,
+table tr td:last-child i.tipo-despesa,
+table tr td:last-child i.tipo-transferencia {
+  color: inherit !important;
+}
+table tr td:last-child i.tipo-receita { color: #4ADE80 !important; fill: #4ADE80 !important; stroke: #4ADE80 !important; }
+table tr td:last-child i.tipo-despesa { color: #F87171 !important; fill: #F87171 !important; stroke: #F87171 !important; }
+table tr td:last-child i.tipo-transferencia { color: #3A8DFF !important; fill: #3A8DFF !important; stroke: #3A8DFF !important; } 

@@ -347,135 +347,148 @@ body.celestial-light .badge {
     text-shadow: none;
 } 
 
-/* --- NOVO MENU LATERAL MODERNO E RESPONSIVO --- */
+/* --- MELHORIAS VISUAIS NO MENU LATERAL (SIDEBAR) --- */
 .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 220px;
-    background: #23272F;
-    color: #fff;
-    z-index: 1030;
-    transition: width 0.3s cubic-bezier(.4,2,.6,1), background 0.3s, color 0.3s;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 220px;
+  background: linear-gradient(135deg, #23272F 80%, #2d3340 100%);
+  color: #fff;
+  z-index: 1030;
+  transition: width 0.3s cubic-bezier(.4,2,.6,1), background 0.3s, color 0.3s;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-shadow: 4px 0 24px 0 rgba(36,41,51,0.13), 1.5px 0 0 #3A8DFF22;
+  border-right: 1.5px solid #3A8DFF22;
 }
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1 1 auto;
+}
+
+.sidebar-item:not(:last-child) {
+  border-bottom: 1px solid rgba(58,141,255,0.07); /* separador sutil */
+}
+
+.sidebar-link, .sidebar-link:visited, .sidebar-link:active, .sidebar-link:hover {
+  text-decoration: none !important;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 1rem;
+  border-radius: 0.375rem;
+  margin: 0.125rem 0.5rem;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  gap: 0.75rem;
+  color: inherit;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.sidebar-link.active, .sidebar-link:hover {
+  background: linear-gradient(90deg, rgba(58,141,255,0.18) 80%, rgba(67,206,162,0.10) 100%);
+  color: #3A8DFF;
+  box-shadow: 0 2px 8px 0 rgba(58,141,255,0.08);
+}
+
+.sidebar-link.active::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 8px;
+  bottom: 8px;
+  width: 5px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #3A8DFF 60%, #43cea2 100%);
+  box-shadow: 0 0 8px #3A8DFF44;
+}
+
+.sidebar-link .sidebar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 1.2em;
+  margin-right: 0.5rem;
+  transition: color 0.2s;
+}
+
 .sidebar.collapsed {
-    width: 60px;
+  width: 60px;
+  box-shadow: 2px 0 12px 0 rgba(36,41,51,0.13);
 }
+
+.sidebar.collapsed .sidebar-label {
+  display: none;
+}
+
+.sidebar.collapsed .sidebar-link {
+  justify-content: center;
+  padding: 0;
+}
+
+.sidebar.collapsed .sidebar-link .sidebar-icon {
+  margin-right: 0;
+}
+
+/* Separador visual entre menu e logout */
+.sidebar-logout {
+  margin: 16px 0 12px 0;
+  padding: 0 0.5rem;
+  border-top: 1.5px solid rgba(58,141,255,0.13);
+}
+
+/* Sombra e destaque para o logo */
 .sidebar-logo-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 24px 0 8px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 0 8px 0;
+  box-shadow: 0 2px 8px 0 rgba(58,141,255,0.08);
+  background: rgba(36,41,51,0.07);
+  min-height: 72px;
 }
 .sidebar-logo-img {
-    height: 56px;
-    width: 56px;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto 4px auto;
+  max-width: 44px;
+  max-height: 44px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 4px auto;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px 0 rgba(36,41,51,0.10);
+  background: #23272F;
 }
-.sidebar-logo-text {
-    font-weight: bold;
-    font-size: 1.1em;
-    color: #3A8DFF;
-    letter-spacing: 1px;
-    text-align: center;
+.sidebar.collapsed .sidebar-logo-img {
+  max-width: 36px;
+  max-height: 36px;
 }
-.sidebar-menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    flex: 1 1 auto;
-}
-.sidebar-item {
-    width: 100%;
-}
-.sidebar-link {
-    display: flex;
-    align-items: center;
-    height: 48px;
-    padding: 0 1rem;
-    border-radius: 0.375rem;
-    margin: 0.125rem 0.5rem;
-    transition: background 0.2s, color 0.2s;
-    gap: 0.75rem;
-    color: inherit;
-    font-weight: 500;
-    text-decoration: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-.sidebar-link:hover, .sidebar-link.active {
-    background: rgba(58,141,255,0.18);
-    color: #3A8DFF;
-}
-.sidebar-link .sidebar-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    font-size: 1.2em;
-    margin-right: 0.5rem;
-    transition: color 0.2s;
-}
-.sidebar.collapsed .sidebar-label {
-    display: none;
-}
-.sidebar.collapsed .sidebar-link {
-    justify-content: center;
-    padding: 0;
-}
-.sidebar.collapsed .sidebar-link .sidebar-icon {
-    margin-right: 0;
-}
-.sidebar-logout {
-    margin: 16px 0 12px 0;
-    padding: 0 0.5rem;
-}
-.sidebar-logout-link {
-    color: #43cea2 !important;
-    font-weight: bold;
-}
-.sidebar-logout-link:hover {
-    background: rgba(67,206,162,0.12);
-    color: #43cea2 !important;
-}
-/* Ícones coloridos globais para todos os temas */
-body.icones-coloridos .sidebar .sidebar-icon {
-    color: var(--icone-color, #43cea2) !important;
-}
-body.icones-coloridos .sidebar .fa-arrow-up { color: #4ADE80 !important; }
-body.icones-coloridos .sidebar .fa-arrow-down { color: #F87171 !important; }
-body.icones-coloridos .sidebar .fa-exchange-alt { color: #3A8DFF !important; }
-body.icones-coloridos .sidebar .fa-tags { color: #FACC15 !important; }
-body.icones-coloridos .sidebar .fa-wallet { color: #A78BFA !important; }
-body.icones-coloridos .sidebar .fa-credit-card { color: #6a82fb !important; }
-body.icones-coloridos .sidebar .fa-bullseye { color: #F472B6 !important; }
-body.icones-coloridos .sidebar .fa-chart-bar { color: #38BDF8 !important; }
-body.icones-coloridos .sidebar .fa-cog { color: #FBBF24 !important; }
-body.icones-coloridos .sidebar .fa-tachometer-alt { color: #2196f3 !important; }
-body.icones-coloridos .sidebar .fa-sign-out-alt { color: #e17055 !important; }
-body.icones-coloridos .sidebar .fa-bell { color: #F59E42 !important; }
-/* Suporte para temas escuros e claros */
-body.dark-theme .sidebar, body.theme-dark .sidebar {
-    background: #23272F !important;
-    color: #fff !important;
-}
-body.light-theme .sidebar, body.theme-light .sidebar {
-    background: #f4f6fa !important;
-    color: #23272F !important;
-}
-body.theme-colorful .sidebar {
-    background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 50%, #45b7d1 100%) !important;
-    color: #fff !important;
+
+/* Responsividade: mantém contraste e sombra */
+@media (max-width: 768px) {
+  .sidebar {
+    box-shadow: 2px 0 12px 0 rgba(36,41,51,0.13);
+    width: 60px;
+  }
+  .main-content {
+    margin-left: 60px;
+  }
 } 
 
 /* --- CORREÇÃO: Alinhamento dos ícones do menu lateral --- */
@@ -539,4 +552,57 @@ body.icones-coloridos .sidebar .nav-link .sidebar-icon,
 body.icones-coloridos .sidebar .nav-link.active .sidebar-icon,
 body.icones-coloridos .sidebar .nav-link:hover .sidebar-icon {
     color: inherit !important;
+} 
+
+/* --- ÍCONES DE TIPO NA TABELA DE TRANSAÇÕES RECENTES --- */
+.tipo-transferencia {
+  color: #3A8DFF !important;
+  position: relative;
+}
+.tipo-transferencia .fa-arrow-right {
+  color: #3A8DFF !important;
+  margin-right: -7px;
+  z-index: 2;
+}
+.tipo-transferencia .fa-arrow-left {
+  color: #4ADE80 !important;
+  margin-left: -7px;
+  z-index: 1;
+}
+.tipo-transferencia .fa-exchange-alt {
+  color: #3A8DFF !important;
+}
+.tipo-despesa {
+  color: #F87171 !important;
+}
+.tipo-receita {
+  color: #4ADE80 !important;
+}
+
+/* Suporte para temas escuros e claros */
+body.theme-dark .tipo-transferencia .fa-arrow-right,
+body.theme-dark .tipo-transferencia .fa-exchange-alt {
+  color: #3A8DFF !important;
+}
+body.theme-dark .tipo-transferencia .fa-arrow-left {
+  color: #4ADE80 !important;
+}
+body.theme-dark .tipo-despesa {
+  color: #F87171 !important;
+}
+body.theme-dark .tipo-receita {
+  color: #4ADE80 !important;
+}
+body.theme-light .tipo-transferencia .fa-arrow-right,
+body.theme-light .tipo-transferencia .fa-exchange-alt {
+  color: #3A8DFF !important;
+}
+body.theme-light .tipo-transferencia .fa-arrow-left {
+  color: #4ADE80 !important;
+}
+body.theme-light .tipo-despesa {
+  color: #F87171 !important;
+}
+body.theme-light .tipo-receita {
+  color: #4ADE80 !important;
 } 

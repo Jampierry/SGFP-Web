@@ -4,6 +4,10 @@
 
 {% block title %}Dashboard - SGFP{% endblock %}
 
+{% block page_icon %}<i class="fas fa-tachometer-alt"></i>{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_greeting %}Bem-vindo, {{ user.get_full_name|default:user.username }}!{% endblock %}
+
 {% block extra_css %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css">
 <style>
@@ -182,22 +186,6 @@
     <!-- (Navbar fixa e menu lateral removidos, pois agora são globais em base.html) -->
     
     <!-- Adicione aqui o conteúdo principal do dashboard, como cards, gráficos, tabelas, etc. -->
-
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h3 mb-0">Dashboard</h1>
-            <p class="text-muted">Bem-vindo, {{ user.get_full_name|default:user.username }}!</p>
-        </div>
-        <div class="btn-group" role="group">
-            <button type="button" class="btn btn-outline-primary" onclick="atualizarDashboard()">
-                <i class="fas fa-sync-alt me-2"></i>Atualizar
-            </button>
-            <a href="{% url 'core:relatorio_financeiro' %}" class="btn btn-outline-info">
-                <i class="fas fa-chart-bar me-2"></i>Relatórios
-            </a>
-        </div>
-    </div>
 
     <!-- Métricas Principais -->
     <div class="row mb-3">
@@ -411,11 +399,11 @@
         </div>
     </div>
 
-    <!-- Análises Avançadas -->
+    <!-- Análises Avançadas - Cards Empilhados à Esquerda -->
     <div class="row mb-4">
-        <!-- Previsão de Gastos -->
-        <div class="col-md-6">
-            <div class="card shadow">
+        <div class="col-md-4 d-flex flex-column gap-3">
+            <!-- Previsão de Gastos -->
+            <div class="card shadow mb-3">
                 <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-crystal-ball me-2"></i>Previsão de Gastos
@@ -443,10 +431,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Análise de Tendências -->
-        <div class="col-md-6">
+            <!-- Análise de Tendências -->
             <div class="card shadow">
                 <div class="card-header">
                     <h5 class="mb-0">
@@ -488,6 +473,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="col-md-8">
+            <!-- Aqui pode ficar o restante do conteúdo do dashboard, como gráficos principais, tabelas, etc. -->
+            <!-- ... conteúdo já existente ... -->
         </div>
     </div>
 
@@ -583,7 +572,7 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
@@ -623,11 +612,11 @@
                                     </td>
                                     <td>
                                         {% if transacao.tipo == 'receita' %}
-                                        <i class="fas fa-arrow-up text-success"></i>
+                                        <i class="fas fa-arrow-up tipo-receita"></i>
                                         {% elif transacao.tipo == 'despesa' %}
-                                        <i class="fas fa-arrow-down text-danger"></i>
+                                        <i class="fas fa-arrow-down tipo-despesa"></i>
                                         {% else %}
-                                        <i class="fas fa-exchange-alt text-info"></i>
+                                        <i class="fas fa-exchange-alt tipo-transferencia"></i>
                                         {% endif %}
                                     </td>
                                 </tr>

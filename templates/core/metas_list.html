@@ -2,17 +2,12 @@
 {% load br_filters %}
 {% block title %}Metas - SGFP{% endblock %}
 
+{% block page_icon %}<i class="fas fa-bullseye"></i>{% endblock %}
+{% block page_title %}Metas{% endblock %}
+{% block page_greeting %}Gerencie suas metas financeiras{% endblock %}
+
 {% block content %}
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h3 mb-0">Metas</h1>
-            <p class="text-muted">Gerencie suas metas financeiras</p>
-        </div>
-        <a href="{% url 'core:meta_create' %}" class="btn btn-primary">
-            <i class="fas fa-plus me-2"></i>Nova Meta
-        </a>
-    </div>
     <div class="card shadow">
         <div class="card-body">
             <div class="table-responsive">

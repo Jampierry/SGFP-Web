@@ -243,14 +243,14 @@ body.dark-mode .meta-progress {
 </style>
 {% endblock %}
 
+{% block page_icon %}<i class="fas fa-tachometer-alt"></i>{% endblock %}
+{% block page_title %}Dashboard Financeiro{% endblock %}
+{% block page_greeting %}Bem-vindo, {{ user.get_full_name|default:user.username }}!{% endblock %}
+
 {% block content %}
 <div class="dashboard-grid{% if tema_escuro %} dark-mode{% endif %}">
     <div class="dashboard-container">
         <div class="dashboard-header d-flex justify-content-between align-items-center flex-wrap">
-            <div>
-                <h1>Dashboard Financeiro</h1>
-                <div class="user-info">Bem-vindo, {{ user.get_full_name|default:user.username }}!</div>
-            </div>
             <div class="dashboard-controls">
                 <button type="button" class="btn btn-primary" onclick="atualizarDashboard()">
                     {% icone_colorido 'fas fa-sync-alt me-2' 'padrao' %}Atualizar

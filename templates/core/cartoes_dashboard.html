@@ -2,9 +2,11 @@
 {% load static %}
 {% load br_filters %}
 {% block title %}Central de Cartões{% endblock %}
+{% block page_icon %}<i class="fas fa-credit-card"></i>{% endblock %}
+{% block page_title %}Central de Cartões{% endblock %}
+{% block page_greeting %}Gerencie e acompanhe seus cartões de crédito{% endblock %}
 {% block content %}
 <div class="container-fluid" style="padding: 30px;">
-    <h2 class="mb-3"><i class="fas fa-credit-card me-2"></i>Central de Cartões</h2>
     <form method="get" class="row g-2 align-items-end mb-2" style="max-width: 600px;">
         <div class="col-auto">
             <label for="data_inicio" class="form-label mb-0">Data inicial</label>
