@@ -8,6 +8,12 @@
 
 {% block content %}
 <div class="container-fluid">
+
+    <div class="d-flex justify-content-end mb-2">
+        <a href="{% url 'core:conta_create' %}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Nova Conta
+        </a>
+    </div>
     <div class="card shadow">
         <div class="card-body p-0" style="max-height: 60vh; overflow-y: auto;">
             <div class="table-responsive" style="height: 100%;">

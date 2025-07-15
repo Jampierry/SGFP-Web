@@ -8,6 +8,12 @@
 
 {% block content %}
 <div class="container-fluid">
+
+    <div class="d-flex justify-content-end mb-2">
+        <a href="{% url 'core:transferencia_create' %}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Nova Transferência
+        </a>
+    </div>
     <div class="card mb-4">
         <div class="card-body">
             <form method="get" class="row g-3 align-items-end">
