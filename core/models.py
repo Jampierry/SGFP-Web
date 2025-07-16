@@ -347,6 +347,27 @@ class Configuracao(models.Model):
     dashboard_refresh = models.PositiveIntegerField(default=5, help_text='Intervalo de atualização automática (minutos)')
     dashboard_animations = models.BooleanField(default=True)
     dashboard_dragdrop = models.BooleanField(default=True)
+    escala_interface = models.PositiveIntegerField(
+        default=100,
+        choices=[
+            (100, '100% (Padrão)'),
+            (95, '95%'),
+            (90, '90%'),
+            (85, '85%'),
+            (80, '80%'),
+            (75, '75%'),
+            (70, '70%'),
+            (65, '65%'),
+            (60, '60%'),
+            (55, '55%'),
+            (50, '50%'),
+            (45, '45%'),
+            (40, '40%'),
+            (35, '35%'),
+            (30, '30%'),
+        ],
+        verbose_name='Escala da Interface (%)'
+    )
     data_criacao = models.DateTimeField(auto_now_add=True)
     data_atualizacao = models.DateTimeField(auto_now=True)
 

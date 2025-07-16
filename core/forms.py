@@ -296,6 +296,23 @@ class ConfiguracaoForm(forms.ModelForm):
         ('wide', 'Amplo'),
         ('tall', 'Alto'),
     ]
+    ESCALA_CHOICES = [
+        (100, '100% (Padrão)'),
+        (95, '95%'),
+        (90, '90%'),
+        (85, '85%'),
+        (80, '80%'),
+        (75, '75%'),
+        (70, '70%'),
+        (65, '65%'),
+        (60, '60%'),
+        (55, '55%'),
+        (50, '50%'),
+        (45, '45%'),
+        (40, '40%'),
+        (35, '35%'),
+        (30, '30%'),
+    ]
     
     moeda_padrao = forms.ChoiceField(choices=MOEDA_CHOICES, widget=forms.Select(attrs={'class': 'form-select'}))
     formato_data = forms.ChoiceField(choices=FORMATO_DATA_CHOICES, widget=forms.Select(attrs={'class': 'form-select'}))
@@ -326,13 +343,19 @@ class ConfiguracaoForm(forms.ModelForm):
         label='Ícones Coloridos',
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
     )
+    escala_interface = forms.ChoiceField(
+        choices=ESCALA_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label='Escala da Interface (%)',
+        initial=100
+    )
 
     class Meta:
         model = Configuracao
         fields = [
             'moeda_padrao', 'formato_data', 'icones_coloridos', 'notificacoes_email', 'backup_automatico',
             'dashboard_tipo', 'dashboard_layout', 'dashboard_tema', 'dashboard_refresh',
-            'dashboard_animations', 'dashboard_dragdrop'
+            'dashboard_animations', 'dashboard_dragdrop', 'escala_interface'
         ]
         widgets = {
             'icones_coloridos': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
