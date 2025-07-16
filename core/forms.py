@@ -431,16 +431,16 @@ class CartaoCreditoForm(forms.ModelForm):
         model = CartaoCredito
         fields = ['nome', 'numero', 'bandeira', 'titular', 'data_vencimento_fatura', 'data_fechamento_fatura', 'limite_total', 'conta_pagamento', 'chave_seguranca', 'observacoes', 'ativo']
         widgets = {
-            'nome': forms.TextInput(attrs={'class': 'form-control'}),
-            'numero': forms.TextInput(attrs={'class': 'form-control', 'maxlength': '20', 'placeholder': '****'}),
-            'bandeira': forms.Select(attrs={'class': 'form-select'}),
-            'titular': forms.TextInput(attrs={'class': 'form-control'}),
-            'data_vencimento_fatura': forms.NumberInput(attrs={'class': 'form-control', 'min': 1, 'max': 31}),
-            'data_fechamento_fatura': forms.NumberInput(attrs={'class': 'form-control', 'min': 1, 'max': 31}),
-            'limite_total': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'min': '0.01'}),
-            'conta_pagamento': forms.Select(attrs={'class': 'form-select'}),
-            'chave_seguranca': forms.TextInput(attrs={'class': 'form-control', 'maxlength': '10', 'placeholder': '***'}),
-            'observacoes': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+            'nome': forms.TextInput(attrs={'class': 'form-control form-control-sm', 'placeholder': 'Nome do cartão'}),
+            'numero': forms.TextInput(attrs={'class': 'form-control form-control-sm', 'maxlength': '20', 'placeholder': 'Apenas os 4 últimos dígitos'}),
+            'bandeira': forms.Select(attrs={'class': 'form-select form-select-sm'}),
+            'titular': forms.TextInput(attrs={'class': 'form-control form-control-sm', 'placeholder': 'Nome do titular'}),
+            'data_vencimento_fatura': forms.NumberInput(attrs={'class': 'form-control form-control-sm', 'min': 1, 'max': 31, 'placeholder': 'Dia do vencimento'}),
+            'data_fechamento_fatura': forms.NumberInput(attrs={'class': 'form-control form-control-sm', 'min': 1, 'max': 31, 'placeholder': 'Dia do fechamento'}),
+            'limite_total': forms.NumberInput(attrs={'class': 'form-control form-control-sm', 'step': '0.01', 'min': '0.01', 'placeholder': 'Limite total'}),
+            'conta_pagamento': forms.Select(attrs={'class': 'form-select form-select-sm'}),
+            'chave_seguranca': forms.TextInput(attrs={'class': 'form-control form-control-sm', 'maxlength': '10', 'placeholder': 'CVV'}),
+            'observacoes': forms.TextInput(attrs={'class': 'form-control form-control-sm', 'placeholder': 'Observações'}),
             'ativo': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
     def __init__(self, *args, **kwargs):

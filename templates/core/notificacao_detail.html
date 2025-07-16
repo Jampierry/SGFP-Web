@@ -2,20 +2,15 @@
 
 {% block title %}{{ notificacao.titulo }} - SGFP{% endblock %}
 
+{% block page_icon %}<i class="{{ notificacao.icone }} text-{{ notificacao.tipo }}"></i>{% endblock %}
+{% block page_title %}{{ notificacao.titulo }}{% endblock %}
+{% block page_greeting %}Notificação {{ notificacao.get_tipo_display|lower }} {% if notificacao.lida %}lida{% else %}não lida{% endif %}{% endblock %}
+
 {% block content %}
 <div class="container-fluid">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h3 mb-0">
-                <i class="{{ notificacao.icone }} me-2 text-{{ notificacao.tipo }}"></i>
-                {{ notificacao.titulo }}
-            </h1>
-            <p class="text-muted">
-                Notificação {{ notificacao.get_tipo_display|lower }} 
-                {% if notificacao.lida %}lida{% else %}não lida{% endif %}
-            </p>
-        </div>
+        <div></div>
         <div class="btn-group" role="group">
             <a href="{% url 'core:notificacoes_list' %}" class="btn btn-outline-secondary">
                 <i class="fas fa-arrow-left me-2"></i>Voltar

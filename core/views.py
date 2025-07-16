@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.http import JsonResponse, FileResponse
 from django.db.models import Sum, Count, Q, Avg, Case, When, F, DecimalField
 from django.utils import timezone
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from decimal import Decimal
 import json
 import io
@@ -333,6 +333,14 @@ def dashboard_responsive(request):
     transacoes_recentes.sort(key=lambda x: x['data'], reverse=True)
     transacoes_recentes = transacoes_recentes[:10]
     
+    # Despesas próximas do vencimento (até 10 dias)
+    despesas_proximas_vencimento = Despesa.objects.filter(
+        usuario=request.user,
+        ativo=True,
+        data__gte=hoje,
+        data__lte=hoje + timedelta(days=10)
+    ).order_by('data')
+    
     context = {
         'receitas_mes': receitas_mes,
         'despesas_mes': despesas_mes,
@@ -373,6 +381,7 @@ def dashboard_responsive(request):
         'dashboard_refresh': dashboard_refresh,
         'dashboard_tema': dashboard_tema,
         'dashboard_layout': dashboard_layout,
+        'despesas_proximas_vencimento': despesas_proximas_vencimento,
     }
     
     return render(request, 'core/dashboard.html', context)
@@ -629,6 +638,14 @@ def dashboard_classic(request):
     transacoes_recentes.sort(key=lambda x: x['data'], reverse=True)
     transacoes_recentes = transacoes_recentes[:10]
 
+    # Despesas próximas do vencimento (até 10 dias)
+    despesas_proximas_vencimento = Despesa.objects.filter(
+        usuario=request.user,
+        ativo=True,
+        data__gte=hoje,
+        data__lte=hoje + timedelta(days=10)
+    ).order_by('data')
+
     context = {
         'receitas_mes': receitas_mes,
         'despesas_mes': despesas_mes,
@@ -664,6 +681,7 @@ def dashboard_classic(request):
         'notificacoes_recentes': notificacoes_recentes,
         'metas_destaque': metas_destaque,
         'transacoes_recentes': transacoes_recentes,
+        'despesas_proximas_vencimento': despesas_proximas_vencimento,
     }
     return render(request, 'core/dashboard_classic.html', context)
 
