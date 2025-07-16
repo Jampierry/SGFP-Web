@@ -1,7 +1,4 @@
 {% load br_filters %}
-<div class="card-header bg-primary text-white">
-    <h5 class="mb-0"><i class="fas fa-file-invoice-dollar me-2"></i>Faturas do Cartão{% if cartao_selecionado %} {{ cartao_selecionado.nome }}{% endif %}</h5>
-</div>
 <div class="card-body">
     {% if not cartao_selecionado %}
         <div class="text-center text-muted" style="min-height: 180px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
@@ -10,81 +7,115 @@
         </div>
     {% else %}
         {% if faturas and faturas|length > 0 %}
-            {% if faturas_em_aberto %}
-            <div class="mb-3">
-                <h6 class="text-warning fw-bold mb-2"><i class="fas fa-exclamation-triangle me-2"></i>Faturas em Aberto</h6>
-                <div class="position-relative">
-                    <button class="btn btn-sm btn-dark position-absolute start-0 top-50 translate-middle-y" id="prevAberto" style="z-index:2; display:none;"><i class="fas fa-chevron-left"></i></button>
-                    <div class="d-flex flex-row flex-nowrap overflow-hidden" id="containerAberto" style="gap: 8px;">
-                        {% for fatura in faturas_em_aberto %}
-                            <div class="d-flex flex-column align-items-center">
-                                <div class="fatura-card border rounded p-1 text-center bg-warning bg-opacity-10{% if fatura_id_selecionada|stringformat:'s' == fatura.id|stringformat:'s' %} fatura-card-selecionada bg-warning{% endif %}" style="min-width:110px; max-width:120px; font-size:0.90em; box-shadow:0 2px 8px #0001; cursor:pointer; transition:box-shadow 0.2s; margin-bottom: 2px; display: flex; flex-direction: column; justify-content: center; align-items: center;" data-fatura-id="{{ fatura.id }}">
-                                    <div class="fw-bold mb-1" style="color:#007bff; font-size:1em;">{{ fatura.valor_calculado|br_currency }}</div>
-                                    <div class="mb-1">Venc: {{ fatura.vencimento|date:'d/m/Y' }}</div>
-                                    <div class="badge bg-warning text-dark mb-2">EM ABERTO</div>
-                                    <div class="d-flex gap-1 w-100 justify-content-center mt-1">
-                                        <button class="btn btn-success btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Pagar</button>
-                                        <a href="{% url 'core:ajustar_fatura' fatura.id %}" class="btn btn-outline-primary btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Ajustar</a>
+        <!-- Abas -->
+        <ul class="nav nav-tabs mb-3" id="faturaTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="aberto-tab" data-bs-toggle="tab" data-bs-target="#aberto" type="button" role="tab" aria-controls="aberto" aria-selected="true">Faturas em Aberto</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="vencida-tab" data-bs-toggle="tab" data-bs-target="#vencida" type="button" role="tab" aria-controls="vencida" aria-selected="false">Faturas Vencidas</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="paga-tab" data-bs-toggle="tab" data-bs-target="#paga" type="button" role="tab" aria-controls="paga" aria-selected="false">Faturas Pagas</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="faturaTabsContent">
+            <div class="tab-pane fade show active" id="aberto" role="tabpanel" aria-labelledby="aberto-tab">
+                {% if faturas_em_aberto %}
+                <div class="mb-3">
+                    <h6 class="text-warning fw-bold mb-2"><i class="fas fa-exclamation-triangle me-2"></i>Faturas em Aberto</h6>
+                    <div class="position-relative">
+                        <button class="btn btn-sm btn-dark position-absolute start-0 top-50 translate-middle-y" id="prevAberto" style="z-index:2; display:none;"><i class="fas fa-chevron-left"></i></button>
+                        <div class="d-flex flex-row flex-nowrap overflow-hidden" id="containerAberto" style="gap: 8px;">
+                            {% for fatura in faturas_em_aberto %}
+                                <div class="d-flex flex-column align-items-center">
+                                    <div class="fatura-card border rounded p-1 text-center bg-warning bg-opacity-10{% if fatura_id_selecionada|stringformat:'s' == fatura.id|stringformat:'s' %} fatura-card-selecionada bg-warning{% endif %}" style="min-width:110px; max-width:120px; font-size:0.90em; box-shadow:0 2px 8px #0001; cursor:pointer; transition:box-shadow 0.2s; margin-bottom: 2px; display: flex; flex-direction: column; justify-content: center; align-items: center;" data-fatura-id="{{ fatura.id }}">
+                                        <div class="fw-bold mb-1" style="color:#007bff; font-size:1em;">{{ fatura.valor_calculado|br_currency }}</div>
+                                        <div class="mb-1">Venc: {{ fatura.vencimento|date:'d/m/Y' }}</div>
+                                        <div class="badge bg-warning text-dark mb-2">EM ABERTO</div>
+                                        <div class="d-flex gap-1 w-100 justify-content-center mt-1">
+                                            <button class="btn btn-success btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Pagar</button>
+                                            <a href="{% url 'core:ajustar_fatura' fatura.id %}" class="btn btn-outline-primary btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Ajustar</a>
+                                        </div>
                                     </div>
+                                    <div class="small text-primary mt-1">{{ fatura.get_mes_display }}/{{ fatura.ano }}</div>
                                 </div>
-                                <div class="small text-primary mt-1">{{ fatura.get_mes_display }}/{{ fatura.ano }}</div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
+                        <button class="btn btn-sm btn-dark position-absolute end-0 top-50 translate-middle-y" id="nextAberto" style="z-index:2; display:none;"><i class="fas fa-chevron-right"></i></button>
                     </div>
-                    <button class="btn btn-sm btn-dark position-absolute end-0 top-50 translate-middle-y" id="nextAberto" style="z-index:2; display:none;"><i class="fas fa-chevron-right"></i></button>
                 </div>
+                {% else %}
+                <div class="text-center text-muted">Nenhuma fatura em aberto.</div>
+                {% endif %}
             </div>
-            {% endif %}
-            {% if faturas_vencidas %}
-            <div class="mb-3">
-                <h6 class="text-danger fw-bold mb-2"><i class="fas fa-times-circle me-2"></i>Faturas Vencidas</h6>
-                <div class="position-relative">
-                    <button class="btn btn-sm btn-dark position-absolute start-0 top-50 translate-middle-y" id="prevVencida" style="z-index:2; display:none;"><i class="fas fa-chevron-left"></i></button>
-                    <div class="d-flex flex-row flex-nowrap overflow-hidden" id="containerVencida" style="gap: 8px;">
-                        {% for fatura in faturas_vencidas %}
-                            <div class="d-flex flex-column align-items-center">
-                                <div class="fatura-card border rounded p-1 text-center bg-danger bg-opacity-10{% if fatura_id_selecionada|stringformat:'s' == fatura.id|stringformat:'s' %} fatura-card-selecionada bg-danger{% endif %}" style="min-width:110px; max-width:120px; font-size:0.90em; box-shadow:0 2px 8px #0001; cursor:pointer; transition:box-shadow 0.2s; margin-bottom: 2px; display: flex; flex-direction: column; justify-content: center; align-items: center;" data-fatura-id="{{ fatura.id }}">
-                                    <div class="fw-bold mb-1" style="color:#007bff; font-size:1em;">{{ fatura.valor_calculado|br_currency }}</div>
-                                    <div class="mb-1">Venc: {{ fatura.vencimento|date:'d/m/Y' }}</div>
-                                    <div class="badge bg-danger text-white mb-2">VENCIDA</div>
-                                    <div class="d-flex gap-1 w-100 justify-content-center mt-1">
-                                        <a href="{% url 'core:pagar_fatura' fatura.id %}" class="btn btn-success btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Pagar</a>
-                                        <a href="{% url 'core:ajustar_fatura' fatura.id %}" class="btn btn-outline-primary btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Ajustar</a>
+            <div class="tab-pane fade" id="vencida" role="tabpanel" aria-labelledby="vencida-tab">
+                {% if faturas_vencidas %}
+                <div class="mb-3">
+                    <h6 class="text-danger fw-bold mb-2"><i class="fas fa-times-circle me-2"></i>Faturas Vencidas</h6>
+                    <div class="position-relative">
+                        <button class="btn btn-sm btn-dark position-absolute start-0 top-50 translate-middle-y" id="prevVencida" style="z-index:2; display:none;"><i class="fas fa-chevron-left"></i></button>
+                        <div class="d-flex flex-row flex-nowrap overflow-hidden" id="containerVencida" style="gap: 8px;">
+                            {% for fatura in faturas_vencidas %}
+                                <div class="d-flex flex-column align-items-center">
+                                    <div class="fatura-card border rounded p-1 text-center bg-danger bg-opacity-10{% if fatura_id_selecionada|stringformat:'s' == fatura.id|stringformat:'s' %} fatura-card-selecionada bg-danger{% endif %}" style="min-width:110px; max-width:120px; font-size:0.90em; box-shadow:0 2px 8px #0001; cursor:pointer; transition:box-shadow 0.2s; margin-bottom: 2px; display: flex; flex-direction: column; justify-content: center; align-items: center;" data-fatura-id="{{ fatura.id }}">
+                                        <div class="fw-bold mb-1" style="color:#007bff; font-size:1em;">{{ fatura.valor_calculado|br_currency }}</div>
+                                        <div class="mb-1">Venc: {{ fatura.vencimento|date:'d/m/Y' }}</div>
+                                        <div class="badge bg-danger text-white mb-2">VENCIDA</div>
+                                        <div class="d-flex gap-1 w-100 justify-content-center mt-1">
+                                            <a href="{% url 'core:pagar_fatura' fatura.id %}" class="btn btn-success btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Pagar</a>
+                                            <a href="{% url 'core:ajustar_fatura' fatura.id %}" class="btn btn-outline-primary btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Ajustar</a>
+                                        </div>
                                     </div>
+                                    <div class="small text-primary mt-1">{{ fatura.get_mes_display }}/{{ fatura.ano }}</div>
                                 </div>
-                                <div class="small text-primary mt-1">{{ fatura.get_mes_display }}/{{ fatura.ano }}</div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
+                        <button class="btn btn-sm btn-dark position-absolute end-0 top-50 translate-middle-y" id="nextVencida" style="z-index:2; display:none;"><i class="fas fa-chevron-right"></i></button>
                     </div>
-                    <button class="btn btn-sm btn-dark position-absolute end-0 top-50 translate-middle-y" id="nextVencida" style="z-index:2; display:none;"><i class="fas fa-chevron-right"></i></button>
                 </div>
+                {% else %}
+                <div class="text-center text-muted">Nenhuma fatura vencida.</div>
+                {% endif %}
             </div>
-            {% endif %}
-            {% if faturas_pagas %}
-            <div class="mb-3">
-                <h6 class="text-success fw-bold mb-2"><i class="fas fa-check-circle me-2"></i>Faturas pagas</h6>
-                <div class="position-relative">
-                    <button class="btn btn-sm btn-dark position-absolute start-0 top-50 translate-middle-y" id="prevPaga" style="z-index:2; display:none;"><i class="fas fa-chevron-left"></i></button>
-                    <div class="d-flex flex-row flex-nowrap overflow-hidden" id="containerPaga" style="gap: 8px;">
-                        {% for fatura in faturas_pagas %}
-                            <div class="d-flex flex-column align-items-center">
-                                <div class="fatura-card border rounded p-1 text-center bg-success bg-opacity-10{% if fatura_id_selecionada|stringformat:'s' == fatura.id|stringformat:'s' %} fatura-card-selecionada bg-success{% endif %}" style="min-width:110px; max-width:120px; font-size:0.90em; box-shadow:0 2px 8px #0001; cursor:pointer; transition:box-shadow 0.2s; margin-bottom: 2px; display: flex; flex-direction: column; justify-content: center; align-items: center;" data-fatura-id="{{ fatura.id }}">
-                                    <div class="fw-bold mb-1" style="color:#007bff; font-size:1em;">{{ fatura.valor_calculado|br_currency }}</div>
-                                    <div class="mb-1">Venc: {{ fatura.vencimento|date:'d/m/Y' }}</div>
-                                    <div class="mb-1">Pago em: {{ fatura.data_pagamento|date:'d/m/Y' }}</div>
-                                    <div class="badge bg-success text-white mb-2">PAGA</div>
-                                    <div class="d-flex gap-1 w-100 justify-content-center mt-1">
-                                        <a href="{% url 'core:reabrir_fatura' fatura.id %}" class="btn btn-warning btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Reabrir</a>
+            <div class="tab-pane fade" id="paga" role="tabpanel" aria-labelledby="paga-tab">
+                {% if faturas_pagas %}
+                <div class="mb-3">
+                    <h6 class="text-success fw-bold mb-2"><i class="fas fa-check-circle me-2"></i>Faturas pagas</h6>
+                    <div class="position-relative">
+                        <button class="btn btn-sm btn-dark position-absolute start-0 top-50 translate-middle-y" id="prevPaga" style="z-index:2; display:none;"><i class="fas fa-chevron-left"></i></button>
+                        <div class="d-flex flex-row flex-nowrap overflow-hidden" id="containerPaga" style="gap: 8px;">
+                            {% for fatura in faturas_pagas %}
+                                <div class="d-flex flex-column align-items-center">
+                                    <div class="fatura-card border rounded p-1 text-center bg-success bg-opacity-10{% if fatura_id_selecionada|stringformat:'s' == fatura.id|stringformat:'s' %} fatura-card-selecionada bg-success{% endif %}" style="min-width:180px; max-width:220px; font-size:0.90em; box-shadow:0 2px 8px #0001; cursor:pointer; transition:box-shadow 0.2s; margin-bottom: 2px; display: flex; flex-direction: column; justify-content: center; align-items: center;" data-fatura-id="{{ fatura.id }}">
+                                        <div class="fw-bold mb-1" style="color:#007bff; font-size:1em;">{{ fatura.valor_calculado|br_currency }}</div>
+                                        <div class="d-flex justify-content-between w-100 px-1 mb-1" style="font-size:0.97em; gap: 8px;">
+                                            <div class="d-flex flex-column align-items-center" style="width: 50%;">
+                                                <span class="fw-bold">Venc:</span>
+                                                <span>{{ fatura.vencimento|date:'d/m/Y' }}</span>
+                                            </div>
+                                            <div class="d-flex flex-column align-items-center" style="width: 50%;">
+                                                <span class="fw-bold">Pago em:</span>
+                                                <span>{{ fatura.data_pagamento|date:'d/m/Y' }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="badge bg-success text-white mb-2">PAGA</div>
+                                        <div class="d-flex gap-1 w-100 justify-content-center mt-1">
+                                            <a href="{% url 'core:reabrir_fatura' fatura.id %}" class="btn btn-warning btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Reabrir</a>
+                                        </div>
                                     </div>
+                                    <div class="small text-primary mt-1">{{ fatura.get_mes_display }}/{{ fatura.ano }}</div>
                                 </div>
-                                <div class="small text-primary mt-1">{{ fatura.get_mes_display }}/{{ fatura.ano }}</div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
+                        <button class="btn btn-sm btn-dark position-absolute end-0 top-50 translate-middle-y" id="nextPaga" style="z-index:2; display:none;"><i class="fas fa-chevron-right"></i></button>
                     </div>
-                    <button class="btn btn-sm btn-dark position-absolute end-0 top-50 translate-middle-y" id="nextPaga" style="z-index:2; display:none;"><i class="fas fa-chevron-right"></i></button>
                 </div>
+                {% else %}
+                <div class="text-center text-muted">Nenhuma fatura paga.</div>
+                {% endif %}
             </div>
-            {% endif %}
+        </div>
         {% else %}
             <div class="text-center text-muted">
                 <i class="fas fa-file-invoice-dollar fa-3x mb-3 text-muted"></i>
@@ -93,13 +124,6 @@
         {% endif %}
     {% endif %}
 </div>
-{% if cartao_selecionado %}
-    <div class="mb-3 text-end">
-        <a href="{% url 'core:nova_fatura' %}?cartao={{ cartao_selecionado.pk }}" class="btn btn-success">
-            <i class="fas fa-plus me-1"></i>Nova Fatura
-        </a>
-    </div>
-{% endif %}
 
 {% if cartao_selecionado %}
     <script>

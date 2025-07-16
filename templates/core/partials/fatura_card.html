@@ -1,0 +1,33 @@
+{% load br_filters %}
+<div class="fw-bold mb-1" style="color:#007bff; font-size:1em;">{{ fatura.valor_calculado|br_currency }}</div>
+{% if fatura.data_pagamento %}
+    <div class="d-flex justify-content-between w-100 px-1 mb-1" style="font-size:0.97em; gap: 8px;">
+        <div class="d-flex flex-column align-items-center" style="width: 50%;">
+            <span class="fw-bold">Venc:</span>
+            <span>{{ fatura.vencimento|date:'d/m/Y' }}</span>
+        </div>
+        <div class="d-flex flex-column align-items-center" style="width: 50%;">
+            <span class="fw-bold">Pago em:</span>
+            <span>{{ fatura.data_pagamento|date:'d/m/Y' }}</span>
+        </div>
+    </div>
+    <div class="badge bg-success text-white mb-2">PAGA</div>
+    <div class="d-flex gap-1 w-100 justify-content-center mt-1">
+        <a href="{% url 'core:reabrir_fatura' fatura.id %}" class="btn btn-warning btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Reabrir</a>
+    </div>
+{% elif fatura.vencimento < today %}
+    <div class="mb-1">Venc: {{ fatura.vencimento|date:'d/m/Y' }}</div>
+    <div class="badge bg-danger text-white mb-2">VENCIDA</div>
+    <div class="d-flex gap-1 w-100 justify-content-center mt-1">
+        <a href="{% url 'core:pagar_fatura' fatura.id %}" class="btn btn-success btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Pagar</a>
+        <a href="{% url 'core:ajustar_fatura' fatura.id %}" class="btn btn-outline-primary btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Ajustar</a>
+    </div>
+{% else %}
+    <div class="mb-1">Venc: {{ fatura.vencimento|date:'d/m/Y' }}</div>
+    <div class="badge bg-warning text-dark mb-2">EM ABERTO</div>
+    <div class="d-flex gap-1 w-100 justify-content-center mt-1">
+        <button class="btn btn-success btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Pagar</button>
+        <a href="{% url 'core:ajustar_fatura' fatura.id %}" class="btn btn-outline-primary btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Ajustar</a>
+    </div>
+{% endif %}
+<div class="small text-primary mt-1">{{ fatura.get_mes_display }}/{{ fatura.ano }}</div> 

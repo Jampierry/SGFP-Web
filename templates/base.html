@@ -751,7 +751,12 @@
                             <span class="notification-badge" id="notification-count" style="display: none;">0</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end notification-dropdown" style="width: 300px;">
-                            <h6 class="dropdown-header">Notificações</h6>
+                            <h6 class="dropdown-header d-flex align-items-center justify-content-between">
+                                <span>Notificações</span>
+                                <button id="btn-limpar-todas-notificacoes" class="btn btn-link btn-sm text-info p-0 ms-2" title="Limpar todas as notificações" style="font-size:1.2em;">
+                                    <i class="fas fa-broom"></i>
+                                </button>
+                            </h6>
                             <div id="notifications-list">
                                 <div class="dropdown-item text-muted">Carregando...</div>
                             </div>
@@ -924,7 +929,7 @@
         
         // Carregar notificações
         function carregarNotificacoes() {
-            fetch('/core/api/notificacoes/recentes/')
+            fetch('/api/notificacoes/recentes/')
                 .then(response => response.json())
                 .then(data => {
                     const notificationsList = document.getElementById('notifications-list');
@@ -934,15 +939,18 @@
                         notificationsList.innerHTML = '<div class="dropdown-item text-muted">Nenhuma notificação</div>';
                     } else {
                         notificationsList.innerHTML = data.notificacoes.map(notif => `
-                            <a class="dropdown-item ${notif.lida ? '' : 'fw-bold'}" href="${notif.link || '#'}">
-                                <div class="d-flex align-items-center">
+                            <div class="dropdown-item d-flex align-items-center justify-content-between gap-2 p-0" style="min-height:48px;">
+                                <a class="d-flex align-items-center flex-grow-1 px-2 py-2 text-decoration-none ${notif.lida ? '' : 'fw-bold'}" href="${notif.link || '#'}" style="color:inherit;">
                                     <i class="${notif.icone} me-2 text-${notif.tipo === 'alerta' ? 'danger' : notif.tipo === 'sucesso' ? 'success' : 'info'}"></i>
                                     <div>
                                         <div class="small">${notif.titulo}</div>
                                         <div class="text-muted small">${notif.tempo_atras}</div>
                                     </div>
-                                </div>
-                            </a>
+                                </a>
+                                <button class="btn btn-link btn-sm text-danger px-2 py-0 btn-apagar-notificacao" title="Apagar notificação" data-id="${notif.id}" style="font-size:1.1em;">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
                         `).join('');
                     }
                 });
@@ -969,6 +977,47 @@
             // Atualizar a cada 30 segundos
             setInterval(carregarNotificacoes, 30000);
             setInterval(carregarContadorNotificacoes, 30000);
+
+            // Handler para apagar notificação individual
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.btn-apagar-notificacao')) {
+                    e.preventDefault();
+                    const btn = e.target.closest('.btn-apagar-notificacao');
+                    const notifId = btn.getAttribute('data-id');
+                    btn.disabled = true;
+                    fetch(`/notificacoes/${notifId}/excluir/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': (document.querySelector('[name=csrfmiddlewaretoken]')||{}).value,
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(resp => resp.ok ? btn.closest('.dropdown-item').remove() : btn.disabled = false)
+                    .catch(() => btn.disabled = false);
+                }
+            });
+
+            // Handler para limpar todas as notificações
+            const btnLimparTodas = document.getElementById('btn-limpar-todas-notificacoes');
+            if (btnLimparTodas) {
+                btnLimparTodas.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    btnLimparTodas.disabled = true;
+                    fetch('/notificacoes/marcar-todas-lidas/', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': (document.querySelector('[name=csrfmiddlewaretoken]')||{}).value,
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(resp => {
+                        btnLimparTodas.disabled = false;
+                        carregarNotificacoes();
+                        carregarContadorNotificacoes();
+                    })
+                    .catch(() => { btnLimparTodas.disabled = false; });
+                });
+            }
         }
 
         // Inicializar tooltips Bootstrap para os ícones do menu lateral
