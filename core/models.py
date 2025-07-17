@@ -6,6 +6,7 @@ import uuid
 from django.utils import timezone
 from datetime import date
 import calendar
+from datetime import timedelta
 
 class Categoria(models.Model):
     TIPO_CHOICES = [
@@ -197,8 +198,8 @@ class Despesa(models.Model):
                     from calendar import monthrange
                     data_venc = date(ano, mes, monthrange(ano, mes)[1])
                 fatura, _ = Fatura.objects.get_or_create(
-                    cartao=self.cartao, mes=mes, ano=ano,
-                    defaults={'vencimento': data_venc, 'valor': 0}
+                    cartao=self.cartao, vencimento=data_venc,
+                    defaults={'valor': 0}
                 )
                 # Cria uma despesa para cada parcela
                 despesa_parcela = Despesa(
@@ -245,8 +246,8 @@ class Despesa(models.Model):
                     from calendar import monthrange
                     data_venc = date(ano_fatura, mes_fatura, monthrange(ano_fatura, mes_fatura)[1])
                 fatura, _ = Fatura.objects.get_or_create(
-                    cartao=self.cartao, mes=mes_fatura, ano=ano_fatura,
-                    defaults={'vencimento': data_venc, 'valor': 0}
+                    cartao=self.cartao, vencimento=data_venc,
+                    defaults={'valor': 0}
                 )
                 self.fatura = fatura
                 super().save(update_fields=['fatura'])
@@ -350,21 +351,13 @@ class Configuracao(models.Model):
     escala_interface = models.PositiveIntegerField(
         default=100,
         choices=[
-            (100, '100% (Padrão)'),
-            (95, '95%'),
-            (90, '90%'),
-            (85, '85%'),
-            (80, '80%'),
-            (75, '75%'),
             (70, '70%'),
-            (65, '65%'),
-            (60, '60%'),
-            (55, '55%'),
-            (50, '50%'),
-            (45, '45%'),
-            (40, '40%'),
-            (35, '35%'),
-            (30, '30%'),
+            (80, '80%'),
+            (90, '90%'),
+            (100, '100% (Padrão)'),
+            (110, '110%'),
+            (120, '120%'),
+            (130, '130%'),
         ],
         verbose_name='Escala da Interface (%)'
     )
@@ -522,8 +515,6 @@ class CartaoCredito(models.Model):
 
 class Fatura(models.Model):
     cartao = models.ForeignKey('CartaoCredito', on_delete=models.CASCADE, related_name='faturas')
-    mes = models.PositiveSmallIntegerField()
-    ano = models.PositiveSmallIntegerField()
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     vencimento = models.DateField()
     paga = models.BooleanField(default=False)
@@ -531,14 +522,14 @@ class Fatura(models.Model):
     data_pagamento = models.DateField(null=True, blank=True)
 
     class Meta:
-        unique_together = ('cartao', 'mes', 'ano')
-        ordering = ['-ano', '-mes']
+        unique_together = ('cartao', 'vencimento')
+        ordering = ['-vencimento']
 
     def __str__(self):
-        return f'Fatura {self.get_mes_display()}/{self.ano} - {self.cartao.nome}'
+        return f'Fatura {self.vencimento.strftime("%m/%Y")} - {self.cartao.nome}'
 
     def get_mes_display(self):
-        return calendar.month_abbr[self.mes].capitalize()
+        return self.vencimento.strftime('%b').capitalize()
 
     @property
     def status(self):
@@ -550,18 +541,10 @@ class Fatura(models.Model):
             return 'Em aberto'
 
     def despesas_do_ciclo(self):
-        """Retorna as despesas do cartão que pertencem a este ciclo de fatura."""
         fechamento_atual = self.cartao.data_fechamento_fatura
-        # Calcular data de fechamento anterior
-        if self.mes == 1:
-            mes_anterior = 12
-            ano_anterior = self.ano - 1
-        else:
-            mes_anterior = self.mes - 1
-            ano_anterior = self.ano
         from datetime import date
-        data_fechamento_anterior = date(ano_anterior, mes_anterior, fechamento_atual)
-        data_fechamento_atual = date(self.ano, self.mes, fechamento_atual)
+        data_fechamento_anterior = self.vencimento.replace(day=fechamento_atual) - timedelta(days=30)
+        data_fechamento_atual = self.vencimento.replace(day=fechamento_atual)
         return self.cartao.despesas_cartao.filter(
             data__gt=data_fechamento_anterior,
             data__lte=data_fechamento_atual,

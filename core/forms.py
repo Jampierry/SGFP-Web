@@ -297,21 +297,13 @@ class ConfiguracaoForm(forms.ModelForm):
         ('tall', 'Alto'),
     ]
     ESCALA_CHOICES = [
-        (100, '100% (Padrão)'),
-        (95, '95%'),
-        (90, '90%'),
-        (85, '85%'),
-        (80, '80%'),
-        (75, '75%'),
         (70, '70%'),
-        (65, '65%'),
-        (60, '60%'),
-        (55, '55%'),
-        (50, '50%'),
-        (45, '45%'),
-        (40, '40%'),
-        (35, '35%'),
-        (30, '30%'),
+        (80, '80%'),
+        (90, '90%'),
+        (100, '100% (Padrão)'),
+        (110, '110%'),
+        (120, '120%'),
+        (130, '130%'),
     ]
     
     moeda_padrao = forms.ChoiceField(choices=MOEDA_CHOICES, widget=forms.Select(attrs={'class': 'form-select'}))
@@ -479,11 +471,9 @@ class CartaoCreditoForm(forms.ModelForm):
 class FaturaForm(forms.ModelForm):
     class Meta:
         model = Fatura
-        fields = ['cartao', 'mes', 'ano', 'valor', 'vencimento', 'paga', 'ajustada', 'data_pagamento']
+        fields = ['cartao', 'valor', 'vencimento', 'paga', 'ajustada', 'data_pagamento']
         widgets = {
             'cartao': forms.Select(attrs={'class': 'form-control'}),
-            'mes': forms.NumberInput(attrs={'class': 'form-control', 'min': 1, 'max': 12}),
-            'ano': forms.NumberInput(attrs={'class': 'form-control', 'min': 2000, 'max': 2100}),
             'valor': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
             'vencimento': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'paga': forms.CheckboxInput(attrs={'class': 'form-check-input'}),

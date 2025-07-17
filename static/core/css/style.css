@@ -18,6 +18,7 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f8f9fa;
+    /* Escala global agora controlada dinamicamente pelo template base.html */
 }
 
 /* Navbar personalizada */
@@ -29,6 +30,8 @@ body {
 .navbar-nav .nav-link {
     font-weight: 500;
     transition: var(--transition);
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
 }
 
 .navbar-nav .nav-link:hover {
@@ -38,6 +41,7 @@ body {
 /* Tabelas personalizadas */
 .table {
     margin-bottom: 0;
+    font-size: 1rem;
 }
 
 .table th {
@@ -45,10 +49,14 @@ body {
     font-weight: 600;
     color: var(--dark-color);
     background-color: var(--light-color);
+    font-size: 0.95rem;
+    padding: 0.75rem 0.5rem;
 }
 
 .table td {
     vertical-align: middle;
+    padding: 0.625rem 0.5rem;
+    font-size: 0.95rem;
 }
 
 .table-hover tbody tr:hover {
@@ -57,17 +65,17 @@ body {
 
 /* Tabelas com rolagem */
 .table-responsive::-webkit-scrollbar {
-    width: 8px;
+    width: 0.5rem;
 }
 
 .table-responsive::-webkit-scrollbar-track {
     background: #f1f1f1;
-    border-radius: 4px;
+    border-radius: 0.25rem;
 }
 
 .table-responsive::-webkit-scrollbar-thumb {
     background: #c1c1c1;
-    border-radius: 4px;
+    border-radius: 0.25rem;
 }
 
 .table-responsive::-webkit-scrollbar-thumb:hover {
@@ -78,30 +86,14 @@ body {
     position: sticky;
     top: 0;
     background: white !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.table th {
-    border-top: none;
-    font-weight: 600;
-    font-size: 0.9em;
-    padding: 12px 8px;
-}
-
-.table td {
-    padding: 10px 8px;
-    font-size: 0.9em;
-    vertical-align: middle;
-}
-
-.table tbody tr:hover {
-    background-color: rgba(0,123,255,0.05);
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.1);
 }
 
 /* Badges personalizados */
 .badge {
     font-weight: 500;
     padding: 0.5em 0.75em;
+    font-size: 0.95rem;
 }
 
 /* Botões personalizados */
@@ -109,6 +101,8 @@ body {
     font-weight: 500;
     border-radius: var(--border-radius);
     transition: var(--transition);
+    font-size: 1rem;
+    padding: 0.5rem 1.25rem;
 }
 
 .btn-group .btn {
@@ -120,6 +114,8 @@ body {
     border-radius: var(--border-radius);
     border: 1px solid #ced4da;
     transition: var(--transition);
+    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
 }
 
 .form-control:focus, .form-select:focus {
@@ -131,6 +127,26 @@ body {
     background-color: var(--light-color);
     border: 1px solid #ced4da;
     border-radius: var(--border-radius);
+    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
+}
+
+/* Cards personalizados */
+.card {
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    font-size: 1rem;
+    padding: 1.25rem;
+}
+
+.card-header {
+    font-size: 1.1rem;
+    padding: 0.75rem 1.25rem;
+}
+
+.card-body {
+    font-size: 1rem;
+    padding: 1.25rem;
 }
 
 /* Progress bars personalizados */
@@ -353,7 +369,7 @@ body.celestial-light .badge {
   top: 0;
   left: 0;
   height: 100vh;
-  width: 220px;
+  width: 13.75rem;
   background: linear-gradient(135deg, #23272F 80%, #2d3340 100%);
   color: #fff;
   z-index: 1030;
@@ -364,6 +380,8 @@ body.celestial-light .badge {
   align-items: stretch;
   box-shadow: 4px 0 24px 0 rgba(36,41,51,0.13), 1.5px 0 0 #3A8DFF22;
   border-right: 1.5px solid #3A8DFF22;
+  font-size: 1rem;
+  padding-top: 1.5rem;
 }
 
 .sidebar-menu {
@@ -534,7 +552,7 @@ body.celestial-light .badge {
 
 /* Ajuste do conteúdo principal para dashboards modernos */
 .main-content {
-  margin-left: 220px;
+  margin-left: 13.75rem;
   transition: margin-left 0.3s cubic-bezier(.4,2,.6,1);
   padding-top: 70px;
 }

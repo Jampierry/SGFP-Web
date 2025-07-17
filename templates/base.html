@@ -15,10 +15,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{% static 'core/css/style.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'core/css/dashboard-themes-v2.css' %}">
     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     <!-- O CSS de ícones coloridos deve ser o último para garantir prioridade sobre temas -->
     <link href="{% static 'core/css/dashboard-themes.css' %}" rel="stylesheet">
+    <style>
+        html { font-size: {{ font_size_percent }}% !important; }
+    </style>
     <style>
         /* Tema Dark Colorido e Moderno */
         .dark-theme {
@@ -650,20 +652,17 @@
     </style>
     {% block extra_css %}{% endblock %}
 </head>
-{% with escala=escala_interface|default:100 %}
-<body style="zoom: {{ escala|floatformat:0 }}%; min-height: 100vh;"
-      class="{% if tema_usuario %}{{ tema_usuario }}{% endif %}{% if icones_coloridos %} icones-coloridos{% endif %}"
+<body class="{% if tema_usuario %}{{ tema_usuario }}{% endif %}{% if icones_coloridos %} icones-coloridos{% endif %}"
       data-tela="{% if request.resolver_match.url_name == 'dashboard' %}dashboard{% elif 'receita' in request.resolver_match.url_name %}receitas{% elif 'despesa' in request.resolver_match.url_name %}despesas{% elif 'transferencia' in request.resolver_match.url_name %}transferencias{% elif 'categoria' in request.resolver_match.url_name %}categorias{% elif 'conta' in request.resolver_match.url_name %}contas{% elif 'cartao' in request.resolver_match.url_name or 'cartoes' in request.resolver_match.url_name %}cartoes{% elif 'meta' in request.resolver_match.url_name %}metas{% elif 'relatorio' in request.resolver_match.url_name %}relatorios{% elif request.resolver_match.app_name == 'configuracoes' %}configuracoes{% else %}padrao{% endif %}">
     <style>
       @-moz-document url-prefix() {
         body {
           zoom: unset !important;
-          transform: scale({{ escala|floatformat:0 }}/100);
+          transform: scale({{ fator_escala }});
           transform-origin: top left;
         }
       }
     </style>
-{% endwith %}
     {% if user.is_authenticated %}
     <!-- Remover botão hambúrguer -->
     <!-- Logo do sistema agora é clicável para expandir/colapsar o menu -->

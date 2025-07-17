@@ -213,6 +213,6 @@ class NotificacaoAdmin(admin.ModelAdmin):
 
 @admin.register(Fatura)
 class FaturaAdmin(admin.ModelAdmin):
-    list_display = ('cartao', 'mes', 'ano', 'valor', 'vencimento', 'paga', 'ajustada', 'data_pagamento')
-    list_filter = ('cartao', 'paga', 'ajustada', 'ano', 'mes')
+    list_display = ('cartao', 'valor', 'vencimento', 'paga', 'ajustada', 'data_pagamento')
+    list_filter = ('cartao', 'paga', 'ajustada')
     search_fields = ('cartao__nome',)

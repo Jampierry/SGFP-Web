@@ -30,4 +30,4 @@
         <a href="{% url 'core:ajustar_fatura' fatura.id %}" class="btn btn-outline-primary btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Ajustar</a>
     </div>
 {% endif %}
-<div class="small text-primary mt-1">{{ fatura.get_mes_display }}/{{ fatura.ano }}</div> 
+<div class="small text-primary mt-1">{{ fatura.get_mes_display }}/{{ fatura.vencimento|date:'Y' }}</div> 

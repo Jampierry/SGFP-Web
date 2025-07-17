@@ -26,6 +26,7 @@ from .forms import (
 )
 from django.template.loader import render_to_string
 from django.contrib.auth.views import LoginView
+from core.utils import preencher_campos_cartao
 
 def register(request):
     if request.method == 'POST':
@@ -231,6 +232,20 @@ def dashboard_responsive(request):
     
     # Cartões de crédito
     cartoes_credito = CartaoCredito.objects.filter(usuario=request.user, ativo=True)
+    from datetime import date
+    hoje = date.today()
+    mes_atual = hoje.month
+    ano_atual = hoje.year
+    for cartao in cartoes_credito:
+        # Fatura do mês atual (em aberto)
+        fatura_atual = cartao.faturas.filter(vencimento__month=mes_atual, vencimento__year=ano_atual).first()
+        if fatura_atual:
+            cartao.fatura_valor = fatura_atual.valor_calculado()
+        else:
+            cartao.fatura_valor = 0
+        cartao.limite_valor = cartao.limite_total
+        cartao.utilizado_valor = cartao.limite_utilizado
+        cartao.saldo_valor = cartao.limite_disponivel
     total_limite_cartoes = cartoes_credito.aggregate(total=Sum('limite_total'))['total'] or 0
     total_utilizado_cartoes = sum(cartao.limite_utilizado for cartao in cartoes_credito)
     total_disponivel_cartoes = total_limite_cartoes - total_utilizado_cartoes
@@ -511,6 +526,21 @@ def dashboard_classic(request):
 
     # Cartões de crédito
     cartoes_credito = CartaoCredito.objects.filter(usuario=request.user, ativo=True)
+    preencher_campos_cartao(cartoes_credito)
+    from datetime import date
+    hoje = date.today()
+    mes_atual = hoje.month
+    ano_atual = hoje.year
+    for cartao in cartoes_credito:
+        # Fatura do mês atual (em aberto)
+        fatura_atual = cartao.faturas.filter(vencimento__month=mes_atual, vencimento__year=ano_atual).first()
+        if fatura_atual:
+            cartao.fatura_valor = fatura_atual.valor_calculado()
+        else:
+            cartao.fatura_valor = 0
+        cartao.limite_valor = cartao.limite_total
+        cartao.utilizado_valor = cartao.limite_utilizado
+        cartao.saldo_valor = cartao.limite_disponivel
     total_limite_cartoes = cartoes_credito.aggregate(total=Sum('limite_total'))['total'] or 0
     total_utilizado_cartoes = sum(cartao.limite_utilizado for cartao in cartoes_credito)
     total_disponivel_cartoes = total_limite_cartoes - total_utilizado_cartoes
@@ -1787,6 +1817,30 @@ def importar_banco_completo(request):
 def cartao_credito_list(request):
     cartoes_ativos = CartaoCredito.objects.filter(usuario=request.user, ativo=True)
     cartoes_inativos = CartaoCredito.objects.filter(usuario=request.user, ativo=False)
+    preencher_campos_cartao(cartoes_ativos)
+    preencher_campos_cartao(cartoes_inativos)
+    from datetime import date
+    hoje = date.today()
+    mes_atual = hoje.month
+    ano_atual = hoje.year
+    for cartao in cartoes_ativos:
+        fatura_atual = cartao.faturas.filter(vencimento__month=mes_atual, vencimento__year=ano_atual).first()
+        if fatura_atual:
+            cartao.fatura_valor = fatura_atual.valor_calculado()
+        else:
+            cartao.fatura_valor = 0
+        cartao.limite_valor = cartao.limite_total
+        cartao.utilizado_valor = cartao.limite_utilizado
+        cartao.saldo_valor = cartao.limite_disponivel
+    for cartao in cartoes_inativos:
+        fatura_atual = cartao.faturas.filter(vencimento__month=mes_atual, vencimento__year=ano_atual).first()
+        if fatura_atual:
+            cartao.fatura_valor = fatura_atual.valor_calculado()
+        else:
+            cartao.fatura_valor = 0
+        cartao.limite_valor = cartao.limite_total
+        cartao.utilizado_valor = cartao.limite_utilizado
+        cartao.saldo_valor = cartao.limite_disponivel
     return render(request, 'core/cartoes_credito_list.html', {
         'cartoes_ativos': cartoes_ativos,
         'cartoes_inativos': cartoes_inativos
@@ -1866,6 +1920,8 @@ def cartoes_dashboard(request):
         filtros_despesa['data__lte'] = data_fim
     
     cartoes = CartaoCredito.objects.filter(usuario=request.user, ativo=True)
+    fatura_id_selecionada = request.GET.get('fatura')
+    preencher_campos_cartao(cartoes, fatura_id_selecionada)
     cartao_id = request.GET.get('cartao')
     cartao_selecionado = None
     faturas = []
@@ -1926,7 +1982,7 @@ def cartoes_dashboard(request):
         gastos = [float(cartao_selecionado.limite_utilizado)]
         
         # Buscar faturas do cartão selecionado
-        faturas = Fatura.objects.filter(cartao=cartao_selecionado).order_by('ano', 'mes')
+        faturas = Fatura.objects.filter(cartao=cartao_selecionado).order_by('vencimento')
         
         # Dados para gráfico de barras das faturas (respeitando filtro de data)
         if data_inicio and data_fim:
@@ -1951,9 +2007,9 @@ def cartoes_dashboard(request):
         meses_status = []
         meses_cores = []
         for mes, ano in meses_ano:
-            fatura = faturas.filter(mes=mes, ano=ano).first()
+            fatura = faturas.filter(vencimento__month=mes, vencimento__year=ano).first()
             if fatura:
-                meses_labels.append(f'{meses_ptbr[mes-1]}/{fatura.ano}')
+                meses_labels.append(f'{meses_ptbr[mes-1]}/{fatura.vencimento.year}')
                 meses_valores.append(float(fatura.valor_calculado()))
                 status = fatura.status
                 meses_status.append(status)
@@ -2097,12 +2153,12 @@ def cartoes_dashboard_ajax(request):
     if data_fim:
         filtros_despesa['data__lte'] = data_fim
     cartoes = CartaoCredito.objects.filter(usuario=request.user, ativo=True)
+    fatura_id_selecionada = request.GET.get('fatura')
+    preencher_campos_cartao(cartoes, fatura_id_selecionada)
     cartao_selecionado = None
-    faturas = []
-    hoje = timezone.now().date()
     if cartao_id:
         try:
-            cartao_selecionado = cartoes.get(pk=cartao_id)
+            cartao_selecionado = CartaoCredito.objects.get(pk=cartao_id, usuario=request.user, ativo=True)
         except CartaoCredito.DoesNotExist:
             cartao_selecionado = None
     meses_ptbr = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
@@ -2149,7 +2205,7 @@ def cartoes_dashboard_ajax(request):
         total_disponivel = total_limite - total_utilizado
         labels = [cartao_selecionado.nome]
         gastos = [float(cartao_selecionado.limite_utilizado)]
-        faturas = Fatura.objects.filter(cartao=cartao_selecionado).order_by('ano', 'mes')
+        faturas = Fatura.objects.filter(cartao=cartao_selecionado).order_by('vencimento')
         if data_inicio and data_fim:
             meses_ano = []
             ano = data_inicio_dt.year
@@ -2172,9 +2228,9 @@ def cartoes_dashboard_ajax(request):
         meses_status = []
         meses_cores = []
         for mes, ano in meses_ano:
-            fatura = faturas.filter(mes=mes, ano=ano).first()
+            fatura = faturas.filter(vencimento__month=mes, vencimento__year=ano).first()
             if fatura:
-                meses_labels.append(f'{meses_ptbr[mes-1]}/{fatura.ano}')
+                meses_labels.append(f'{meses_ptbr[mes-1]}/{fatura.vencimento.year}')
                 meses_valores.append(float(fatura.valor_calculado()))
                 status = fatura.status
                 meses_status.append(status)

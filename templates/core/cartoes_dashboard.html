@@ -174,7 +174,7 @@
     </script>
     <div class="row g-3 align-items-stretch mb-2">
         <div class="col-lg-6 col-12 mb-3 mb-lg-0 d-flex flex-column align-items-center">
-            <div class="card shadow mb-4 w-100 d-flex flex-column align-items-center">
+            <div class="card shadow mb-4 w-100 d-flex flex-column align-items-center" style="min-height:400px; height:400px;">
                 <div class="card-header bg-primary text-white d-flex align-items-center w-100 justify-content-between">
                     <h5 class="mb-0"><i class="fas fa-credit-card me-2"></i>Cartões Cadastrados</h5>
                     <div class="d-flex gap-2">
@@ -205,10 +205,18 @@
         <div class="col-lg-6 col-12 mb-3 mb-lg-0">
             <div class="card shadow mb-4 w-100" style="min-height:400px; height:400px;">
                 <div class="card-header bg-primary text-white d-flex align-items-center w-100 justify-content-between">
-                    <h5 class="mb-0"><i class="fas fa-file-invoice-dollar me-2"></i>Faturas do Cartão{% if cartao_selecionado %} {{ cartao_selecionado.nome }}{% endif %}</h5>
-                    {% if cartao_selecionado %}
-                    <a href="{% url 'core:nova_fatura' %}?cartao={{ cartao_selecionado.pk }}" class="btn btn-success btn-sm"><i class="fas fa-plus me-1"></i>Nova Fatura</a>
-                    {% endif %}
+                    <h5 class="mb-0">
+                        <i class="fas fa-file-invoice-dollar me-2"></i>
+                        Faturas do Cartão{% if cartao_selecionado %} {{ cartao_selecionado.nome }}{% endif %}
+                    </h5>
+                    <a
+                        href="{% if cartao_selecionado %}{% url 'core:nova_fatura' %}?cartao={{ cartao_selecionado.pk }}{% else %}#{% endif %}"
+                        class="btn btn-success btn-sm ms-2"
+                        id="btnNovaFatura"
+                        {% if not cartao_selecionado %}disabled{% endif %}
+                    >
+                        <i class="fas fa-plus me-1"></i>Nova Fatura
+                    </a>
                 </div>
                 <div id="painel-cartao">
                     {% include 'core/partials/cartoes_dashboard_painel.html' with fatura_id_selecionada=request.GET.fatura %}
@@ -220,6 +228,36 @@
       {% include 'core/partials/despesas_fatura_painel.html' %}
     </div>
 </div>
+
+<!-- Toast de notificação para seleção de cartão -->
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+  <div id="toastCartao" class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        Selecione um cartão para cadastrar uma nova fatura.
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button>
+    </div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('btnNovaFatura');
+    if (btn) {
+        btn.addEventListener('click', function(e) {
+            if (btn.hasAttribute('disabled')) {
+                e.preventDefault();
+                const toastEl = document.getElementById('toastCartao');
+                if (toastEl) {
+                    const toast = new bootstrap.Toast(toastEl);
+                    toast.show();
+                }
+            }
+        });
+    }
+});
+</script>
 
 <script>
 // Função para navegação dos cards de fatura
@@ -398,6 +436,41 @@ document.addEventListener('DOMContentLoaded', function() {
         setupFaturaCardClickAjax();
     }, 200);
 });
+</script>
+
+<script>
+const novaFaturaUrlBase = "{% url 'core:nova_fatura' %}";
+// Função para carregar painel de faturas via AJAX
+function carregarPainelFaturas(cartaoId) {
+    fetch(`/cartoes_dashboard_ajax/?cartao=${cartaoId}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('painel-cartao').innerHTML = data.html;
+            // Atualiza a URL para manter o cartão selecionado
+            const url = new URL(window.location);
+            url.searchParams.set('cartao', cartaoId);
+            window.history.replaceState({}, '', url);
+            // Reatribui eventos de clique nos cartões após AJAX
+            setupCartaoClickAjax();
+            // Atualiza o botão Nova Fatura
+            const btn = document.getElementById('btnNovaFatura');
+            if (btn) {
+                btn.removeAttribute('disabled');
+                btn.setAttribute('href', novaFaturaUrlBase + `?cartao=${cartaoId}`);
+            }
+        });
+}
+// Adiciona evento de clique nos cartões
+function setupCartaoClickAjax() {
+    document.querySelectorAll('.wallet-card').forEach(card => {
+        card.onclick = null;
+        card.addEventListener('click', function() {
+            const cartaoId = this.getAttribute('data-cartao-id');
+            carregarPainelFaturas(cartaoId);
+        });
+    });
+}
+document.addEventListener('DOMContentLoaded', setupCartaoClickAjax);
 </script>
 
 <style>
