@@ -1,16 +1,34 @@
 {% load static %}
 {% load br_filters %}
-<div class="cartao-visual {{ cartao.nome|lower|slugify }}" style="position:relative; border-radius:18px; min-width:260px; max-width:320px; height:180px; width:100%; background: linear-gradient(135deg, {{ cartao.nome|banco_cor }} 0%, #414345 100%); color:#fff; box-shadow:0 2px 8px #0002; text-shadow:0 1px 2px rgba(0,0,0,0.25); overflow:hidden;">
+<div class="cartao-visual {{ cartao.nome|lower|slugify }}" style="position:relative; border-radius:18px; min-width:260px; max-width:320px; height:180px; width:100%; aspect-ratio:16/9; background: linear-gradient(135deg, {{ cartao.nome|banco_cor }} 0%, #414345 100%); color:#fff; box-shadow:0 2px 8px #0002; text-shadow:0 1px 2px rgba(0,0,0,0.25); overflow:hidden;">
     <!-- Logo do banco/cartão no topo direito -->
     {% if cartao.nome|lower == 'neon' %}
         <img class="banco-logo" src="{% static 'imagens/cartoes/neon.png' %}" alt="Neon" style="position:absolute;top:14px;right:18px;height:44px;width:44px;object-fit:contain;z-index:2;">
+        {% if cartao.tem_fatura_vencida %}
+            <span style="position:absolute;top:60px;right:18px;display:inline-flex;align-items:center;background:#d32f2f;color:#fff;font-size:0.78rem;font-weight:600;padding:1px 7px 1px 5px;border-radius:11px;gap:0.3em;box-shadow:0 1px 4px #0003;z-index:3;">
+                <i class="fas fa-exclamation-triangle" style="font-size:0.95em;margin-right:0.2em;"></i> Fatura vencida!
+            </span>
+        {% endif %}
     {% elif cartao.nome|lower == 'inter' %}
         <img class="banco-logo" src="{% static 'imagens/cartoes/banco-inter-logo-9-1536x390.png' %}" alt="Inter" style="position:absolute;top:14px;right:18px;height:44px;width:44px;object-fit:contain;z-index:2;">
+        {% if cartao.tem_fatura_vencida %}
+            <span style="position:absolute;top:60px;right:18px;display:inline-flex;align-items:center;background:#d32f2f;color:#fff;font-size:0.78rem;font-weight:600;padding:1px 7px 1px 5px;border-radius:11px;gap:0.3em;box-shadow:0 1px 4px #0003;z-index:3;">
+                <i class="fas fa-exclamation-triangle" style="font-size:0.95em;margin-right:0.2em;"></i> Fatura vencida!
+            </span>
+        {% endif %}
     {% elif cartao.nome|lower == 'nubank' %}
         <img class="banco-logo" src="{% static 'imagens/cartoes/nubank.png' %}" alt="Nubank" style="position:absolute;top:14px;right:18px;height:44px;width:44px;object-fit:contain;z-index:2;">
+        {% if cartao.tem_fatura_vencida %}
+            <span style="position:absolute;top:60px;right:18px;display:inline-flex;align-items:center;background:#d32f2f;color:#fff;font-size:0.78rem;font-weight:600;padding:1px 7px 1px 5px;border-radius:11px;gap:0.3em;box-shadow:0 1px 4px #0003;z-index:3;">
+                <i class="fas fa-exclamation-triangle" style="font-size:0.95em;margin-right:0.2em;"></i> Fatura vencida!
+            </span>
+        {% endif %}
     {% endif %}
     <div style="padding: 1.2rem 1.2rem 0.7rem 1.2rem; height:100%; display:flex; flex-direction:column; justify-content:flex-start;">
-        <div style="font-weight:700;font-size:1.1rem; margin-bottom:0.2rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:60%">{{ cartao.nome }}</div>
+        <div class="cartao-header" style="display:flex;align-items:center;justify-content:space-between;position:relative;">
+            <span class="cartao-nome" style="font-size:1.25rem;font-weight:600;letter-spacing:0.5px;z-index:1;">{{ cartao.nome }}</span>
+            <!-- Badge de fatura vencida -->
+        </div>
         <div style="margin:0.1rem 0 0.4rem 0;display:flex;align-items:center;gap:0.7rem;">
             <span style="background:#C0C0C0;border-radius:6px;width:32px;height:22px;display:inline-block;"></span>
             <span style="font-size:1rem;letter-spacing:2px;">**** {{ cartao.numero|slice:'-4:' }}</span>
@@ -32,6 +50,10 @@
             <div class="cartao-row">
                 <span class="cartao-label">Saldo:</span>
                 <span class="cartao-value cartao-value-saldo">{{ cartao.saldo_valor|default_if_none:"—"|br_currency }}</span>
+            </div>
+            <div class="cartao-row" style="font-size:0.92em; color:#ffe082; margin-top:0.2em;">
+                <span class="cartao-label" style="min-width:unset;max-width:unset;font-weight:400;">Melhor dia p/ comprar:</span>
+                <span class="cartao-value" style="color:#ffe082; font-weight:600;">{{ cartao.data_fechamento_fatura|add:1 }}</span>
             </div>
         </div>
     </div>

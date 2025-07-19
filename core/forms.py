@@ -488,4 +488,15 @@ class FaturaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Salvar', css_class='btn-primary'))
-        self.helper.add_input(Button('cancel', 'Cancelar', css_class='btn-secondary', onclick='history.back()')) 
+        self.helper.add_input(Button('cancel', 'Cancelar', css_class='btn-secondary', onclick='history.back()'))
+    def clean(self):
+        cleaned_data = super().clean()
+        cartao = cleaned_data.get('cartao')
+        vencimento = cleaned_data.get('vencimento')
+        if cartao and vencimento:
+            qs = Fatura.objects.filter(cartao=cartao, vencimento=vencimento)
+            if self.instance.pk:
+                qs = qs.exclude(pk=self.instance.pk)
+            if qs.exists():
+                raise forms.ValidationError('Já existe uma fatura para este cartão com este vencimento.')
+        return cleaned_data 

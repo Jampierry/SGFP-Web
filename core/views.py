@@ -44,7 +44,9 @@ def register(request):
                 {'nome': 'Transporte', 'tipo': 'despesa', 'cor': '#fd7e14', 'icone': 'fas fa-car'},
                 {'nome': 'Moradia', 'tipo': 'despesa', 'cor': '#6f42c1', 'icone': 'fas fa-home'},
                 {'nome': 'Saúde', 'tipo': 'despesa', 'cor': '#e83e8c', 'icone': 'fas fa-heartbeat'},
-                {'nome': 'Educação', 'tipo': 'despesa', 'cor': '#20c997', 'icone': 'fas fa-graduation-cap'},
+                {
+                    'nome': 'Educação', 'tipo': 'despesa', 'cor': '#20c997', 'icone': 'fas fa-graduation-cap'
+                },
                 {'nome': 'Lazer', 'tipo': 'despesa', 'cor': '#6c757d', 'icone': 'fas fa-gamepad'},
             ]
             for cat in categorias_padrao:
@@ -526,7 +528,8 @@ def dashboard_classic(request):
 
     # Cartões de crédito
     cartoes_credito = CartaoCredito.objects.filter(usuario=request.user, ativo=True)
-    preencher_campos_cartao(cartoes_credito)
+    from core.utils import preencher_campos_cartao
+    preencher_campos_cartao(cartoes_credito, data_base=hoje)
     from datetime import date
     hoje = date.today()
     mes_atual = hoje.month
@@ -2297,41 +2300,54 @@ def cartoes_dashboard_ajax(request):
 
 @login_required
 def despesas_fatura_ajax(request):
-    fatura_id = request.GET.get('fatura')
-    cartao_id = request.GET.get('cartao')
-    data_inicio = request.GET.get('data_inicio')
-    data_fim = request.GET.get('data_fim')
-    filtros = {'ativo': True}
-    if cartao_id:
-        filtros['cartao_id'] = cartao_id
-    if fatura_id:
-        filtros['fatura_id'] = fatura_id
-    if data_inicio:
-        filtros['data__gte'] = data_inicio
-    if data_fim:
-        filtros['data__lte'] = data_fim
-    # Filtro para garantir apenas despesas de cartão de crédito
-    despesas = Despesa.objects.filter(cartao__isnull=False, **filtros)
-    fatura = Fatura.objects.filter(id=fatura_id).first() if fatura_id else None
-    # Dados do gráfico de evolução das faturas (pode ser simplificado para o período da fatura)
-    grafico_labels = []
-    grafico_valores = []
-    if fatura:
-        grafico_labels = [f'{fatura.get_mes_display}/{fatura.ano}']
-        grafico_valores = [float(fatura.valor_calculado())]
-    else:
-        # Se não houver fatura selecionada, mostrar pelo menos um ponto zerado
-        grafico_labels = ["Sem Fatura"]
-        grafico_valores = [0]
-    context = {
-        'despesas': despesas,
-        'grafico_labels': grafico_labels,
-        'grafico_valores': grafico_valores,
-        'fatura': fatura,
-        'fatura_id_selecionada': fatura_id,  # Adicionado para seleção visual
-    }
-    html = render_to_string('core/partials/despesas_fatura_painel.html', context, request=request)
-    return JsonResponse({'html': html})
+    try:
+        fatura_id = request.GET.get('fatura')
+        cartao_id = request.GET.get('cartao')
+        data_inicio = request.GET.get('data_inicio')
+        data_fim = request.GET.get('data_fim')
+        filtros = {'ativo': True}
+        
+        # Se uma fatura específica foi selecionada, filtrar apenas por ela
+        if fatura_id:
+            filtros['fatura_id'] = fatura_id
+        # Caso contrário, filtrar por cartão (se especificado)
+        elif cartao_id:
+            filtros['cartao_id'] = cartao_id
+        
+        if data_inicio:
+            filtros['data__gte'] = data_inicio
+        if data_fim:
+            filtros['data__lte'] = data_fim
+        
+        # Filtro para garantir apenas despesas de cartão de crédito
+        despesas = Despesa.objects.filter(cartao__isnull=False, **filtros)
+        fatura = Fatura.objects.filter(id=fatura_id).first() if fatura_id else None
+        
+        # Dados do gráfico de evolução das faturas
+        grafico_labels = []
+        grafico_valores = []
+        if fatura:
+            grafico_labels = [f'{fatura.get_mes_display}/{fatura.vencimento.year}']
+            grafico_valores = [float(fatura.valor_calculado())]
+        else:
+            # Se não houver fatura selecionada, mostrar pelo menos um ponto zerado
+            grafico_labels = ["Sem Fatura"]
+            grafico_valores = [0]
+        
+        context = {
+            'despesas': despesas,
+            'grafico_labels': grafico_labels,
+            'grafico_valores': grafico_valores,
+            'fatura': fatura,
+            'fatura_id_selecionada': fatura_id,  # Adicionado para seleção visual
+        }
+        html = render_to_string('core/partials/despesas_fatura_painel.html', context, request=request)
+        return JsonResponse({'html': html})
+    except Exception as e:
+        import traceback
+        print(f"Erro em despesas_fatura_ajax: {e}")
+        print(traceback.format_exc())
+        return JsonResponse({'html': f'<div class="alert alert-danger">Erro: {str(e)}</div>'})
 
 class LoginViewCustom(LoginView):
     template_name = 'registration/login.html'
@@ -2364,3 +2380,17 @@ def preferencias_usuario(request):
         'tema_usuario': 'corona-dark',
         'escala_interface': 100,
     }
+
+@login_required
+def fatura_update(request, pk):
+    fatura = get_object_or_404(Fatura, pk=pk, cartao__usuario=request.user)
+    if request.method == 'POST':
+        form = FaturaForm(request.POST, instance=fatura, user=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect(f'{reverse("core:cartoes_dashboard")}?cartao={fatura.cartao.pk}')
+    else:
+        # Garante que o campo vencimento vem no formato YYYY-MM-DD
+        initial = {'vencimento': fatura.vencimento.strftime('%Y-%m-%d') if fatura.vencimento else ''}
+        form = FaturaForm(instance=fatura, user=request.user, initial=initial)
+    return render(request, 'core/nova_fatura.html', {'form': form, 'fatura': fatura, 'edicao': True})

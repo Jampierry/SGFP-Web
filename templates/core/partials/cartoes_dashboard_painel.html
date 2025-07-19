@@ -27,19 +27,17 @@
                     <h6 class="text-warning fw-bold mb-2"><i class="fas fa-exclamation-triangle me-2"></i>Faturas em Aberto</h6>
                     <div class="position-relative">
                         <button class="btn btn-sm btn-dark position-absolute start-0 top-50 translate-middle-y" id="prevAberto" style="z-index:2; display:none;"><i class="fas fa-chevron-left"></i></button>
-                        <div class="d-flex flex-row flex-nowrap overflow-hidden" id="containerAberto" style="gap: 8px;">
+                        <div class="d-flex flex-row flex-nowrap overflow-hidden justify-content-center" id="containerAberto" style="gap: 8px;">
                             {% for fatura in faturas_em_aberto %}
-                                <div class="d-flex flex-column align-items-center">
-                                    <div class="fatura-card border rounded p-1 text-center bg-warning bg-opacity-10{% if fatura_id_selecionada|stringformat:'s' == fatura.id|stringformat:'s' %} fatura-card-selecionada bg-warning{% endif %}" style="min-width:110px; max-width:120px; font-size:0.90em; box-shadow:0 2px 8px #0001; cursor:pointer; transition:box-shadow 0.2s; margin-bottom: 2px; display: flex; flex-direction: column; justify-content: center; align-items: center;" data-fatura-id="{{ fatura.id }}">
-                                        <div class="fw-bold mb-1" style="color:#007bff; font-size:1em;">{{ fatura.valor_calculado|br_currency }}</div>
-                                        <div class="mb-1">Venc: {{ fatura.vencimento|date:'d/m/Y' }}</div>
-                                        <div class="badge bg-warning text-dark mb-2">EM ABERTO</div>
-                                        <div class="d-flex gap-1 w-100 justify-content-center mt-1">
-                                            <button class="btn btn-success btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Pagar</button>
-                                            <a href="{% url 'core:ajustar_fatura' fatura.id %}" class="btn btn-outline-primary btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Ajustar</a>
-                                        </div>
+                                <div class="fatura-card border rounded p-1 text-center bg-warning bg-opacity-10{% if fatura_id_selecionada|stringformat:'s' == fatura.id|stringformat:'s' %} fatura-card-selecionada bg-warning{% endif %}" style="min-width:110px; max-width:120px; font-size:0.90em; box-shadow:0 2px 8px #0001; cursor:pointer; transition:box-shadow 0.2s; margin-bottom: 2px; display: flex; flex-direction: column; justify-content: center; align-items: center;" data-fatura-id="{{ fatura.id }}">
+                                    <div class="fw-bold mb-1" style="color:#007bff; font-size:1em;">{{ fatura.valor_calculado|br_currency }}</div>
+                                    <div class="mb-1">Venc: {{ fatura.vencimento|date:'d/m/Y' }}</div>
+                                    <div class="badge bg-warning text-dark mb-2">EM ABERTO</div>
+                                    <div class="d-flex gap-1 w-100 justify-content-center mt-1">
+                                        <button class="btn btn-success btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Pagar</button>
+                                        <a href="{% url 'core:fatura_update' fatura.id %}" class="btn btn-outline-primary btn-sm text-nowrap" style="min-width:unset; padding-left:6px; padding-right:6px;">Ajustar</a>
                                     </div>
-                                    <div class="small text-primary mt-1">{{ fatura.get_mes_display }}/{{ fatura.vencimento|date:'Y' }}</div>
+                                    <div class="small text-primary mt-1 text-center w-100">{{ fatura.get_mes_display }}/{{ fatura.vencimento|date:'Y' }}</div>
                                 </div>
                             {% endfor %}
                         </div>
@@ -128,7 +126,12 @@
 
 {% if cartao_selecionado %}
     <script>
-    // Garante que o clique nas faturas funcione após AJAX
+    // Garante que o clique nas faturas e navegação funcionem após AJAX
+    if (typeof setupFaturaNav === 'function') {
+        setupFaturaNav('containerAberto', 'prevAberto', 'nextAberto', 4);
+        setupFaturaNav('containerVencida', 'prevVencida', 'nextVencida', 4);
+        setupFaturaNav('containerPaga', 'prevPaga', 'nextPaga', 4);
+    }
     if (typeof setupFaturaCardClickAjax === 'function') setupFaturaCardClickAjax();
     </script>
 {% endif %} 

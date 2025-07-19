@@ -86,6 +86,7 @@ urlpatterns = [
     path('fatura/<int:fatura_id>/reabrir/', views.reabrir_fatura, name='reabrir_fatura'),
     path('fatura/<int:fatura_id>/ajustar/', views.ajustar_fatura, name='ajustar_fatura'),
     path('fatura/nova/', views.nova_fatura, name='nova_fatura'),
+    path('fatura/<int:pk>/editar/', views.fatura_update, name='fatura_update'),
     path('cartoes_dashboard_ajax/', views.cartoes_dashboard_ajax, name='cartoes_dashboard_ajax'),
     path('despesas_fatura_ajax/', views.despesas_fatura_ajax, name='despesas_fatura_ajax'),
 ] 

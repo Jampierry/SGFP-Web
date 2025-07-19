@@ -176,6 +176,8 @@ class Despesa(models.Model):
             vencimento = self.cartao.data_vencimento_fatura
             data_compra = self.data
             parcelas = self.parcelas or 1
+            valor_parcela = round(self.valor / parcelas, 2)
+            resto = round(self.valor - (valor_parcela * parcelas), 2)
             if data_compra.day <= fechamento:
                 mes_fatura = data_compra.month
                 ano_fatura = data_compra.year
@@ -201,11 +203,16 @@ class Despesa(models.Model):
                     cartao=self.cartao, vencimento=data_venc,
                     defaults={'valor': 0}
                 )
-                # Cria uma despesa para cada parcela
+                # Corrige o valor da última parcela para somar exatamente o valor total
+                valor_atual = valor_parcela
+                if i == parcelas - 1:
+                    valor_atual += resto
+                # Ajusta a data da despesa para o mês de vencimento da fatura
+                data_parcela = data_venc
                 despesa_parcela = Despesa(
                     descricao=self.descricao,
-                    valor=self.valor,
-                    data=self.data,
+                    valor=valor_atual,
+                    data=data_parcela,
                     categoria=self.categoria,
                     conta=self.conta,
                     usuario=self.usuario,
