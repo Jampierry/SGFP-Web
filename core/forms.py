@@ -120,12 +120,22 @@ class ReceitaForm(forms.ModelForm):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         if self.user:
-            self.fields['categoria'].queryset = Categoria.objects.filter(
-                usuario=self.user, 
-                ativo=True,
-                tipo__in=['receita', 'ambos']
-            )
-            self.fields['conta'].queryset = Conta.objects.filter(usuario=self.user, ativo=True)
+            qs_categoria = Categoria.objects.filter(usuario=self.user, ativo=True, tipo__in=['receita', 'ambos'])
+            qs_conta = Conta.objects.filter(usuario=self.user, ativo=True)
+            if self.instance and self.instance.pk:
+                # Verificar se a categoria existe antes de acessá-la
+                try:
+                    if hasattr(self.instance, 'categoria') and self.instance.categoria and self.instance.categoria not in qs_categoria:
+                        qs_categoria = Categoria.objects.filter(pk=self.instance.categoria.pk) | qs_categoria
+                except:
+                    pass  # Se não conseguir acessar categoria, ignora
+                try:
+                    if hasattr(self.instance, 'conta') and self.instance.conta and self.instance.conta not in qs_conta:
+                        qs_conta = Conta.objects.filter(pk=self.instance.conta.pk) | qs_conta
+                except:
+                    pass  # Se não conseguir acessar conta, ignora
+            self.fields['categoria'].queryset = qs_categoria
+            self.fields['conta'].queryset = qs_conta
         
         self.helper = FormHelper()
         self.helper.form_method = 'post'
@@ -164,13 +174,29 @@ class DespesaForm(forms.ModelForm):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         if self.user:
-            self.fields['categoria'].queryset = Categoria.objects.filter(
-                usuario=self.user, 
-                ativo=True,
-                tipo__in=['despesa', 'ambos']
-            )
-            self.fields['conta'].queryset = Conta.objects.filter(usuario=self.user, ativo=True)
-            self.fields['cartao'].queryset = CartaoCredito.objects.filter(usuario=self.user, ativo=True)
+            qs_categoria = Categoria.objects.filter(usuario=self.user, ativo=True, tipo__in=['despesa', 'ambos'])
+            qs_conta = Conta.objects.filter(usuario=self.user, ativo=True)
+            qs_cartao = CartaoCredito.objects.filter(usuario=self.user, ativo=True)
+            if self.instance and self.instance.pk:
+                # Verificar se os objetos relacionados existem antes de acessá-los
+                try:
+                    if hasattr(self.instance, 'categoria') and self.instance.categoria and self.instance.categoria not in qs_categoria:
+                        qs_categoria = Categoria.objects.filter(pk=self.instance.categoria.pk) | qs_categoria
+                except:
+                    pass
+                try:
+                    if hasattr(self.instance, 'conta') and self.instance.conta and self.instance.conta not in qs_conta:
+                        qs_conta = Conta.objects.filter(pk=self.instance.conta.pk) | qs_conta
+                except:
+                    pass
+                try:
+                    if hasattr(self.instance, 'cartao') and self.instance.cartao and self.instance.cartao not in qs_cartao:
+                        qs_cartao = CartaoCredito.objects.filter(pk=self.instance.cartao.pk) | qs_cartao
+                except:
+                    pass
+            self.fields['categoria'].queryset = qs_categoria
+            self.fields['conta'].queryset = qs_conta
+            self.fields['cartao'].queryset = qs_cartao
         else:
             self.fields['cartao'].queryset = CartaoCredito.objects.none()
         self.fields['cartao'].required = False
@@ -251,9 +277,22 @@ class MetaForm(forms.ModelForm):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         if self.user:
-            self.fields['categoria'].queryset = Categoria.objects.filter(usuario=self.user, ativo=True)
-            self.fields['conta'].queryset = Conta.objects.filter(usuario=self.user, ativo=True)
-        
+            qs_categoria = Categoria.objects.filter(usuario=self.user, ativo=True)
+            qs_conta = Conta.objects.filter(usuario=self.user, ativo=True)
+            if self.instance and self.instance.pk:
+                # Verificar se os objetos relacionados existem antes de acessá-los
+                try:
+                    if hasattr(self.instance, 'categoria') and self.instance.categoria and self.instance.categoria not in qs_categoria:
+                        qs_categoria = Categoria.objects.filter(pk=self.instance.categoria.pk) | qs_categoria
+                except:
+                    pass
+                try:
+                    if hasattr(self.instance, 'conta') and self.instance.conta and self.instance.conta not in qs_conta:
+                        qs_conta = Conta.objects.filter(pk=self.instance.conta.pk) | qs_conta
+                except:
+                    pass
+            self.fields['categoria'].queryset = qs_categoria
+            self.fields['conta'].queryset = qs_conta
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Salvar', css_class='btn-primary'))
@@ -484,7 +523,10 @@ class FaturaForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         if user:
-            self.fields['cartao'].queryset = CartaoCredito.objects.filter(usuario=user, ativo=True)
+            qs_cartao = CartaoCredito.objects.filter(usuario=user, ativo=True)
+            if self.instance and self.instance.pk and self.instance.cartao and self.instance.cartao not in qs_cartao:
+                qs_cartao = CartaoCredito.objects.filter(pk=self.instance.cartao.pk) | qs_cartao
+            self.fields['cartao'].queryset = qs_cartao
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Salvar', css_class='btn-primary'))

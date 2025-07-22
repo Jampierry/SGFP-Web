@@ -7,240 +7,6 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
 <link rel="stylesheet" href="{% static 'core/css/dashboard-themes.css' %}">
-<style>
-body { background: #232526 !important; }
-body, .dashboard-grid { background: #232526 !important; }
-body, .dashboard-grid, .card-dashboard { color: #f1f1f1 !important; }
-body { min-height: 100vh; }
-.dashboard-grid {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 10px;
-}
-body.dark-mode .dashboard-grid {
-    background: linear-gradient(135deg, #232526 0%, #414345 100%);
-}
-.dashboard-container {
-    max-width: 1400px;
-    margin: 0 auto;
-}
-.dashboard-header {
-    background: rgba(255,255,255,0.95);
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin-bottom: 16px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
-}
-body.dark-mode .dashboard-header {
-    background: rgba(34,34,34,0.97);
-    color: #f1f1f1;
-}
-.dashboard-header h1 {
-    color: #2c3e50;
-    font-weight: 700;
-    margin: 0;
-    font-size: 2rem;
-}
-body.dark-mode .dashboard-header h1 {
-    color: #f1f1f1;
-}
-.dashboard-header .user-info {
-    color: #7f8c8d;
-    font-size: 0.95rem;
-}
-body.dark-mode .dashboard-header .user-info {
-    color: #b2bec3;
-}
-.dashboard-controls {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-.dashboard-controls .btn {
-    border-radius: 20px;
-    padding: 6px 18px;
-    font-weight: 500;
-    font-size: 1rem;
-}
-.grid-stack {
-    background: transparent;
-}
-.grid-stack-item {
-    border-radius: 10px;
-    overflow: hidden;
-}
-.grid-stack-item-content {
-    background: rgba(255,255,255,0.97);
-    border-radius: 10px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
-    border: 1px solid rgba(0,0,0,0.04);
-    transition: all 0.2s;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow: hidden;
-}
-body.dark-mode .grid-stack-item-content {
-    background: rgba(34,34,34,0.97);
-    color: #f1f1f1;
-    border: 1px solid #222;
-}
-.metric-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-.metric-title {
-    font-size: 0.85rem;
-    color: #7f8c8d;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    line-height: 1.2;
-}
-body.dark-mode .metric-title {
-    color: #b2bec3;
-}
-.metric-icon {
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-}
-.metric-value {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin: 0;
-    line-height: 1.2;
-}
-.metric-trend {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.75rem;
-    flex-wrap: wrap;
-}
-.trend-indicator {
-    padding: 2px 6px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.65rem;
-}
-.trend-up {
-    background: linear-gradient(45deg, #00b894, #00cec9);
-    color: white;
-}
-.trend-down {
-    background: linear-gradient(45deg, #e17055, #d63031);
-    color: white;
-}
-.trend-stable {
-    background: linear-gradient(45deg, #636e72, #b2bec3);
-    color: white;
-}
-.chart-container {
-    position: relative;
-    height: 100%;
-    min-height: 200px;
-    width: 100%;
-}
-.chart-title {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #2c3e50;
-    margin-bottom: 8px;
-    text-align: center;
-}
-body.dark-mode .chart-title {
-    color: #f1f1f1;
-}
-.alert-card {
-    background: linear-gradient(45deg, #ff7675, #fd79a8);
-    color: white;
-    border-radius: 8px;
-    padding: 8px;
-    margin-bottom: 8px;
-}
-body.dark-mode .alert-card {
-    background: linear-gradient(45deg, #b31217, #2c5364);
-    color: #fff;
-}
-.alert-title {
-    font-size: 0.8rem;
-    font-weight: 600;
-    margin-bottom: 4px;
-}
-.alert-message {
-    font-size: 0.75rem;
-    opacity: 0.9;
-}
-.transaction-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 0;
-    border-bottom: 1px solid #f1f2f6;
-    font-size: 0.8rem;
-}
-body.dark-mode .transaction-item {
-    border-bottom: 1px solid #333;
-}
-.transaction-item:last-child {
-    border-bottom: none;
-}
-.transaction-info {
-    flex: 1;
-}
-.transaction-desc {
-    font-weight: 600;
-    color: #2c3e50;
-    margin-bottom: 2px;
-}
-body.dark-mode .transaction-desc {
-    color: #f1f1f1;
-}
-.transaction-meta {
-    color: #7f8c8d;
-    font-size: 0.7rem;
-}
-body.dark-mode .transaction-meta {
-    color: #b2bec3;
-}
-.transaction-value {
-    font-weight: 700;
-    text-align: right;
-}
-.meta-progress {
-    background: #ecf0f1;
-    border-radius: 10px;
-    height: 8px;
-    margin: 4px 0;
-    overflow: hidden;
-}
-body.dark-mode .meta-progress {
-    background: #333;
-}
-.meta-progress-bar {
-    height: 100%;
-    border-radius: 10px;
-    transition: width 0.3s ease;
-}
-.progress-success { background: linear-gradient(45deg, #00b894, #00cec9); }
-.progress-warning { background: linear-gradient(45deg, #fdcb6e, #e17055); }
-.progress-danger { background: linear-gradient(45deg, #e17055, #d63031); }
-@media (max-width: 900px) {
-    .dashboard-header h1 { font-size: 1.3rem; }
-    .metric-value { font-size: 1rem; }
-    .grid-stack-item-content { padding: 8px; }
-    .metric-title { font-size: 0.75rem; }
-    .metric-icon { width: 24px; height: 24px; font-size: 0.8rem; }
-}
-</style>
 {% endblock %}
 
 {% block page_icon %}<i class="fas fa-tachometer-alt"></i>{% endblock %}
@@ -266,11 +32,10 @@ DEBUG: user={{ user }} | receitas_mes={{ receitas_mes }} | saldo_mes={{ saldo_me
         
         <!-- Bloco de Cards do Dashboard - MODERNO COM BARRA LATERAL -->
         <div class="dashboard-cards-container">
-            <div class="dashboard-card dashboard-card-receita">
-                <div class="dashboard-card-bar"></div>
-                <div class="dashboard-card-body">
+            <div class="sgfp-card dashboard-card-receita">
+                <div class="sgfp-card-header">Receitas (Mês)</div>
+                <div class="sgfp-card-body">
                     <div>
-                        <div class="dashboard-card-title">Receitas (Mês)</div>
                         <div class="dashboard-card-value">{{ receitas_mes|br_currency }}</div>
                         <div class="mt-2">
                             {% if receitas_trend > 0 %}
@@ -295,11 +60,10 @@ DEBUG: user={{ user }} | receitas_mes={{ receitas_mes }} | saldo_mes={{ saldo_me
                     </div>
                 </div>
             </div>
-            <div class="dashboard-card dashboard-card-despesa">
-                <div class="dashboard-card-bar"></div>
-                <div class="dashboard-card-body">
+            <div class="sgfp-card dashboard-card-despesa">
+                <div class="sgfp-card-header">Despesas (Mês)</div>
+                <div class="sgfp-card-body">
                     <div>
-                        <div class="dashboard-card-title">Despesas (Mês)</div>
                         <div class="dashboard-card-value">{{ despesas_mes|br_currency }}</div>
                         <div class="mt-2">
                             {% if despesas_trend > 0 %}
@@ -324,11 +88,10 @@ DEBUG: user={{ user }} | receitas_mes={{ receitas_mes }} | saldo_mes={{ saldo_me
                     </div>
                 </div>
             </div>
-            <div class="dashboard-card dashboard-card-saldo">
-                <div class="dashboard-card-bar"></div>
-                <div class="dashboard-card-body">
+            <div class="sgfp-card dashboard-card-saldo">
+                <div class="sgfp-card-header">Saldo (Mês)</div>
+                <div class="sgfp-card-body">
                     <div>
-                        <div class="dashboard-card-title">Saldo (Mês)</div>
                         <div class="dashboard-card-value">{{ saldo_mes|br_currency }}</div>
                         <div class="mt-2">
                             {% if saldo_trend > 0 %}
@@ -353,11 +116,10 @@ DEBUG: user={{ user }} | receitas_mes={{ receitas_mes }} | saldo_mes={{ saldo_me
                     </div>
                 </div>
             </div>
-            <div class="dashboard-card dashboard-card-meta">
-                <div class="dashboard-card-bar"></div>
-                <div class="dashboard-card-body">
+            <div class="sgfp-card dashboard-card-meta">
+                <div class="sgfp-card-header">Metas</div>
+                <div class="sgfp-card-body">
                     <div>
-                        <div class="dashboard-card-title">Metas Ativas</div>
                         <div class="dashboard-card-value">{{ metas_ativas_count }}</div>
                         <div class="mt-2">
                             <span class="trend-indicator trend-up">

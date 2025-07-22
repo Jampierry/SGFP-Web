@@ -9,40 +9,8 @@
 {% block page_greeting %}Visualize e analise seus dados financeiros{% endblock %}
 
 {% block extra_css %}
+{{ block.super }}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css">
-<style>
-.chart-container {
-    position: relative;
-    height: 240px;
-    min-height: 160px;
-    width: 100%;
-}
-@media (max-width: 900px) {
-    .chart-container {
-        height: 120px;
-        min-height: 80px;
-    }
-}
-.metric-card {
-    border-left: 4px solid;
-    transition: transform 0.2s;
-}
-.metric-card:hover {
-    transform: translateY(-2px);
-}
-.metric-card.receitas {
-    border-left-color: #28a745;
-}
-.metric-card.despesas {
-    border-left-color: #dc3545;
-}
-.metric-card.saldo {
-    border-left-color: #007bff;
-}
-.metric-card.metas {
-    border-left-color: #ffc107;
-}
-</style>
 {% endblock %}
 
 {% block content %}
@@ -117,67 +85,59 @@
     </div>
 
     <!-- Métricas Principais -->
-    <div class="row mb-4 dashboard-grid">
-        <div class="col-md-3 col-12 mb-3">
-            <div class="card-dashboard card-receita">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="card-title">Receitas</div>
-                            <div class="card-value">{{ total_receitas|br_currency }}</div>
-                            <div class="card-desc">{{ receitas_count }} transações</div>
-                        </div>
-                        <div class="card-icon-bg">
-                            <i class="fas fa-arrow-up card-icon"></i>
-                        </div>
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <div class="sgfp-card dashboard-card-receita">
+                <div class="sgfp-card-header d-flex align-items-center justify-content-between">
+                    <span>Receitas</span>
+                    <span class="dashboard-card-icon-bg"><i class="fas fa-arrow-up dashboard-card-icon"></i></span>
+                </div>
+                <div class="sgfp-card-body">
+                    <div>
+                        <div class="dashboard-card-value">{{ total_receitas|br_currency }}</div>
+                        <div class="dashboard-card-desc">{{ receitas_count }} transações</div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-12 mb-3">
-            <div class="card-dashboard card-despesa">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="card-title">Despesas</div>
-                            <div class="card-value">{{ total_despesas|br_currency }}</div>
-                            <div class="card-desc">{{ despesas_count }} transações</div>
-                        </div>
-                        <div class="card-icon-bg">
-                            <i class="fas fa-arrow-down card-icon"></i>
-                        </div>
+        <div class="col-md-3">
+            <div class="sgfp-card dashboard-card-despesa">
+                <div class="sgfp-card-header d-flex align-items-center justify-content-between">
+                    <span>Despesas</span>
+                    <span class="dashboard-card-icon-bg"><i class="fas fa-arrow-down dashboard-card-icon"></i></span>
+                </div>
+                <div class="sgfp-card-body">
+                    <div>
+                        <div class="dashboard-card-value">{{ total_despesas|br_currency }}</div>
+                        <div class="dashboard-card-desc">{{ despesas_count }} transações</div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-12 mb-3">
-            <div class="card-dashboard card-saldo">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="card-title">Saldo</div>
-                            <div class="card-value">{{ saldo|br_currency }}</div>
-                            <div class="card-desc">Receitas - Despesas</div>
-                        </div>
-                        <div class="card-icon-bg">
-                            <i class="fas fa-balance-scale card-icon"></i>
-                        </div>
+        <div class="col-md-3">
+            <div class="sgfp-card dashboard-card-saldo">
+                <div class="sgfp-card-header d-flex align-items-center justify-content-between">
+                    <span>Saldo</span>
+                    <span class="dashboard-card-icon-bg"><i class="fas fa-balance-scale dashboard-card-icon"></i></span>
+                </div>
+                <div class="sgfp-card-body">
+                    <div>
+                        <div class="dashboard-card-value">{{ saldo_total|br_currency }}</div>
+                        <div class="dashboard-card-desc">Receitas - Despesas</div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-12 mb-3">
-            <div class="card-dashboard card-meta">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="card-title">Metas</div>
-                            <div class="card-value">{{ metas_count }}</div>
-                            <div class="card-desc">{{ metas_ativas_count }} ativas</div>
-                        </div>
-                        <div class="card-icon-bg">
-                            <i class="fas fa-bullseye card-icon"></i>
-                        </div>
+        <div class="col-md-3">
+            <div class="sgfp-card dashboard-card-meta">
+                <div class="sgfp-card-header d-flex align-items-center justify-content-between">
+                    <span>Metas</span>
+                    <span class="dashboard-card-icon-bg"><i class="fas fa-bullseye dashboard-card-icon"></i></span>
+                </div>
+                <div class="sgfp-card-body">
+                    <div>
+                        <div class="dashboard-card-value">{{ metas_ativas_count }}</div>
+                        <div class="dashboard-card-desc">{{ metas_total_count }} metas no total</div>
                     </div>
                 </div>
             </div>
@@ -326,6 +286,7 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
 
 {% block extra_js %}

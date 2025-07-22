@@ -642,3 +642,1272 @@ body.theme-light .tipo-receita {
     margin-right: 0 !important;
   }
 } 
+
+/* ===== COMPONENTES ESPECÍFICOS DO DASHBOARD ===== */
+
+/* Barras de progresso das metas em destaque - COM MÁXIMA PRIORIDADE */
+.progress .progress-bar.progress-bar-meta.red {
+    background: linear-gradient(90deg,#e74c3c,#f39c12) !important;
+    background-color: #e74c3c !important;
+}
+
+.progress .progress-bar.progress-bar-meta.orange {
+    background: linear-gradient(90deg,#f39c12,#f1c40f) !important;
+    background-color: #f39c12 !important;
+}
+
+.progress .progress-bar.progress-bar-meta.green {
+    background: linear-gradient(90deg,#a8ff78,#78ffd6) !important;
+    background-color: #a8ff78 !important;
+}
+
+.progress .progress-bar.progress-bar-meta.vibrant {
+    background: linear-gradient(90deg,#00c853,#43e97b) !important;
+    background-color: #00c853 !important;
+}
+
+/* Fallback para casos onde o gradiente não funciona */
+.progress-bar-meta.red {
+    background: linear-gradient(90deg,#e74c3c,#f39c12) !important;
+    background-color: #e74c3c !important;
+}
+
+.progress-bar-meta.orange {
+    background: linear-gradient(90deg,#f39c12,#f1c40f) !important;
+    background-color: #f39c12 !important;
+}
+
+.progress-bar-meta.green {
+    background: linear-gradient(90deg,#a8ff78,#78ffd6) !important;
+    background-color: #a8ff78 !important;
+}
+
+.progress-bar-meta.vibrant {
+    background: linear-gradient(90deg,#00c853,#43e97b) !important;
+    background-color: #00c853 !important;
+}
+
+/* Regras específicas para tema escuro */
+.dark-theme .progress .progress-bar.progress-bar-meta.red,
+.dark-theme .progress-bar-meta.red {
+    background: linear-gradient(90deg,#e74c3c,#f39c12) !important;
+    background-color: #e74c3c !important;
+}
+
+.dark-theme .progress .progress-bar.progress-bar-meta.orange,
+.dark-theme .progress-bar-meta.orange {
+    background: linear-gradient(90deg,#f39c12,#f1c40f) !important;
+    background-color: #f39c12 !important;
+}
+
+.dark-theme .progress .progress-bar.progress-bar-meta.green,
+.dark-theme .progress-bar-meta.green {
+    background: linear-gradient(90deg,#a8ff78,#78ffd6) !important;
+    background-color: #a8ff78 !important;
+}
+
+.dark-theme .progress .progress-bar.progress-bar-meta.vibrant,
+.dark-theme .progress-bar-meta.vibrant {
+    background: linear-gradient(90deg,#00c853,#43e97b) !important;
+    background-color: #00c853 !important;
+}
+
+/* Cards de métricas do dashboard */
+.metric-card {
+    border-left: 4px solid;
+    transition: transform 0.2s;
+    min-height: 120px;
+    padding: 12px 16px;
+}
+
+.metric-card h3 {
+    font-size: 1.5rem;
+}
+
+.metric-card.receitas {
+    border-left-color: #28a745;
+}
+
+.metric-card.despesas {
+    border-left-color: #dc3545;
+}
+
+.metric-card.saldo {
+    border-left-color: #007bff;
+}
+
+.metric-card.metas {
+    border-left-color: #ffc107;
+}
+
+/* Indicadores de tendência */
+.trend-indicator {
+    font-size: 0.8rem;
+    padding: 2px 6px;
+    border-radius: 12px;
+}
+
+.trend-up {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.trend-down {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.trend-stable {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+/* Cards de cartão de crédito */
+.credit-card {
+    width: 100%;
+    max-width: 320px;
+    height: 200px;
+    border-radius: 18px;
+    color: #fff;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+    padding: 18px 18px 12px 18px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #232526 0%, #414345 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.credit-card.inter { background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%); }
+.credit-card.neon { background: linear-gradient(135deg, #00e1ff 0%, #0077ff 100%); }
+.credit-card.santander { background: linear-gradient(135deg, #e30613 0%, #ff5f6d 100%); }
+.credit-card.trigg { background: linear-gradient(135deg, #00c3ad 0%, #1e2a38 100%); }
+.credit-card.next { background: linear-gradient(135deg, #00ff88 0%, #00c3ad 100%); }
+.credit-card.digio { background: linear-gradient(135deg, #1e2a38 0%, #3a7bd5 100%); }
+.credit-card.hipercard { background: linear-gradient(135deg, #c1000a 0%, #ff5858 100%); }
+.credit-card.pan { background: linear-gradient(135deg, #1e2a38 0%, #00c3ad 100%); }
+.credit-card.pag { background: linear-gradient(135deg, #232526 0%, #414345 100%); }
+.credit-card.meluz { background: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%); }
+.credit-card.itaú { background: linear-gradient(135deg, #009ee3 0%, #ff7e5f 100%); }
+
+.credit-card .card-main-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.credit-card .left {
+    flex: 1;
+}
+
+.credit-card .right {
+    text-align: right;
+    min-width: 80px;
+}
+
+.credit-card .chip {
+    width: 32px;
+    height: 20px;
+    background: #e0e0e0;
+    border-radius: 6px;
+    margin-bottom: 6px;
+}
+
+.credit-card .bank-logo {
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+
+.credit-card .card-number {
+    font-size: 1.05rem;
+    letter-spacing: 2px;
+    margin-bottom: 2px;
+}
+
+.credit-card .card-holder {
+    font-size: 0.93rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.credit-card .card-footer {
+    font-size: 0.93rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2px;
+}
+
+.credit-card .bandeira {
+    height: 22px;
+}
+
+.credit-card .info-list {
+    font-size: 0.91rem;
+    margin-top: 2px;
+}
+
+.credit-card .info-list span {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 0;
+}
+
+/* Layout do dashboard */
+.dashboard-cards-row-fixed {
+    min-height: 340px;
+    height: 340px;
+    display: flex;
+}
+
+.dashboard-cards-row-fixed > .col-lg-6 {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.dashboard-cards-row-fixed .card.shadow {
+    flex: 1 1 0;
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-cards-row-fixed .card-body {
+    flex: 1 1 0;
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.dashboard-cards-row-fixed .avisos-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.dashboard-cards-row-fixed .aviso-vencimento {
+    flex: 0 0 48%;
+    max-width: 48%;
+    min-width: 180px;
+    height: 90px;
+    margin-bottom: 0;
+}
+
+.dashboard-top-card {
+    height: 320px;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-top-card .card-body {
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Adicionar overflow-y: auto apenas para os cards que precisam */
+.dashboard-top-card.despesas-proximas .card-body,
+.dashboard-top-card.metas-destaque .card-body {
+    overflow-y: auto;
+}
+
+/* Container de gráficos */
+.chart-container {
+    position: relative;
+    height: 220px;
+    margin-bottom: 16px;
+}
+
+/* Cards com sombra */
+.card.shadow {
+    margin-bottom: 16px;
+} 
+
+/* ===== DASHBOARD DE CARTÕES DE CRÉDITO ===== */
+
+/* Cards do dashboard de cartões */
+.card, .card-body, .card.shadow, .card.h-100 {
+    min-height: 220px;
+    height: 100%;
+}
+
+.cartao-card {
+    border-radius: 20px;
+    box-shadow: 0 2px 8px #0002;
+    border: 2px solid transparent;
+}
+
+.cartao-card-selecionado {
+    border: 2px solid #007bff !important;
+    box-shadow: 0 0 0 3px #007bff33 !important;
+    background: #e9f5ff !important;
+}
+
+.fatura-card {
+    border: 2px solid transparent;
+}
+
+.fatura-card.fatura-card-selecionada {
+    border: 2px solid #007bff !important;
+    box-shadow: 0 0 0 3px #007bff33 !important;
+    background: #e9f5ff !important;
+}
+
+.fatura-card.fatura-card-selecionada.bg-success {
+    border: 2px solid #28a745 !important;
+    box-shadow: 0 0 0 3px #28a74533 !important;
+    background: rgba(40, 167, 69, 0.1) !important;
+}
+
+.fatura-card.fatura-card-selecionada.bg-warning {
+    border: 2px solid #ffc107 !important;
+    box-shadow: 0 0 0 3px #ffc10733 !important;
+    background: rgba(255, 193, 7, 0.1) !important;
+}
+
+.fatura-card.fatura-card-selecionada.bg-danger {
+    border: 2px solid #dc3545 !important;
+    box-shadow: 0 0 0 3px #dc354533 !important;
+    background: rgba(220, 53, 69, 0.1) !important;
+}
+
+/* Legenda de gastos dos cartões */
+#legendaGastosCartoes.legenda-horizontal {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: nowrap;
+    margin-top: 0;
+    min-width: 110px;
+    max-width: 150px;
+}
+
+#legendaGastosCartoes.legenda-horizontal span.legenda-item {
+    display: flex;
+    align-items: center;
+    font-size: 1em;
+    text-align: left;
+    gap: 6px;
+    white-space: nowrap;
+    margin-bottom: 0;
+}
+
+#legendaGastosCartoes .legenda-cor {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    margin-right: 6px;
+}
+
+/* Carrossel de cartões */
+.wallet-carrossel { 
+    min-height: 220px; 
+}
+
+.wallet-cards { 
+    height: 220px; 
+    width: 100%; 
+    position: relative; 
+}
+
+.wallet-card-container { 
+    top: 0; 
+}
+
+.wallet-card { 
+    box-shadow: 0 4px 24px #0003; 
+    transition: box-shadow 0.3s, border 0.3s; 
+    border: 2px solid transparent; 
+}
+
+.wallet-card-active { 
+    box-shadow: 0 8px 32px #0005; 
+    border: 2px solid #007bff; 
+} 
+
+/* ===== TEMPLATES DE LISTAGEM ===== */
+
+/* Inputs de data em formulários */
+input[type="date"] {
+    width: 145px !important;
+    min-width: 120px !important;
+    max-width: 180px;
+}
+
+/* Altura fixa para linhas de tabela */
+.table tbody tr {
+    height: 40px;
+}
+
+/* Badges de categoria e conta */
+.badge-categoria-receita {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.badge-categoria-despesa {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.badge-conta-corrente {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.badge-conta-poupanca {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.badge-conta-investimento {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+/* Coluna de ações em tabelas */
+.acoes-col {
+    width: 120px;
+    text-align: center;
+} 
+
+/* ===== RELATÓRIO FINANCEIRO ===== */
+
+/* Container de gráficos responsivo */
+.chart-container {
+    position: relative;
+    height: 240px;
+    min-height: 160px;
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .chart-container {
+        height: 120px;
+        min-height: 80px;
+    }
+}
+
+/* Cards de métricas do relatório */
+.metric-card {
+    border-left: 4px solid;
+    transition: transform 0.2s;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+}
+
+.metric-card.receitas {
+    border-left-color: #28a745;
+}
+
+.metric-card.despesas {
+    border-left-color: #dc3545;
+}
+
+.metric-card.saldo {
+    border-left-color: #007bff;
+}
+
+.metric-card.metas {
+    border-left-color: #ffc107;
+}
+
+/* Cards do dashboard de relatório */
+.card-dashboard {
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+    overflow: hidden;
+    min-height: 100px;
+    max-height: 120px;
+}
+
+.card-dashboard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35), 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.card-dashboard .card-body {
+    padding: 12px 16px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+.card-receita {
+    border-left: 4px solid #28a745;
+}
+
+.card-despesa {
+    border-left: 4px solid #dc3545;
+}
+
+.card-saldo {
+    border-left: 4px solid #007bff;
+}
+
+.card-meta {
+    border-left: 4px solid #ffc107;
+}
+
+.card-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+}
+
+.card-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0.25rem 0;
+    color: #ffffff;
+}
+
+.card-desc {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    margin-top: 0.25rem;
+    color: #b0b3b8;
+}
+
+.card-icon-bg {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.card-icon {
+    font-size: 1rem;
+    color: #ffffff;
+}
+
+/* Grid do dashboard */
+.dashboard-grid {
+    gap: 0.75rem;
+}
+
+/* Garantir que os cards ocupem toda a largura das colunas */
+.dashboard-grid .col-xl-3 .card-dashboard,
+.dashboard-grid .col-lg-3 .card-dashboard,
+.dashboard-grid .col-md-3 .card-dashboard,
+.dashboard-grid .col-sm-6 .card-dashboard,
+.dashboard-grid .col-12 .card-dashboard {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Reduzir espaçamento do grid para aproximar elementos */
+.dashboard-grid {
+    gap: 0.5rem;
+}
+
+/* Forçar cards lado a lado em telas médias e grandes */
+@media (min-width: 768px) {
+    .dashboard-grid .row {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+    }
+    
+    .dashboard-grid .col-md-3 {
+        flex: 0 0 25% !important;
+        max-width: 25% !important;
+    }
+}
+
+/* ===== CARTÃO DE CRÉDITO ===== */
+
+/* Estrutura do cartão visual */
+.cartao-visual {
+    position: relative;
+    border-radius: 18px;
+    min-width: 260px;
+    max-width: 320px;
+    height: 180px;
+    width: 100%;
+    aspect-ratio: 16/9;
+    color: #fff;
+    box-shadow: 0 2px 8px #0002;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    overflow: hidden;
+}
+
+/* Logo do banco */
+.banco-logo {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    height: 44px;
+    width: 44px;
+    object-fit: contain;
+    z-index: 2;
+}
+
+/* Badge de fatura vencida */
+.cartao-visual .fatura-vencida-badge {
+    position: absolute;
+    top: 60px;
+    right: 18px;
+    display: inline-flex;
+    align-items: center;
+    background: #d32f2f;
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 1px 7px 1px 5px;
+    border-radius: 11px;
+    gap: 0.3em;
+    box-shadow: 0 1px 4px #0003;
+    z-index: 3;
+}
+
+/* Estrutura interna do cartão */
+.cartao-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.cartao-nome {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    z-index: 1;
+}
+
+/* Linhas de informação do cartão */
+.cartao-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 0.2rem;
+}
+
+.cartao-label {
+    color: #fff;
+    font-weight: 500;
+    text-shadow: 0 1px 2px #0008;
+    min-width: 70px;
+    max-width: 90px;
+    flex-shrink: 0;
+}
+
+.cartao-value {
+    color: #fff;
+    font-weight: 600;
+    text-shadow: 0 1px 2px #0008;
+    word-break: break-all;
+    flex: 1;
+}
+
+.cartao-value-bold {
+    font-weight: 700;
+}
+
+.cartao-value-saldo {
+    color: #00ffae;
+    font-weight: 700;
+    text-shadow: 0 1px 2px #0008;
+}
+
+/* Logo da bandeira */
+.cartao-visual img[alt*="Visa"],
+.cartao-visual img[alt*="Mastercard"] {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    width: 36px;
+    height: auto;
+    opacity: 0.9;
+    z-index: 2;
+} 
+
+/* ===== DASHBOARD RESPONSIVO ===== */
+
+/* Tema escuro do dashboard */
+body.dark-mode {
+    background: #232526 !important;
+}
+
+body.dark-mode .dashboard-grid {
+    background: linear-gradient(135deg, #232526 0%, #414345 100%);
+}
+
+/* Grid do dashboard responsivo */
+.dashboard-grid {
+    min-height: 100vh;
+    padding: 4px;
+}
+
+.dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Header do dashboard */
+.dashboard-header {
+    background: rgba(255,255,255,0.95);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+}
+
+body.dark-mode .dashboard-header {
+    background: rgba(34,34,34,0.97);
+    color: #f1f1f1;
+}
+
+.dashboard-header h1 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin: 0;
+    font-size: 2rem;
+}
+
+body.dark-mode .dashboard-header h1 {
+    color: #f1f1f1;
+}
+
+.dashboard-header .user-info {
+    color: #7f8c8d;
+    font-size: 0.95rem;
+}
+
+body.dark-mode .dashboard-header .user-info {
+    color: #b2bec3;
+}
+
+/* Controles do dashboard */
+.dashboard-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.dashboard-controls .btn {
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+/* Grid stack */
+.grid-stack {
+    background: transparent;
+}
+
+.grid-stack-item {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.grid-stack-item-content {
+    background: rgba(255,255,255,0.97);
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    border: 1px solid rgba(0,0,0,0.04);
+    transition: all 0.2s;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+body.dark-mode .grid-stack-item-content {
+    background: rgba(34,34,34,0.97);
+    color: #f1f1f1;
+    border: 1px solid #222;
+}
+
+/* Métricas */
+.metric-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.metric-title {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+}
+
+body.dark-mode .metric-title {
+    color: #b2bec3;
+}
+
+.metric-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.metric-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.metric-trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    flex-wrap: wrap;
+}
+
+/* Indicadores de tendência */
+.trend-indicator {
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.65rem;
+}
+
+.trend-up {
+    background: linear-gradient(45deg, #00b894, #00cec9);
+    color: white;
+}
+
+.trend-down {
+    background: linear-gradient(45deg, #e17055, #d63031);
+    color: white;
+}
+
+.trend-stable {
+    background: linear-gradient(45deg, #636e72, #b2bec3);
+    color: white;
+}
+
+/* Títulos de gráficos */
+.chart-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+body.dark-mode .chart-title {
+    color: #f1f1f1;
+}
+
+/* Cards de alerta */
+.alert-card {
+    background: linear-gradient(45deg, #ff7675, #fd79a8);
+    color: white;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 8px;
+}
+
+body.dark-mode .alert-card {
+    background: linear-gradient(45deg, #b31217, #2c5364);
+    color: #fff;
+}
+
+.alert-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.alert-message {
+    font-size: 0.75rem;
+    opacity: 0.9;
+}
+
+/* Itens de transação */
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #f1f2f6;
+    font-size: 0.8rem;
+}
+
+body.dark-mode .transaction-item {
+    border-bottom: 1px solid #333;
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+}
+
+.transaction-info {
+    flex: 1;
+}
+
+.transaction-desc {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 2px;
+}
+
+body.dark-mode .transaction-desc {
+    color: #f1f1f1;
+}
+
+.transaction-meta {
+    color: #7f8c8d;
+    font-size: 0.75rem;
+}
+
+body.dark-mode .transaction-meta {
+    color: #b2bec3;
+} 
+
+/* Cards de métricas do dashboard - Saldo Geral e Resumo de Contas */
+.metric-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    background: linear-gradient(145deg, #2a2e39 0%, #23272f 100%);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35), 0 4px 15px rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.metric-card.saldo {
+    background: linear-gradient(145deg, #2a2e39 0%, #1e3a5f 100%);
+    border-left: 4px solid #007bff;
+}
+
+.metric-card:not(.saldo) {
+    background: linear-gradient(145deg, #2a2e39 0%, #2d3748 100%);
+    border-left: 4px solid #6c757d;
+}
+
+.metric-card .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    padding: 1rem;
+    position: relative;
+}
+
+.metric-card.saldo .card-body {
+    justify-content: flex-start;
+}
+
+.metric-card .d-flex.align-items-center {
+    width: 100%;
+}
+
+.metric-card .flex-grow-1 {
+    min-width: 0;
+    overflow: visible;
+}
+
+.metric-card .text-muted {
+    line-height: 1.2;
+}
+
+/* Garantir que as contas sejam visíveis */
+.metric-card .d-flex.flex-wrap {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem;
+    align-items: flex-start;
+    overflow: visible;
+}
+
+.metric-card .d-flex.flex-wrap > div {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Efeito de brilho sutil nos cards */
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    pointer-events: none;
+}
+
+/* Responsividade para os cards de contas */
+@media (max-width: 768px) {
+    .metric-card .d-flex.flex-wrap {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .metric-card .d-flex.flex-wrap > div {
+        min-width: 100% !important;
+        width: 100%;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+    .metric-card .d-flex.flex-wrap > div {
+        min-width: 200px !important;
+        flex: 1;
+    }
+}
+
+@media (min-width: 1201px) {
+    .metric-card .d-flex.flex-wrap > div {
+        min-width: 180px !important;
+        flex: 1;
+    }
+} 
+
+/* Cards do Dashboard - Ajustes para relatórios */
+.dashboard-grid {
+    gap: 0.5rem;
+    padding: 4px;
+}
+
+.dashboard-grid .col-lg-3 .dashboard-card,
+.dashboard-grid .col-md-6 .dashboard-card,
+.dashboard-grid .col-sm-6 .dashboard-card,
+.dashboard-grid .col-12 .dashboard-card {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Forçar layout em linha para telas grandes */
+@media (min-width: 992px) {
+    .dashboard-grid .row {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+    }
+    .dashboard-grid .col-lg-3 {
+        flex: 0 0 25% !important;
+        max-width: 25% !important;
+    }
+}
+
+/* Layout responsivo para telas médias */
+@media (min-width: 768px) and (max-width: 991px) {
+    .dashboard-grid .col-md-6 {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+}
+
+/* Layout responsivo para telas pequenas */
+@media (max-width: 767px) {
+    .dashboard-grid .col-sm-6 {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+}
+
+/* Layout para telas muito pequenas */
+@media (max-width: 575px) {
+    .dashboard-grid .col-12 {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+} 
+
+/* Regras específicas para garantir que os cards fiquem lado a lado */
+.dashboard-grid .dashboard-card {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+.dashboard-grid .dashboard-card .dashboard-card-body {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+} 
+
+/* SGFP Cards Slim com Borda Colorida e Barra Esquerda Grossa */
+.sgfp-card {
+    border-radius: 1rem;
+    border: 2.5px solid transparent;
+    border-left-width: 8px;
+    padding: 1.1rem 1.5rem 1.1rem 1.5rem;
+    margin-bottom: 1.2rem;
+    min-height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: none;
+    background: inherit;
+    transition: box-shadow 0.18s, transform 0.18s, border-color 0.18s;
+    overflow: hidden;
+}
+.sgfp-card.dashboard-card-receita { border-color: var(--receita-color, #17e3c1); }
+.sgfp-card.dashboard-card-despesa { border-color: var(--despesa-color, #ff4d4f); }
+.sgfp-card.dashboard-card-saldo { border-color: var(--saldo-color, #2e86de); }
+.sgfp-card.dashboard-card-meta { border-color: var(--meta-color, #ffd600); }
+
+.sgfp-card:hover {
+    box-shadow: 0 4px 18px 0 rgba(0,0,0,0.10), 0 1.5px 6px 0 rgba(0,0,0,0.08);
+    transform: translateY(-2px) scale(1.012);
+    z-index: 2;
+}
+.sgfp-card-header {
+    font-weight: 600;
+    font-size: 1.08rem;
+    padding: 0.5rem 0 0.4rem 0;
+    margin-bottom: 0;
+    border-bottom: 1px solid #e0e0e0;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 38px;
+}
+.dashboard-card-icon-bg {
+    margin-left: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.10);
+}
+.sgfp-card-body {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+}
+.dashboard-card-icon {
+    font-size: 1.35rem;
+    opacity: 0.85;
+} 
+
+/* SGFP Botões Utilitários */
+.sgfp-btn {
+    display: inline-block;
+    font-weight: 500;
+    color: #fff;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 0.45rem 1.1rem;
+    font-size: 1rem;
+    transition: var(--transition);
+    box-shadow: 0 1px 2px #0001;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+.sgfp-btn:hover, .sgfp-btn:focus {
+    background-color: #0056b3;
+    color: #fff;
+}
+.sgfp-btn-success {
+    background-color: var(--success-color);
+}
+.sgfp-btn-success:hover, .sgfp-btn-success:focus {
+    background-color: #218838;
+}
+.sgfp-btn-danger {
+    background-color: var(--danger-color);
+}
+.sgfp-btn-danger:hover, .sgfp-btn-danger:focus {
+    background-color: #a71d2a;
+}
+.sgfp-btn-outline {
+    background: none;
+    color: var(--primary-color);
+    border: 1.5px solid var(--primary-color);
+}
+.sgfp-btn-outline:hover, .sgfp-btn-outline:focus {
+    background: var(--primary-color);
+    color: #fff;
+}
+.sgfp-btn-sm {
+    font-size: 0.92rem;
+    padding: 0.25rem 0.7rem;
+} 
+
+/* SGFP Barras de Progresso Utilitárias */
+.sgfp-progress {
+    background-color: #e9ecef;
+    border-radius: var(--border-radius);
+    height: 1.25rem;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+.sgfp-progress-bar {
+    height: 100%;
+    background-color: var(--primary-color);
+    transition: width 0.4s ease;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+    line-height: 1.25rem;
+}
+.sgfp-progress-bar-success {
+    background-color: var(--success-color);
+}
+.sgfp-progress-bar-warning {
+    background-color: var(--warning-color);
+    color: #212529;
+}
+.sgfp-progress-bar-danger {
+    background-color: var(--danger-color);
+}
+.sgfp-progress-bar-info {
+    background-color: var(--info-color);
+} 

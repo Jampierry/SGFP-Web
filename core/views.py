@@ -27,6 +27,7 @@ from .forms import (
 from django.template.loader import render_to_string
 from django.contrib.auth.views import LoginView
 from core.utils import preencher_campos_cartao
+from django.core.paginator import Paginator
 
 def register(request):
     if request.method == 'POST':
@@ -296,13 +297,21 @@ def dashboard_responsive(request):
             })
     
     # Metas em destaque (top 3)
-    metas_destaque = metas_ativas.annotate(
+    metas_destaque_qs = metas_ativas.annotate(
         percentual=Case(
             When(valor_meta__gt=0, then=F('valor_atual') * Decimal('100') / F('valor_meta')),
             default=0,
             output_field=DecimalField(max_digits=10, decimal_places=2)
         )
     ).order_by('-percentual')[:3]
+
+    metas_destaque = []
+    for meta in metas_destaque_qs:
+        percentual = float(getattr(meta, 'percentual', 0) or 0)
+        meta.percentual = percentual
+        meta.percentual_restante = max(0, 100 - percentual)
+        meta.valor_restante = max(0, float(meta.valor_meta or 0) - float(meta.valor_atual or 0))
+        metas_destaque.append(meta)
     
     # Transações recentes (receitas, despesas e transferências)
     receitas_recentes = Receita.objects.filter(
@@ -624,6 +633,9 @@ def dashboard_classic(request):
             output_field=DecimalField(max_digits=10, decimal_places=2)
         )
     ).order_by('-percentual')[:3]
+    # Adicionar percentual_restante para cada meta (como atributo, não dict)
+    for meta in metas_destaque:
+        meta.percentual_restante = 100 - float(meta.percentual or 0)
 
     # Transações recentes (receitas, despesas e transferências)
     receitas_recentes = Receita.objects.filter(
@@ -679,30 +691,36 @@ def dashboard_classic(request):
         data__lte=hoje + timedelta(days=10)
     ).order_by('data')
 
+    # Saldo geral e contas (exceto cartões de crédito)
+    contas = Conta.objects.filter(usuario=request.user, ativo=True).exclude(tipo='cartao_credito')
+    saldo_geral = contas.aggregate(total=Sum('saldo_atual'))['total'] or 0
+
+    prazo_curto_limite = timezone.now().date() + timedelta(days=30)
+
     context = {
         'receitas_mes': receitas_mes,
         'despesas_mes': despesas_mes,
         'saldo_mes': saldo_mes,
         'receitas_count': receitas_count,
         'despesas_count': despesas_count,
+        'metas_ativas_count': metas_ativas_count,
+        'metas_total_count': metas_total_count,
+        'metas_concluidas_count': metas_concluidas_count,
         'receitas_trend': receitas_trend,
         'despesas_trend': despesas_trend,
         'saldo_trend': saldo_trend,
         'receitas_tendencia': receitas_tendencia,
         'despesas_tendencia': despesas_tendencia,
-        'metas_ativas_count': metas_ativas_count,
-        'metas_total_count': metas_total_count,
-        'metas_concluidas_count': metas_concluidas_count,
         'previsao_proximo_mes': previsao_proximo_mes,
         'previsao_trimestre': previsao_trimestre,
         'previsao_ano': previsao_ano,
-        'labels_evolucao': json.dumps(labels_evolucao),
-        'dados_evolucao_receitas': json.dumps(dados_receitas),
-        'dados_evolucao_despesas': json.dumps(dados_despesas),
-        'dados_evolucao_saldo': json.dumps(dados_saldo),
-        'labels_categorias': json.dumps(labels_categorias),
-        'dados_categorias': json.dumps(dados_categorias),
-        'cores_categorias': json.dumps(cores_categorias),
+        'labels_evolucao': labels_evolucao,
+        'dados_evolucao_receitas': dados_receitas,
+        'dados_evolucao_despesas': dados_despesas,
+        'dados_evolucao_saldo': dados_saldo,
+        'labels_categorias': labels_categorias,
+        'dados_categorias': dados_categorias,
+        'cores_categorias': cores_categorias,
         'cartoes_credito': cartoes_credito,
         'total_limite_cartoes': total_limite_cartoes,
         'total_utilizado_cartoes': total_utilizado_cartoes,
@@ -710,11 +728,15 @@ def dashboard_classic(request):
         'percentual_utilizacao': percentual_utilizacao,
         'despesas_cartao_mes': despesas_cartao_mes,
         'cartoes_vencendo': cartoes_vencendo,
-        'alertas': alertas,
         'notificacoes_recentes': notificacoes_recentes,
+        'alertas': alertas,
+        'metas_vencendo': metas_vencendo,
+        'saldo_geral': saldo_geral,
+        'contas': contas,
         'metas_destaque': metas_destaque,
         'transacoes_recentes': transacoes_recentes,
         'despesas_proximas_vencimento': despesas_proximas_vencimento,
+        'prazo_curto_limite': prazo_curto_limite,
     }
     return render(request, 'core/dashboard_classic.html', context)
 
@@ -894,10 +916,23 @@ def receita_list(request):
             receitas = receitas.filter(recorrente=recorrente)
         if busca_texto:
             receitas = receitas.filter(descricao__icontains=busca_texto)
-    
+    per_page = request.GET.get('per_page')
+    try:
+        per_page = int(per_page)
+        if per_page < 1 or per_page > 100:
+            per_page = 8
+    except (TypeError, ValueError):
+        per_page = 8
+    paginator = Paginator(receitas, per_page)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     return render(request, 'core/receitas_list.html', {
-        'receitas': receitas, 
-        'form_filtro': form
+        'receitas': page_obj.object_list,
+        'form_filtro': form,
+        'is_paginated': page_obj.has_other_pages(),
+        'page_obj': page_obj,
+        'paginator': paginator,
+        'per_page': per_page,
     })
 
 @login_required
@@ -968,10 +1003,23 @@ def despesa_list(request):
             despesas = despesas.filter(recorrente=recorrente)
         if busca_texto:
             despesas = despesas.filter(descricao__icontains=busca_texto)
-    
+    per_page = request.GET.get('per_page')
+    try:
+        per_page = int(per_page)
+        if per_page < 1 or per_page > 100:
+            per_page = 8
+    except (TypeError, ValueError):
+        per_page = 8
+    paginator = Paginator(despesas, per_page)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     return render(request, 'core/despesas_list.html', {
-        'despesas': despesas, 
-        'form_filtro': form
+        'despesas': page_obj.object_list,
+        'form_filtro': form,
+        'is_paginated': page_obj.has_other_pages(),
+        'page_obj': page_obj,
+        'paginator': paginator,
+        'per_page': per_page,
     })
 
 @login_required
@@ -1096,7 +1144,24 @@ def transferencia_delete(request, pk):
 @login_required
 def meta_list(request):
     metas = Meta.objects.filter(usuario=request.user, ativo=True).order_by('data_fim')
-    return render(request, 'core/metas_list.html', {'metas': metas})
+    per_page = request.GET.get('per_page')
+    from django.core.paginator import Paginator
+    try:
+        per_page = int(per_page)
+        if per_page < 1 or per_page > 100:
+            per_page = 8
+    except (TypeError, ValueError):
+        per_page = 8
+    paginator = Paginator(metas, per_page)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'core/metas_list.html', {
+        'metas': page_obj.object_list,
+        'is_paginated': page_obj.has_other_pages(),
+        'page_obj': page_obj,
+        'paginator': paginator,
+        'per_page': per_page,
+    })
 
 @login_required
 def meta_create(request):
@@ -1822,31 +1887,30 @@ def cartao_credito_list(request):
     cartoes_inativos = CartaoCredito.objects.filter(usuario=request.user, ativo=False)
     preencher_campos_cartao(cartoes_ativos)
     preencher_campos_cartao(cartoes_inativos)
-    from datetime import date
-    hoje = date.today()
-    mes_atual = hoje.month
-    ano_atual = hoje.year
-    for cartao in cartoes_ativos:
-        fatura_atual = cartao.faturas.filter(vencimento__month=mes_atual, vencimento__year=ano_atual).first()
-        if fatura_atual:
-            cartao.fatura_valor = fatura_atual.valor_calculado()
-        else:
-            cartao.fatura_valor = 0
-        cartao.limite_valor = cartao.limite_total
-        cartao.utilizado_valor = cartao.limite_utilizado
-        cartao.saldo_valor = cartao.limite_disponivel
-    for cartao in cartoes_inativos:
-        fatura_atual = cartao.faturas.filter(vencimento__month=mes_atual, vencimento__year=ano_atual).first()
-        if fatura_atual:
-            cartao.fatura_valor = fatura_atual.valor_calculado()
-        else:
-            cartao.fatura_valor = 0
-        cartao.limite_valor = cartao.limite_total
-        cartao.utilizado_valor = cartao.limite_utilizado
-        cartao.saldo_valor = cartao.limite_disponivel
+    per_page = request.GET.get('per_page')
+    from django.core.paginator import Paginator
+    try:
+        per_page = int(per_page)
+        if per_page < 1 or per_page > 100:
+            per_page = 8
+    except (TypeError, ValueError):
+        per_page = 8
+    paginator_ativos = Paginator(cartoes_ativos, per_page)
+    paginator_inativos = Paginator(cartoes_inativos, per_page)
+    page_number_ativos = request.GET.get('page_ativos')
+    page_number_inativos = request.GET.get('page_inativos')
+    page_obj_ativos = paginator_ativos.get_page(page_number_ativos)
+    page_obj_inativos = paginator_inativos.get_page(page_number_inativos)
     return render(request, 'core/cartoes_credito_list.html', {
-        'cartoes_ativos': cartoes_ativos,
-        'cartoes_inativos': cartoes_inativos
+        'cartoes_ativos': page_obj_ativos.object_list,
+        'cartoes_inativos': page_obj_inativos.object_list,
+        'is_paginated_ativos': page_obj_ativos.has_other_pages(),
+        'is_paginated_inativos': page_obj_inativos.has_other_pages(),
+        'page_obj_ativos': page_obj_ativos,
+        'page_obj_inativos': page_obj_inativos,
+        'paginator_ativos': paginator_ativos,
+        'paginator_inativos': paginator_inativos,
+        'per_page': per_page,
     })
 
 @login_required

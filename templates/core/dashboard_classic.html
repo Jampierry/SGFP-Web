@@ -2,202 +2,59 @@
 {% load static %}
 {% load br_filters %}
 
-{% block title %}Dashboard - SGFP{% endblock %}
+{% block title %}Dashboard Clássico - SGFP{% endblock %}
 
 {% block page_icon %}<i class="fas fa-tachometer-alt"></i>{% endblock %}
 {% block page_title %}Dashboard{% endblock %}
 {% block page_greeting %}Bem-vindo, {{ user.get_full_name|default:user.username }}!{% endblock %}
 
 {% block extra_css %}
+{{ block.super }}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css">
-<style>
-.chart-container {
-    position: relative;
-    height: 220px;
-    margin-bottom: 16px;
-}
-.metric-card {
-    border-left: 4px solid;
-    transition: transform 0.2s;
-    min-height: 120px;
-    padding: 12px 16px;
-}
-.metric-card h3 {
-    font-size: 1.5rem;
-}
-.card.shadow {
-    margin-bottom: 16px;
-}
-.metric-card.receitas {
-    border-left-color: #28a745;
-}
-.metric-card.despesas {
-    border-left-color: #dc3545;
-}
-.metric-card.saldo {
-    border-left-color: #007bff;
-}
-.metric-card.metas {
-    border-left-color: #ffc107;
-}
-.trend-indicator {
-    font-size: 0.8rem;
-    padding: 2px 6px;
-    border-radius: 12px;
-}
-.trend-up {
-    background-color: #d4edda;
-    color: #155724;
-}
-.trend-down {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-.trend-stable {
-    background-color: #e2e3e5;
-    color: #383d41;
-}
-.credit-card {
-    width: 100%;
-    max-width: 320px;
-    height: 200px;
-    border-radius: 18px;
-    color: #fff;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.2);
-    padding: 18px 18px 12px 18px;
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 12px;
-    background: linear-gradient(135deg, #232526 0%, #414345 100%);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-.credit-card.inter { background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%); }
-.credit-card.neon { background: linear-gradient(135deg, #00e1ff 0%, #0077ff 100%); }
-.credit-card.santander { background: linear-gradient(135deg, #e30613 0%, #ff5f6d 100%); }
-.credit-card.trigg { background: linear-gradient(135deg, #00c3ad 0%, #1e2a38 100%); }
-.credit-card.next { background: linear-gradient(135deg, #00ff88 0%, #00c3ad 100%); }
-.credit-card.digio { background: linear-gradient(135deg, #1e2a38 0%, #3a7bd5 100%); }
-.credit-card.hipercard { background: linear-gradient(135deg, #c1000a 0%, #ff5858 100%); }
-.credit-card.pan { background: linear-gradient(135deg, #1e2a38 0%, #00c3ad 100%); }
-.credit-card.pag { background: linear-gradient(135deg, #232526 0%, #414345 100%); }
-.credit-card.meluz { background: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%); }
-.credit-card.itaú { background: linear-gradient(135deg, #009ee3 0%, #ff7e5f 100%); }
-.credit-card .card-main-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-.credit-card .left {
-    flex: 1;
-}
-.credit-card .right {
-    text-align: right;
-    min-width: 80px;
-}
-.credit-card .chip {
-    width: 32px;
-    height: 20px;
-    background: #e0e0e0;
-    border-radius: 6px;
-    margin-bottom: 6px;
-}
-.credit-card .bank-logo {
-    font-size: 1.1rem;
-    font-weight: bold;
-    letter-spacing: 1px;
-    margin-bottom: 2px;
-}
-.credit-card .card-number {
-    font-size: 1.05rem;
-    letter-spacing: 2px;
-    margin-bottom: 2px;
-}
-.credit-card .card-holder {
-    font-size: 0.93rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-.credit-card .card-footer {
-    font-size: 0.93rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 2px;
-}
-.credit-card .bandeira {
-    height: 22px;
-}
-.credit-card .info-list {
-    font-size: 0.91rem;
-    margin-top: 2px;
-}
-.credit-card .info-list span {
-    display: inline-block;
-    margin-right: 10px;
-    margin-bottom: 0;
-}
-.dashboard-cards-row-fixed {
-  min-height: 340px;
-  height: 340px;
-  display: flex;
-}
-.dashboard-cards-row-fixed > .col-lg-6 {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-.dashboard-cards-row-fixed .card.shadow {
-  flex: 1 1 0;
-  height: 100%;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-}
-.dashboard-cards-row-fixed .card-body {
-  flex: 1 1 0;
-  height: 100%;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.dashboard-cards-row-fixed .avisos-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  height: 100%;
-  overflow-y: auto;
-}
-.dashboard-cards-row-fixed .aviso-vencimento {
-  flex: 0 0 48%;
-  max-width: 48%;
-  min-width: 180px;
-  height: 90px;
-  margin-bottom: 0;
-}
-.dashboard-top-card {
-  height: 320px;
-  display: flex;
-  flex-direction: column;
-}
-.dashboard-top-card .card-body {
-  flex: 1 1 0;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-}
-/* Adicionar overflow-y: auto apenas para os cards que precisam */
-.dashboard-top-card.despesas-proximas .card-body,
-.dashboard-top-card.metas-destaque .card-body {
-  overflow-y: auto;
-}
-</style>
 {% endblock %}
 
 {% block content %}
 <div class="container-fluid">
+    <!-- Cards de Saldo Geral e Resumo de Contas (compactos e alinhados) -->
+    <div class="row mb-3 g-3 align-items-stretch">
+        <div class="col-md-3">
+            <div class="card shadow metric-card saldo p-2" style="min-height: 100px; max-height: 100px;">
+                <div class="card-body d-flex flex-column justify-content-between align-items-start p-2" style="height: 100%;">
+                    <div class="d-flex align-items-center w-100">
+                        <i class="fas fa-wallet fa-lg me-2 text-primary"></i>
+                        <div class="flex-grow-1">
+                            <div class="fw-bold" style="font-size:0.9em; margin-bottom: 0.25rem;">Saldo Geral</div>
+                            <div class="fw-bold text-primary" style="font-size:1.1em; margin-bottom: 0.25rem;">{{ saldo_geral|br_currency }}</div>
+                            <div class="text-muted" style="font-size:0.75em;">Soma das contas (exceto cartões)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card shadow metric-card p-2" style="min-height: 100px; max-height: 100px;">
+                <div class="card-body p-2">
+                    <div class="fw-bold mb-2" style="font-size:0.9em;"><i class="fas fa-university me-2"></i>Resumo de Contas</div>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for conta in contas %}
+                        <div class="d-flex align-items-center p-2 rounded" style="background: #2325260d; border-left: 3px solid {{ conta.cor }}; min-width: 180px;">
+                            <i class="{{ conta.icone }} me-2" style="color: {{ conta.cor }}; font-size: 0.9em;"></i>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold" style="font-size:0.85em; margin-bottom: 0.1rem;">{{ conta.nome }}</div>
+                                <small class="text-muted" style="font-size:0.75em;">{{ conta.get_tipo_display }}</small>
+                            </div>
+                            <div class="fw-bold ms-2 {% if conta.saldo_atual >= 0 %}text-success{% else %}text-danger{% endif %}" style="font-size:0.85em; white-space: nowrap;">
+                                {{ conta.saldo_atual|br_currency }}
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="text-muted" style="font-size:0.8em;">Nenhuma conta cadastrada.</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Conteúdo principal do dashboard clássico começa aqui -->
     <!-- (Navbar fixa e menu lateral removidos, pois agora são globais em base.html) -->
     
@@ -206,13 +63,15 @@
     <!-- Métricas Principais -->
     <div class="row mb-3">
         <div class="col-md-3">
-            <div class="dashboard-card dashboard-card-receita">
-                <div class="dashboard-card-bar"></div>
-                <div class="dashboard-card-body">
+            <div class="sgfp-card dashboard-card-receita">
+                <div class="sgfp-card-header d-flex align-items-center justify-content-between">
+                    <span>Receitas</span>
+                    <span class="dashboard-card-icon-bg"><i class="fas fa-arrow-up dashboard-card-icon"></i></span>
+                </div>
+                <div class="sgfp-card-body">
                     <div>
-                        <div class="dashboard-card-title">Receitas (Mês)</div>
                         <div class="dashboard-card-value">{{ receitas_mes|br_currency }}</div>
-                        <div class="mt-2">
+                        <div class="mt-1">
                             {% if receitas_trend > 0 %}
                             <span class="trend-indicator trend-up">
                                 <i class="fas fa-arrow-up me-1"></i>{{ receitas_trend|floatformat:1 }}%
@@ -228,22 +87,21 @@
                             {% endif %}
                             <small class="text-muted ms-2">vs mês anterior</small>
                         </div>
-                        <div class="dashboard-card-desc">{{ receitas_count }} transações este mês</div>
-                    </div>
-                    <div class="dashboard-card-icon-bg">
-                        <i class="fas fa-arrow-up dashboard-card-icon"></i>
+                        <div>{{ receitas_count }} transações</div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="dashboard-card dashboard-card-despesa">
-                <div class="dashboard-card-bar"></div>
-                <div class="dashboard-card-body">
+            <div class="sgfp-card dashboard-card-despesa">
+                <div class="sgfp-card-header d-flex align-items-center justify-content-between">
+                    <span>Despesas</span>
+                    <span class="dashboard-card-icon-bg"><i class="fas fa-arrow-down dashboard-card-icon"></i></span>
+                </div>
+                <div class="sgfp-card-body">
                     <div>
-                        <div class="dashboard-card-title">Despesas (Mês)</div>
                         <div class="dashboard-card-value">{{ despesas_mes|br_currency }}</div>
-                        <div class="mt-2">
+                        <div class="mt-1">
                             {% if despesas_trend > 0 %}
                             <span class="trend-indicator trend-down">
                                 <i class="fas fa-arrow-up me-1"></i>{{ despesas_trend|floatformat:1 }}%
@@ -259,22 +117,21 @@
                             {% endif %}
                             <small class="text-muted ms-2">vs mês anterior</small>
                         </div>
-                        <div class="dashboard-card-desc">{{ despesas_count }} transações este mês</div>
-                    </div>
-                    <div class="dashboard-card-icon-bg">
-                        <i class="fas fa-arrow-down dashboard-card-icon"></i>
+                        <div>{{ despesas_count }} transações</div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="dashboard-card dashboard-card-saldo">
-                <div class="dashboard-card-bar"></div>
-                <div class="dashboard-card-body">
+            <div class="sgfp-card dashboard-card-saldo">
+                <div class="sgfp-card-header d-flex align-items-center justify-content-between">
+                    <span>Saldo</span>
+                    <span class="dashboard-card-icon-bg"><i class="fas fa-balance-scale dashboard-card-icon"></i></span>
+                </div>
+                <div class="sgfp-card-body">
                     <div>
-                        <div class="dashboard-card-title">Saldo (Mês)</div>
                         <div class="dashboard-card-value">{{ saldo_mes|br_currency }}</div>
-                        <div class="mt-2">
+                        <div class="mt-1">
                             {% if saldo_trend > 0 %}
                             <span class="trend-indicator trend-up">
                                 <i class="fas fa-arrow-up me-1"></i>{{ saldo_trend|floatformat:1 }}%
@@ -290,30 +147,26 @@
                             {% endif %}
                             <small class="text-muted ms-2">vs mês anterior</small>
                         </div>
-                        <div class="dashboard-card-desc">Receitas - Despesas</div>
-                    </div>
-                    <div class="dashboard-card-icon-bg">
-                        <i class="fas fa-balance-scale dashboard-card-icon"></i>
+                        <div>Receitas - Despesas</div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="dashboard-card dashboard-card-meta">
-                <div class="dashboard-card-bar"></div>
-                <div class="dashboard-card-body">
+            <div class="sgfp-card dashboard-card-meta">
+                <div class="sgfp-card-header d-flex align-items-center justify-content-between">
+                    <span>Metas</span>
+                    <span class="dashboard-card-icon-bg"><i class="fas fa-bullseye dashboard-card-icon"></i></span>
+                </div>
+                <div class="sgfp-card-body">
                     <div>
-                        <div class="dashboard-card-title">Metas Ativas</div>
                         <div class="dashboard-card-value">{{ metas_ativas_count }}</div>
-                        <div class="mt-2">
+                        <div class="mt-1">
                             <span class="trend-indicator trend-up">
                                 <i class="fas fa-bullseye me-1"></i>{{ metas_concluidas_count }} concluídas
                             </span>
                         </div>
-                        <div class="dashboard-card-desc">{{ metas_total_count }} metas no total</div>
-                    </div>
-                    <div class="dashboard-card-icon-bg">
-                        <i class="fas fa-bullseye dashboard-card-icon"></i>
+                        <div>{{ metas_total_count }} metas no total</div>
                     </div>
                 </div>
             </div>
@@ -344,35 +197,55 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 col-12 mb-3 mb-lg-0">
-            <div class="card shadow mb-4 w-100 d-flex flex-column">
-                <div class="card-header bg-primary text-white d-flex align-items-center w-100">
-                    <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Cartões próximos do vencimento</h5>
+        <div class="col-lg-6 col-12 mb-3 mb-lg-0 d-flex flex-column align-items-center justify-content-center">
+            <!-- Metas em Destaque moderno e compacto -->
+            <div class="card shadow mb-4 w-100 dashboard-top-card metas-destaque">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bullseye me-2"></i>Metas em Destaque
+                    </h5>
                 </div>
-                <div class="card-body p-3 w-100">
-                    {% if cartoes_vencendo %}
-                    <div class="avisos-grid">
-                        {% for cartao in cartoes_vencendo %}
-                        <div class="alert alert-warning aviso-vencimento d-flex flex-column justify-content-between">
-                            <strong>{{ cartao.nome }}</strong>
-                            <div class="fw-bold text-danger" style="font-size:1.05em;">{{ cartao.valor_fatura|br_currency }}</div>
-                            <small>
-                                Vence em {{ cartao.data_vencimento|date:"d/m/Y" }}
-                                {% if cartao.dias_restantes == 0 %}
-                                    <span class="badge bg-danger">Hoje!</span>
-                                {% elif cartao.dias_restantes == 1 %}
-                                    <span class="badge bg-warning">Amanhã!</span>
-                                {% else %}
-                                    <span class="badge bg-info text-dark fw-bold">{{ cartao.dias_restantes }} dias</span>
-                                {% endif %}
-                            </small>
+                <div class="card-body">
+                    {% if metas_destaque %}
+                    <div class="d-flex flex-column gap-2">
+                        {% for meta in metas_destaque %}
+                        <div class="meta-card bg-dark text-light p-2 rounded mb-2" style="box-shadow:0 2px 8px #0002;">
+                            <div class="d-flex align-items-center justify-content-between mb-1">
+                                <span><i class="fas fa-bullseye me-1 text-success"></i> <strong>{{ meta.titulo }}</strong></span>
+                                <span class="badge" style="background:#1abc9c; color:#fff; font-size:0.95em;">{{ meta.percentual|floatformat:1 }}%</span>
+                            </div>
+                            <!-- Barra de progresso Bootstrap -->
+                            <div class="progress" style="height:8px; background:#2c3e50; border-radius:4px; margin-bottom:2px;">
+                                <div class="progress-bar progress-bar-meta
+                                    {% if meta.percentual < 25 %}red
+                                    {% elif meta.percentual < 70 %}orange
+                                    {% elif meta.percentual < 100 %}green
+                                    {% else %}vibrant
+                                    {% endif %}"
+                                     role="progressbar"
+                                     style="width:{{ meta.percentual|floatformat:1 }}%;"
+                                     aria-valuenow="{{ meta.percentual|floatformat:1 }}"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100"></div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-1" style="font-size:0.97em;">
+                                <span>{{ meta.valor_atual|br_currency }} / {{ meta.valor_meta|br_currency }}</span>
+                                <span class="text-muted">Faltam {{ meta.valor_restante|br_currency }}</span>
+                                <span>
+                                    <a href="{% url 'core:meta_update' meta.id %}" class="btn btn-sm btn-outline-secondary py-0 px-2" title="Editar"><i class="fas fa-edit"></i></a>
+                                    <a href="{% url 'core:meta_delete' meta.id %}" class="btn btn-sm btn-outline-danger py-0 px-2 ms-1" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir esta meta?');"><i class="fas fa-trash"></i></a>
+                                </span>
+                            </div>
                         </div>
                         {% endfor %}
                     </div>
                     {% else %}
-                    <div class="text-center text-muted py-4">
-                        <i class="fas fa-credit-card fa-3x text-muted mb-3"></i>
-                        <p class="text-muted">Nenhum cartão próximo do vencimento.</p>
+                    <div class="text-center text-muted">
+                        <i class="fas fa-bullseye fa-3x mb-3"></i>
+                        <p>Nenhuma meta ativa</p>
+                        <a href="{% url 'core:meta_create' %}" class="btn btn-sm btn-primary">
+                            Criar Meta
+                        </a>
                     </div>
                     {% endif %}
                 </div>
@@ -516,43 +389,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 d-flex flex-column gap-3">
-            <!-- Metas em Destaque -->
-            <div class="card shadow mb-3 dashboard-top-card metas-destaque">
-                <div class="card-header">
-                    <h5 class="mb-0">
-                        <i class="fas fa-bullseye me-2"></i>Metas em Destaque
-                    </h5>
-                </div>
-                <div class="card-body">
-                    {% if metas_destaque %}
-                    <div class="list-group list-group-flush">
-                        {% for meta in metas_destaque %}
-                        <div class="list-group-item">
-                            <h6 class="mb-1">{{ meta.titulo }}</h6>
-                            <div class="progress mb-2" style="height: 8px;">
-                                <div class="progress-bar bg-success" role="progressbar" 
-                                     style="width: {{ meta.percentual }}%"></div>
-                            </div>
-                            <small class="text-muted">
-                                {{ meta.valor_atual|br_currency }} / {{ meta.valor_meta|br_currency }}
-                                ({{ meta.percentual|floatformat:1 }}%)
-                            </small>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% else %}
-                    <div class="text-center text-muted">
-                        <i class="fas fa-bullseye fa-3x mb-3"></i>
-                        <p>Nenhuma meta ativa</p>
-                        <a href="{% url 'core:meta_create' %}" class="btn btn-sm btn-primary">
-                            Criar Meta
-                        </a>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+        <!-- Removido o painel de Metas em Destaque daqui -->
     </div>
 
     <!-- Transações Recentes -->

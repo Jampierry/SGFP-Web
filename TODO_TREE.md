@@ -1,0 +1,13 @@
+// TODO [ETAPA 1 - BACKEND] Garantir que todos os dados passados aos templates sejam objetos ou dicionários bem definidos, evitando misturar tipos e facilitando uso de filtros do Django. (Base para todas as melhorias) - CONCLUÍDO ✅
+// TODO [ETAPA 2 - FRONTEND] Centralizar e padronizar o CSS customizado do sistema em arquivos próprios (ex: static/core/css/custom.css), evitando estilos inline e blocos <style> dispersos nos templates. Garantir que o CSS customizado seja sempre carregado por último no <head> para máxima prioridade. - CONCLUÍDO ✅
+// TODO [CORREÇÕES] Corrigir erros de backend nos formulários (RelatedObjectDoesNotExist) e problemas visuais das barras de progresso das metas - CONCLUÍDO ✅
+// TODO [CORREÇÕES VISUAIS] Ajustar altura dos cards de Saldo Geral/Resumo de Contas e corrigir cards desconfigurados da tela de relatórios - CONCLUÍDO ✅
+// TODO [ETAPA 3 - FRONTEND] Refatorar o uso de classes Bootstrap e customizadas para componentes visuais (cards, barras de progresso, botões), criando classes utilitárias próprias para elementos recorrentes do sistema. - EM ANDAMENTO 🔄
+// TODO [ETAPA 4 - FRONTEND] Implementar um sistema de temas (light/dark) centralizado, usando variáveis CSS (custom properties) para cores principais, facilitando manutenção e personalização visual.
+// TODO [ETAPA 5 - FRONTEND] Revisar todos os templates para remover código duplicado, garantir semântica HTML5 e acessibilidade (uso correto de <main>, <section>, <nav>, <button>, ARIA labels, etc).
+// TODO [ETAPA 6 - FRONTEND] Modularizar scripts JavaScript customizados em arquivos separados por funcionalidade (ex: static/core/js/dashboard.js), evitando scripts inline nos templates.
+// TODO [ETAPA 7 - BACKEND] Implementar testes automatizados para views, forms e models principais, garantindo cobertura mínima e facilitando refatorações futuras.
+// TODO [ETAPA 8 - BACKEND] Documentar endpoints, models e principais fluxos do sistema usando docstrings e, se possível, ferramentas como Sphinx ou Swagger para APIs.
+// TODO [ETAPA 9 - FULLSTACK] Adotar um padrão de organização de arquivos e pastas consistente, separando claramente apps, templates, static, media, scripts utilitários e documentação.
+// TODO [ETAPA 10 - FULLSTACK] Criar um README.md detalhado na raiz do projeto, explicando setup, dependências, comandos principais, estrutura do sistema e dicas de contribuição.
+// TODO [ETAPA 11 - FULLSTACK] Adotar um padrão de comentários TODO/FIXME nos arquivos de código para facilitar rastreamento de melhorias e bugs via extensões como TODO Tree. 

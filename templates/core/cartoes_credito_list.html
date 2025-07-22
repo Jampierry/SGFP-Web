@@ -43,6 +43,39 @@
             </div>
             {% endfor %}
         </div>
+        {% if is_paginated_ativos %}
+        <nav class="mt-3">
+            <ul class="pagination justify-content-center">
+                {% if page_obj_ativos.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page_ativos={{ page_obj_ativos.previous_page_number }}&per_page={{ per_page }}" aria-label="Anterior">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&laquo;</span>
+                </li>
+                {% endif %}
+                {% for num in paginator_ativos.page_range %}
+                <li class="page-item {% if page_obj_ativos.number == num %}active{% endif %}">
+                    <a class="page-link" href="?page_ativos={{ num }}&per_page={{ per_page }}">{{ num }}</a>
+                </li>
+                {% endfor %}
+                {% if page_obj_ativos.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page_ativos={{ page_obj_ativos.next_page_number }}&per_page={{ per_page }}" aria-label="Próxima">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&raquo;</span>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
     </div>
     <div class="card shadow mb-4 p-3">
         <h5 class="mb-3 mt-4">Cartões Inativos</h5>
@@ -63,10 +96,78 @@
                 </div>
             {% endfor %}
         </div>
+        {% if is_paginated_inativos %}
+        <nav class="mt-3">
+            <ul class="pagination justify-content-center">
+                {% if page_obj_inativos.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page_inativos={{ page_obj_inativos.previous_page_number }}&per_page={{ per_page }}" aria-label="Anterior">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&laquo;</span>
+                </li>
+                {% endif %}
+                {% for num in paginator_inativos.page_range %}
+                <li class="page-item {% if page_obj_inativos.number == num %}active{% endif %}">
+                    <a class="page-link" href="?page_inativos={{ num }}&per_page={{ per_page }}">{{ num }}</a>
+                </li>
+                {% endfor %}
+                {% if page_obj_inativos.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page_inativos={{ page_obj_inativos.next_page_number }}&per_page={{ per_page }}" aria-label="Próxima">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&raquo;</span>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
         <div class="alert alert-info mt-3">
             <strong>Inativar</strong>: O cartão será mantido no histórico, mas não poderá ser usado em novas despesas.<br>
             <strong>Excluir</strong>: O cartão será removido do sistema (ação irreversível).
         </div>
     </div>
 </div>
+{% block extra_js %}
+<script>
+function calcularLinhasTabela() {
+    const alturaJanela = window.innerHeight;
+    const tabela = document.querySelector('.table');
+    if (!tabela) return 8;
+    const cabecalho = tabela.querySelector('thead');
+    const linhaExemplo = tabela.querySelector('tbody tr');
+    if (!linhaExemplo) return 8;
+    const alturaCabecalho = cabecalho ? cabecalho.offsetHeight : 40;
+    const alturaLinha = linhaExemplo.offsetHeight || 40;
+    const alturaExtra = 260;
+    const alturaDisponivel = alturaJanela - alturaExtra;
+    let linhas = Math.floor(alturaDisponivel / alturaLinha);
+    linhas = Math.max(4, Math.min(linhas - 1, 30));
+    return linhas;
+}
+function setPerPageIfNeeded() {
+    const url = new URL(window.location.href);
+    const perPageAtual = url.searchParams.get('per_page');
+    const linhas = calcularLinhasTabela();
+    if (perPageAtual === null || parseInt(perPageAtual) !== linhas) {
+        url.searchParams.set('per_page', linhas);
+        url.searchParams.set('page_ativos', 1);
+        url.searchParams.set('page_inativos', 1);
+        window.location.replace(url.toString());
+    }
+}
+window.addEventListener('DOMContentLoaded', setPerPageIfNeeded);
+window.addEventListener('resize', function() {
+    clearTimeout(window._resizeTimeout);
+    window._resizeTimeout = setTimeout(setPerPageIfNeeded, 400);
+});
+</script>
+{% endblock %}
 {% endblock %} 

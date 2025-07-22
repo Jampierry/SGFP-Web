@@ -18,6 +18,7 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f8f9fa;
+    /* Escala global agora controlada dinamicamente pelo template base.html */
 }
 
 /* Navbar personalizada */
@@ -29,54 +30,18 @@ body {
 .navbar-nav .nav-link {
     font-weight: 500;
     transition: var(--transition);
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
 }
 
 .navbar-nav .nav-link:hover {
     color: rgba(255, 255, 255, 0.8) !important;
 }
 
-/* Cards personalizados */
-.card {
-    border: none;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    transition: var(--transition);
-}
-
-.card:hover {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-}
-
-.card-header {
-    background-color: #fff;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-    font-weight: 600;
-}
-
-/* Cards de resumo do dashboard */
-.border-left-success {
-    border-left: 4px solid var(--success-color) !important;
-}
-
-.border-left-danger {
-    border-left: 4px solid var(--danger-color) !important;
-}
-
-.border-left-warning {
-    border-left: 4px solid var(--warning-color) !important;
-}
-
-.border-left-info {
-    border-left: 4px solid var(--info-color) !important;
-}
-
-.border-left-primary {
-    border-left: 4px solid var(--primary-color) !important;
-}
-
 /* Tabelas personalizadas */
 .table {
     margin-bottom: 0;
+    font-size: 1rem;
 }
 
 .table th {
@@ -84,10 +49,14 @@ body {
     font-weight: 600;
     color: var(--dark-color);
     background-color: var(--light-color);
+    font-size: 0.95rem;
+    padding: 0.75rem 0.5rem;
 }
 
 .table td {
     vertical-align: middle;
+    padding: 0.625rem 0.5rem;
+    font-size: 0.95rem;
 }
 
 .table-hover tbody tr:hover {
@@ -96,17 +65,17 @@ body {
 
 /* Tabelas com rolagem */
 .table-responsive::-webkit-scrollbar {
-    width: 8px;
+    width: 0.5rem;
 }
 
 .table-responsive::-webkit-scrollbar-track {
     background: #f1f1f1;
-    border-radius: 4px;
+    border-radius: 0.25rem;
 }
 
 .table-responsive::-webkit-scrollbar-thumb {
     background: #c1c1c1;
-    border-radius: 4px;
+    border-radius: 0.25rem;
 }
 
 .table-responsive::-webkit-scrollbar-thumb:hover {
@@ -117,30 +86,14 @@ body {
     position: sticky;
     top: 0;
     background: white !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.table th {
-    border-top: none;
-    font-weight: 600;
-    font-size: 0.9em;
-    padding: 12px 8px;
-}
-
-.table td {
-    padding: 10px 8px;
-    font-size: 0.9em;
-    vertical-align: middle;
-}
-
-.table tbody tr:hover {
-    background-color: rgba(0,123,255,0.05);
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.1);
 }
 
 /* Badges personalizados */
 .badge {
     font-weight: 500;
     padding: 0.5em 0.75em;
+    font-size: 0.95rem;
 }
 
 /* Botões personalizados */
@@ -148,6 +101,8 @@ body {
     font-weight: 500;
     border-radius: var(--border-radius);
     transition: var(--transition);
+    font-size: 1rem;
+    padding: 0.5rem 1.25rem;
 }
 
 .btn-group .btn {
@@ -159,6 +114,8 @@ body {
     border-radius: var(--border-radius);
     border: 1px solid #ced4da;
     transition: var(--transition);
+    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
 }
 
 .form-control:focus, .form-select:focus {
@@ -170,6 +127,26 @@ body {
     background-color: var(--light-color);
     border: 1px solid #ced4da;
     border-radius: var(--border-radius);
+    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
+}
+
+/* Cards personalizados */
+.card {
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    font-size: 1rem;
+    padding: 1.25rem;
+}
+
+.card-header {
+    font-size: 1.1rem;
+    padding: 0.75rem 1.25rem;
+}
+
+.card-body {
+    font-size: 1rem;
+    padding: 1.25rem;
 }
 
 /* Progress bars personalizados */
@@ -257,10 +234,6 @@ body {
         padding: 1rem;
     }
     
-    .card-body {
-        padding: 1rem;
-    }
-    
     .table-responsive {
         font-size: 0.875rem;
     }
@@ -280,11 +253,6 @@ body {
     --light-color: #343a40;
     --dark-color: #f8f9fa;
     background-color: #212529;
-    color: #f8f9fa;
-}
-
-[data-theme="dark"] .card {
-    background-color: #343a40;
     color: #f8f9fa;
 }
 
@@ -379,4 +347,1212 @@ footer {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
+} 
+
+/* Contraste dinâmico para badges em todos os temas */
+body.vanta-dark .badge,
+body.corona-dark .badge,
+body.futureui-color .badge {
+    color: #fff !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+body.staradmin-color .badge,
+body.material-light .badge,
+body.celestial-light .badge {
+    color: #23272f !important;
+    text-shadow: none;
+} 
+
+/* --- MELHORIAS VISUAIS NO MENU LATERAL (SIDEBAR) --- */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 13.75rem;
+  background: linear-gradient(135deg, #23272F 80%, #2d3340 100%);
+  color: #fff;
+  z-index: 1030;
+  transition: width 0.3s cubic-bezier(.4,2,.6,1), background 0.3s, color 0.3s;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-shadow: 4px 0 24px 0 rgba(36,41,51,0.13), 1.5px 0 0 #3A8DFF22;
+  border-right: 1.5px solid #3A8DFF22;
+  font-size: 1rem;
+  padding-top: 1.5rem;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1 1 auto;
+}
+
+.sidebar-item:not(:last-child) {
+  border-bottom: 1px solid rgba(58,141,255,0.07); /* separador sutil */
+}
+
+.sidebar-link, .sidebar-link:visited, .sidebar-link:active, .sidebar-link:hover {
+  text-decoration: none !important;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 1rem;
+  border-radius: 0.375rem;
+  margin: 0.125rem 0.5rem;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  gap: 0.75rem;
+  color: inherit;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.sidebar-link.active, .sidebar-link:hover {
+  background: linear-gradient(90deg, rgba(58,141,255,0.18) 80%, rgba(67,206,162,0.10) 100%);
+  color: #3A8DFF;
+  box-shadow: 0 2px 8px 0 rgba(58,141,255,0.08);
+}
+
+.sidebar-link.active::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 8px;
+  bottom: 8px;
+  width: 5px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #3A8DFF 60%, #43cea2 100%);
+  box-shadow: 0 0 8px #3A8DFF44;
+}
+
+.sidebar-link .sidebar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 1.2em;
+  margin-right: 0.5rem;
+  transition: color 0.2s;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+  box-shadow: 2px 0 12px 0 rgba(36,41,51,0.13);
+}
+
+.sidebar.collapsed .sidebar-label {
+  display: none;
+}
+
+.sidebar.collapsed .sidebar-link {
+  justify-content: center;
+  padding: 0;
+}
+
+.sidebar.collapsed .sidebar-link .sidebar-icon {
+  margin-right: 0;
+}
+
+/* Separador visual entre menu e logout */
+.sidebar-logout {
+  margin: 16px 0 12px 0;
+  padding: 0 0.5rem;
+  border-top: 1.5px solid rgba(58,141,255,0.13);
+}
+
+/* Sombra e destaque para o logo */
+.sidebar-logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 0 8px 0;
+  box-shadow: 0 2px 8px 0 rgba(58,141,255,0.08);
+  background: rgba(36,41,51,0.07);
+  min-height: 72px;
+}
+.sidebar-logo-img {
+  max-width: 44px;
+  max-height: 44px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 4px auto;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px 0 rgba(36,41,51,0.10);
+  background: #23272F;
+}
+.sidebar.collapsed .sidebar-logo-img {
+  max-width: 36px;
+  max-height: 36px;
+}
+
+/* Responsividade: mantém contraste e sombra */
+@media (max-width: 768px) {
+  .sidebar {
+    box-shadow: 2px 0 12px 0 rgba(36,41,51,0.13);
+    width: 60px;
+  }
+  .main-content {
+    margin-left: 60px;
+  }
+} 
+
+/* --- CORREÇÃO: Alinhamento dos ícones do menu lateral --- */
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.375rem;
+  margin: 0.125rem 0.5rem;
+  transition: all 0.2s cubic-bezier(.4,2,.6,1);
+}
+.sidebar .sidebar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  width: 24px;
+  font-size: 1.2em;
+  margin-right: 0.5rem;
+}
+.sidebar-label {
+  display: inline-block;
+  vertical-align: middle;
+} 
+
+/* Botão hambúrguer sempre visível, fixo no topo esquerdo */
+.sidebar-toggle {
+  display: block !important;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1100;
+  background: #23272f;
+  border: none;
+  color: #38b2ac;
+  font-size: 2rem;
+  border-radius: 6px;
+  padding: 4px 10px;
+  box-shadow: 0 2px 8px #0002;
+  transition: left 0.3s;
+}
+
+/* Ajuste do conteúdo principal para dashboards modernos */
+.main-content {
+  margin-left: 13.75rem;
+  transition: margin-left 0.3s cubic-bezier(.4,2,.6,1);
+  padding-top: 70px;
+}
+.main-content.sidebar-collapsed {
+  margin-left: 60px;
+} 
+
+/* Remover regras genéricas que sobrescrevem a cor dos ícones do menu lateral */
+/* .sidebar .nav-link.active .sidebar-icon { color: inherit !important; } */
+/* .sidebar .nav-link i { color: #fff; } */
+
+/* Garantir prioridade máxima para ícones coloridos */
+body.icones-coloridos .sidebar .sidebar-icon,
+body.icones-coloridos .sidebar .nav-link .sidebar-icon,
+body.icones-coloridos .sidebar .nav-link.active .sidebar-icon,
+body.icones-coloridos .sidebar .nav-link:hover .sidebar-icon {
+    color: inherit !important;
+} 
+
+/* --- ÍCONES DE TIPO NA TABELA DE TRANSAÇÕES RECENTES --- */
+.tipo-transferencia {
+  color: #3A8DFF !important;
+  position: relative;
+}
+.tipo-transferencia .fa-arrow-right {
+  color: #3A8DFF !important;
+  margin-right: -7px;
+  z-index: 2;
+}
+.tipo-transferencia .fa-arrow-left {
+  color: #4ADE80 !important;
+  margin-left: -7px;
+  z-index: 1;
+}
+.tipo-transferencia .fa-exchange-alt {
+  color: #3A8DFF !important;
+}
+.tipo-despesa {
+  color: #F87171 !important;
+}
+.tipo-receita {
+  color: #4ADE80 !important;
+}
+
+/* Suporte para temas escuros e claros */
+body.theme-dark .tipo-transferencia .fa-arrow-right,
+body.theme-dark .tipo-transferencia .fa-exchange-alt {
+  color: #3A8DFF !important;
+}
+body.theme-dark .tipo-transferencia .fa-arrow-left {
+  color: #4ADE80 !important;
+}
+body.theme-dark .tipo-despesa {
+  color: #F87171 !important;
+}
+body.theme-dark .tipo-receita {
+  color: #4ADE80 !important;
+}
+body.theme-light .tipo-transferencia .fa-arrow-right,
+body.theme-light .tipo-transferencia .fa-exchange-alt {
+  color: #3A8DFF !important;
+}
+body.theme-light .tipo-transferencia .fa-arrow-left {
+  color: #4ADE80 !important;
+}
+body.theme-light .tipo-despesa {
+  color: #F87171 !important;
+}
+body.theme-light .tipo-receita {
+  color: #4ADE80 !important;
+} 
+
+/* Ocupa altura total disponível para a tabela de categorias, com rolagem só se necessário */
+.categorias-table-container {
+    min-height: 0;
+    height: calc(100vh - 180px); /* Ajuste para descontar header, margens e rodapé */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+@media (max-width: 991px) {
+  .categorias-table-container {
+    height: calc(100vh - 120px);
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+} 
+
+/* ===== COMPONENTES ESPECÍFICOS DO DASHBOARD ===== */
+
+/* Barras de progresso das metas em destaque - COM MÁXIMA PRIORIDADE */
+.progress .progress-bar.progress-bar-meta.red {
+    background: linear-gradient(90deg,#e74c3c,#f39c12) !important;
+    background-color: #e74c3c !important;
+}
+
+.progress .progress-bar.progress-bar-meta.orange {
+    background: linear-gradient(90deg,#f39c12,#f1c40f) !important;
+    background-color: #f39c12 !important;
+}
+
+.progress .progress-bar.progress-bar-meta.green {
+    background: linear-gradient(90deg,#a8ff78,#78ffd6) !important;
+    background-color: #a8ff78 !important;
+}
+
+.progress .progress-bar.progress-bar-meta.vibrant {
+    background: linear-gradient(90deg,#00c853,#43e97b) !important;
+    background-color: #00c853 !important;
+}
+
+/* Fallback para casos onde o gradiente não funciona */
+.progress-bar-meta.red {
+    background: linear-gradient(90deg,#e74c3c,#f39c12) !important;
+    background-color: #e74c3c !important;
+}
+
+.progress-bar-meta.orange {
+    background: linear-gradient(90deg,#f39c12,#f1c40f) !important;
+    background-color: #f39c12 !important;
+}
+
+.progress-bar-meta.green {
+    background: linear-gradient(90deg,#a8ff78,#78ffd6) !important;
+    background-color: #a8ff78 !important;
+}
+
+.progress-bar-meta.vibrant {
+    background: linear-gradient(90deg,#00c853,#43e97b) !important;
+    background-color: #00c853 !important;
+}
+
+/* Regras específicas para tema escuro */
+.dark-theme .progress .progress-bar.progress-bar-meta.red,
+.dark-theme .progress-bar-meta.red {
+    background: linear-gradient(90deg,#e74c3c,#f39c12) !important;
+    background-color: #e74c3c !important;
+}
+
+.dark-theme .progress .progress-bar.progress-bar-meta.orange,
+.dark-theme .progress-bar-meta.orange {
+    background: linear-gradient(90deg,#f39c12,#f1c40f) !important;
+    background-color: #f39c12 !important;
+}
+
+.dark-theme .progress .progress-bar.progress-bar-meta.green,
+.dark-theme .progress-bar-meta.green {
+    background: linear-gradient(90deg,#a8ff78,#78ffd6) !important;
+    background-color: #a8ff78 !important;
+}
+
+.dark-theme .progress .progress-bar.progress-bar-meta.vibrant,
+.dark-theme .progress-bar-meta.vibrant {
+    background: linear-gradient(90deg,#00c853,#43e97b) !important;
+    background-color: #00c853 !important;
+}
+
+/* Cards de métricas do dashboard */
+.metric-card {
+    border-left: 4px solid;
+    transition: transform 0.2s;
+    min-height: 120px;
+    padding: 12px 16px;
+}
+
+.metric-card h3 {
+    font-size: 1.5rem;
+}
+
+.metric-card.receitas {
+    border-left-color: #28a745;
+}
+
+.metric-card.despesas {
+    border-left-color: #dc3545;
+}
+
+.metric-card.saldo {
+    border-left-color: #007bff;
+}
+
+.metric-card.metas {
+    border-left-color: #ffc107;
+}
+
+/* Indicadores de tendência */
+.trend-indicator {
+    font-size: 0.8rem;
+    padding: 2px 6px;
+    border-radius: 12px;
+}
+
+.trend-up {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.trend-down {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.trend-stable {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+/* Cards de cartão de crédito */
+.credit-card {
+    width: 100%;
+    max-width: 320px;
+    height: 200px;
+    border-radius: 18px;
+    color: #fff;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+    padding: 18px 18px 12px 18px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #232526 0%, #414345 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.credit-card.inter { background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%); }
+.credit-card.neon { background: linear-gradient(135deg, #00e1ff 0%, #0077ff 100%); }
+.credit-card.santander { background: linear-gradient(135deg, #e30613 0%, #ff5f6d 100%); }
+.credit-card.trigg { background: linear-gradient(135deg, #00c3ad 0%, #1e2a38 100%); }
+.credit-card.next { background: linear-gradient(135deg, #00ff88 0%, #00c3ad 100%); }
+.credit-card.digio { background: linear-gradient(135deg, #1e2a38 0%, #3a7bd5 100%); }
+.credit-card.hipercard { background: linear-gradient(135deg, #c1000a 0%, #ff5858 100%); }
+.credit-card.pan { background: linear-gradient(135deg, #1e2a38 0%, #00c3ad 100%); }
+.credit-card.pag { background: linear-gradient(135deg, #232526 0%, #414345 100%); }
+.credit-card.meluz { background: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%); }
+.credit-card.itaú { background: linear-gradient(135deg, #009ee3 0%, #ff7e5f 100%); }
+
+.credit-card .card-main-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.credit-card .left {
+    flex: 1;
+}
+
+.credit-card .right {
+    text-align: right;
+    min-width: 80px;
+}
+
+.credit-card .chip {
+    width: 32px;
+    height: 20px;
+    background: #e0e0e0;
+    border-radius: 6px;
+    margin-bottom: 6px;
+}
+
+.credit-card .bank-logo {
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+
+.credit-card .card-number {
+    font-size: 1.05rem;
+    letter-spacing: 2px;
+    margin-bottom: 2px;
+}
+
+.credit-card .card-holder {
+    font-size: 0.93rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.credit-card .card-footer {
+    font-size: 0.93rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2px;
+}
+
+.credit-card .bandeira {
+    height: 22px;
+}
+
+.credit-card .info-list {
+    font-size: 0.91rem;
+    margin-top: 2px;
+}
+
+.credit-card .info-list span {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 0;
+}
+
+/* Layout do dashboard */
+.dashboard-cards-row-fixed {
+    min-height: 340px;
+    height: 340px;
+    display: flex;
+}
+
+.dashboard-cards-row-fixed > .col-lg-6 {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.dashboard-cards-row-fixed .card.shadow {
+    flex: 1 1 0;
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-cards-row-fixed .card-body {
+    flex: 1 1 0;
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.dashboard-cards-row-fixed .avisos-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.dashboard-cards-row-fixed .aviso-vencimento {
+    flex: 0 0 48%;
+    max-width: 48%;
+    min-width: 180px;
+    height: 90px;
+    margin-bottom: 0;
+}
+
+.dashboard-top-card {
+    height: 320px;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-top-card .card-body {
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Adicionar overflow-y: auto apenas para os cards que precisam */
+.dashboard-top-card.despesas-proximas .card-body,
+.dashboard-top-card.metas-destaque .card-body {
+    overflow-y: auto;
+}
+
+/* Container de gráficos */
+.chart-container {
+    position: relative;
+    height: 220px;
+    margin-bottom: 16px;
+}
+
+/* Cards com sombra */
+.card.shadow {
+    margin-bottom: 16px;
+} 
+
+/* ===== DASHBOARD DE CARTÕES DE CRÉDITO ===== */
+
+/* Cards do dashboard de cartões */
+.card, .card-body, .card.shadow, .card.h-100 {
+    min-height: 220px;
+    height: 100%;
+}
+
+.cartao-card {
+    border-radius: 20px;
+    box-shadow: 0 2px 8px #0002;
+    border: 2px solid transparent;
+}
+
+.cartao-card-selecionado {
+    border: 2px solid #007bff !important;
+    box-shadow: 0 0 0 3px #007bff33 !important;
+    background: #e9f5ff !important;
+}
+
+.fatura-card {
+    border: 2px solid transparent;
+}
+
+.fatura-card.fatura-card-selecionada {
+    border: 2px solid #007bff !important;
+    box-shadow: 0 0 0 3px #007bff33 !important;
+    background: #e9f5ff !important;
+}
+
+.fatura-card.fatura-card-selecionada.bg-success {
+    border: 2px solid #28a745 !important;
+    box-shadow: 0 0 0 3px #28a74533 !important;
+    background: rgba(40, 167, 69, 0.1) !important;
+}
+
+.fatura-card.fatura-card-selecionada.bg-warning {
+    border: 2px solid #ffc107 !important;
+    box-shadow: 0 0 0 3px #ffc10733 !important;
+    background: rgba(255, 193, 7, 0.1) !important;
+}
+
+.fatura-card.fatura-card-selecionada.bg-danger {
+    border: 2px solid #dc3545 !important;
+    box-shadow: 0 0 0 3px #dc354533 !important;
+    background: rgba(220, 53, 69, 0.1) !important;
+}
+
+/* Legenda de gastos dos cartões */
+#legendaGastosCartoes.legenda-horizontal {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: nowrap;
+    margin-top: 0;
+    min-width: 110px;
+    max-width: 150px;
+}
+
+#legendaGastosCartoes.legenda-horizontal span.legenda-item {
+    display: flex;
+    align-items: center;
+    font-size: 1em;
+    text-align: left;
+    gap: 6px;
+    white-space: nowrap;
+    margin-bottom: 0;
+}
+
+#legendaGastosCartoes .legenda-cor {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    margin-right: 6px;
+}
+
+/* Carrossel de cartões */
+.wallet-carrossel { 
+    min-height: 220px; 
+}
+
+.wallet-cards { 
+    height: 220px; 
+    width: 100%; 
+    position: relative; 
+}
+
+.wallet-card-container { 
+    top: 0; 
+}
+
+.wallet-card { 
+    box-shadow: 0 4px 24px #0003; 
+    transition: box-shadow 0.3s, border 0.3s; 
+    border: 2px solid transparent; 
+}
+
+.wallet-card-active { 
+    box-shadow: 0 8px 32px #0005; 
+    border: 2px solid #007bff; 
+} 
+
+/* ===== TEMPLATES DE LISTAGEM ===== */
+
+/* Inputs de data em formulários */
+input[type="date"] {
+    width: 145px !important;
+    min-width: 120px !important;
+    max-width: 180px;
+}
+
+/* Altura fixa para linhas de tabela */
+.table tbody tr {
+    height: 40px;
+}
+
+/* Badges de categoria e conta */
+.badge-categoria-receita {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.badge-categoria-despesa {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.badge-conta-corrente {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.badge-conta-poupanca {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.badge-conta-investimento {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+/* Coluna de ações em tabelas */
+.acoes-col {
+    width: 120px;
+    text-align: center;
+} 
+
+/* ===== RELATÓRIO FINANCEIRO ===== */
+
+/* Container de gráficos responsivo */
+.chart-container {
+    position: relative;
+    height: 240px;
+    min-height: 160px;
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .chart-container {
+        height: 120px;
+        min-height: 80px;
+    }
+}
+
+/* Cards de métricas do relatório */
+.metric-card {
+    border-left: 4px solid;
+    transition: transform 0.2s;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+}
+
+.metric-card.receitas {
+    border-left-color: #28a745;
+}
+
+.metric-card.despesas {
+    border-left-color: #dc3545;
+}
+
+.metric-card.saldo {
+    border-left-color: #007bff;
+}
+
+.metric-card.metas {
+    border-left-color: #ffc107;
+}
+
+/* Cards do dashboard de relatório */
+.card-dashboard {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+    overflow: hidden;
+}
+
+.card-dashboard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.card-receita {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+}
+
+.card-despesa {
+    background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+    color: white;
+}
+
+.card-saldo {
+    background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
+    color: white;
+}
+
+.card-meta {
+    background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+    color: white;
+}
+
+.card-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.card-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 4px 0;
+}
+
+.card-desc {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.card-icon-bg {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-icon {
+    font-size: 1.2rem;
+}
+
+/* Grid do dashboard */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+} 
+
+/* ===== CARTÃO DE CRÉDITO ===== */
+
+/* Estrutura do cartão visual */
+.cartao-visual {
+    position: relative;
+    border-radius: 18px;
+    min-width: 260px;
+    max-width: 320px;
+    height: 180px;
+    width: 100%;
+    aspect-ratio: 16/9;
+    color: #fff;
+    box-shadow: 0 2px 8px #0002;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    overflow: hidden;
+}
+
+/* Logo do banco */
+.banco-logo {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    height: 44px;
+    width: 44px;
+    object-fit: contain;
+    z-index: 2;
+}
+
+/* Badge de fatura vencida */
+.cartao-visual .fatura-vencida-badge {
+    position: absolute;
+    top: 60px;
+    right: 18px;
+    display: inline-flex;
+    align-items: center;
+    background: #d32f2f;
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 1px 7px 1px 5px;
+    border-radius: 11px;
+    gap: 0.3em;
+    box-shadow: 0 1px 4px #0003;
+    z-index: 3;
+}
+
+/* Estrutura interna do cartão */
+.cartao-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.cartao-nome {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    z-index: 1;
+}
+
+/* Linhas de informação do cartão */
+.cartao-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 0.2rem;
+}
+
+.cartao-label {
+    color: #fff;
+    font-weight: 500;
+    text-shadow: 0 1px 2px #0008;
+    min-width: 70px;
+    max-width: 90px;
+    flex-shrink: 0;
+}
+
+.cartao-value {
+    color: #fff;
+    font-weight: 600;
+    text-shadow: 0 1px 2px #0008;
+    word-break: break-all;
+    flex: 1;
+}
+
+.cartao-value-bold {
+    font-weight: 700;
+}
+
+.cartao-value-saldo {
+    color: #00ffae;
+    font-weight: 700;
+    text-shadow: 0 1px 2px #0008;
+}
+
+/* Logo da bandeira */
+.cartao-visual img[alt*="Visa"],
+.cartao-visual img[alt*="Mastercard"] {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    width: 36px;
+    height: auto;
+    opacity: 0.9;
+    z-index: 2;
+} 
+
+/* ===== DASHBOARD RESPONSIVO ===== */
+
+/* Tema escuro do dashboard */
+body.dark-mode {
+    background: #232526 !important;
+}
+
+body.dark-mode .dashboard-grid {
+    background: linear-gradient(135deg, #232526 0%, #414345 100%);
+}
+
+/* Grid do dashboard responsivo */
+.dashboard-grid {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 10px;
+}
+
+.dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Header do dashboard */
+.dashboard-header {
+    background: rgba(255,255,255,0.95);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+}
+
+body.dark-mode .dashboard-header {
+    background: rgba(34,34,34,0.97);
+    color: #f1f1f1;
+}
+
+.dashboard-header h1 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin: 0;
+    font-size: 2rem;
+}
+
+body.dark-mode .dashboard-header h1 {
+    color: #f1f1f1;
+}
+
+.dashboard-header .user-info {
+    color: #7f8c8d;
+    font-size: 0.95rem;
+}
+
+body.dark-mode .dashboard-header .user-info {
+    color: #b2bec3;
+}
+
+/* Controles do dashboard */
+.dashboard-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.dashboard-controls .btn {
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+/* Grid stack */
+.grid-stack {
+    background: transparent;
+}
+
+.grid-stack-item {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.grid-stack-item-content {
+    background: rgba(255,255,255,0.97);
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    border: 1px solid rgba(0,0,0,0.04);
+    transition: all 0.2s;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+body.dark-mode .grid-stack-item-content {
+    background: rgba(34,34,34,0.97);
+    color: #f1f1f1;
+    border: 1px solid #222;
+}
+
+/* Métricas */
+.metric-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.metric-title {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+}
+
+body.dark-mode .metric-title {
+    color: #b2bec3;
+}
+
+.metric-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.metric-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.metric-trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    flex-wrap: wrap;
+}
+
+/* Indicadores de tendência */
+.trend-indicator {
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.65rem;
+}
+
+.trend-up {
+    background: linear-gradient(45deg, #00b894, #00cec9);
+    color: white;
+}
+
+.trend-down {
+    background: linear-gradient(45deg, #e17055, #d63031);
+    color: white;
+}
+
+.trend-stable {
+    background: linear-gradient(45deg, #636e72, #b2bec3);
+    color: white;
+}
+
+/* Títulos de gráficos */
+.chart-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+body.dark-mode .chart-title {
+    color: #f1f1f1;
+}
+
+/* Cards de alerta */
+.alert-card {
+    background: linear-gradient(45deg, #ff7675, #fd79a8);
+    color: white;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 8px;
+}
+
+body.dark-mode .alert-card {
+    background: linear-gradient(45deg, #b31217, #2c5364);
+    color: #fff;
+}
+
+.alert-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.alert-message {
+    font-size: 0.75rem;
+    opacity: 0.9;
+}
+
+/* Itens de transação */
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #f1f2f6;
+    font-size: 0.8rem;
+}
+
+body.dark-mode .transaction-item {
+    border-bottom: 1px solid #333;
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+}
+
+.transaction-info {
+    flex: 1;
+}
+
+.transaction-desc {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 2px;
+}
+
+body.dark-mode .transaction-desc {
+    color: #f1f1f1;
+}
+
+.transaction-meta {
+    color: #7f8c8d;
+    font-size: 0.75rem;
+}
+
+body.dark-mode .transaction-meta {
+    color: #b2bec3;
 } 

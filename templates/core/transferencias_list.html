@@ -56,59 +56,124 @@
     </div>
 
     <div class="card shadow">
-        <div class="card-body p-0" style="max-height: 60vh; overflow-y: auto;">
-            <div class="table-responsive" style="height: 100%;">
-                <table class="table table-hover">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Descrição</th>
-                            <th>Valor</th>
-                            <th>Data</th>
-                            <th>Conta Origem</th>
-                            <th>Conta Destino</th>
-                            <th class="acoes-col">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for transferencia in transferencias %}
-                        <tr>
-                            <td>{{ transferencia.descricao }}</td>
-                            <td class="fw-bold">{{ transferencia.valor|br_currency }}</td>
-                            <td>{{ transferencia.data|date:"d/m/Y" }}</td>
-                            <td>
-                                <span class="badge badge-conta-{{ transferencia.conta_origem.tipo|lower }}">
-                                    <i class="{{ transferencia.conta_origem.icone }} me-1"></i>{{ transferencia.conta_origem.nome }}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="badge badge-conta-{{ transferencia.conta_destino.tipo|lower }}">
-                                    <i class="{{ transferencia.conta_destino.icone }} me-1"></i>{{ transferencia.conta_destino.nome }}
-                                </span>
-                            </td>
-                            <td class="acoes-col">
-                                <a href="{% url 'core:transferencia_update' transferencia.id %}" class="btn btn-sm btn-outline-primary" title="Editar">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a href="{% url 'core:transferencia_delete' transferencia.id %}" class="btn btn-sm btn-outline-danger" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir esta transferência?');">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="6" class="text-center text-muted py-4">
-                                <i class="fas fa-inbox fa-3x mb-3"></i>
-                                <p>Nenhuma transferência encontrada.</p>
-                                <a href="{% url 'core:transferencia_create' %}" class="btn btn-primary">
-                                    <i class="fas fa-plus me-2"></i>Nova Transferência
-                                </a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+        <div class="card-body p-0">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Descrição</th>
+                        <th>Valor</th>
+                        <th>Data</th>
+                        <th>Conta Origem</th>
+                        <th>Conta Destino</th>
+                        <th class="acoes-col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transferencia in transferencias %}
+                    <tr>
+                        <td>{{ transferencia.descricao }}</td>
+                        <td class="fw-bold">{{ transferencia.valor|br_currency }}</td>
+                        <td>{{ transferencia.data|date:"d/m/Y" }}</td>
+                        <td>
+                            <span class="badge badge-conta-{{ transferencia.conta_origem.tipo|lower }}">
+                                <i class="{{ transferencia.conta_origem.icone }} me-1"></i>{{ transferencia.conta_origem.nome }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge badge-conta-{{ transferencia.conta_destino.tipo|lower }}">
+                                <i class="{{ transferencia.conta_destino.icone }} me-1"></i>{{ transferencia.conta_destino.nome }}
+                            </span>
+                        </td>
+                        <td class="acoes-col">
+                            <a href="{% url 'core:transferencia_update' transferencia.id %}" class="btn btn-sm btn-outline-primary" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="{% url 'core:transferencia_delete' transferencia.id %}" class="btn btn-sm btn-outline-danger" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir esta transferência?');">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            <i class="fas fa-inbox fa-3x mb-3"></i>
+                            <p>Nenhuma transferência encontrada.</p>
+                            <a href="{% url 'core:transferencia_create' %}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Nova Transferência
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if is_paginated %}
+            <nav class="mt-3">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}&per_page={{ per_page }}" aria-label="Anterior">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo;</span>
+                    </li>
+                    {% endif %}
+                    {% for num in paginator.page_range %}
+                    <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                        <a class="page-link" href="?page={{ num }}&per_page={{ per_page }}">{{ num }}</a>
+                    </li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}&per_page={{ per_page }}" aria-label="Próxima">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&raquo;</span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
         </div>
     </div>
 </div>
+{% block extra_js %}
+<script>
+function calcularLinhasTabela() {
+    const alturaJanela = window.innerHeight;
+    const tabela = document.querySelector('.table');
+    if (!tabela) return 8;
+    const cabecalho = tabela.querySelector('thead');
+    const linhaExemplo = tabela.querySelector('tbody tr');
+    if (!linhaExemplo) return 8;
+    const alturaCabecalho = cabecalho ? cabecalho.offsetHeight : 40;
+    const alturaLinha = linhaExemplo.offsetHeight || 40;
+    const alturaExtra = 260;
+    const alturaDisponivel = alturaJanela - alturaExtra;
+    let linhas = Math.floor(alturaDisponivel / alturaLinha);
+    linhas = Math.max(4, Math.min(linhas - 1, 30));
+    return linhas;
+}
+function setPerPageIfNeeded() {
+    const url = new URL(window.location.href);
+    const perPageAtual = url.searchParams.get('per_page');
+    const linhas = calcularLinhasTabela();
+    if (perPageAtual === null || parseInt(perPageAtual) !== linhas) {
+        url.searchParams.set('per_page', linhas);
+        url.searchParams.set('page', 1);
+        window.location.replace(url.toString());
+    }
+}
+window.addEventListener('DOMContentLoaded', setPerPageIfNeeded);
+window.addEventListener('resize', function() {
+    clearTimeout(window._resizeTimeout);
+    window._resizeTimeout = setTimeout(setPerPageIfNeeded, 400);
+});
+</script>
+{% endblock %}
 {% endblock %} 

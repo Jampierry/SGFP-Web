@@ -1073,6 +1073,8 @@ body.sgfp-light-sidebar .badge i[class^="fa"] {
     position: relative !important;
     overflow: hidden !important;
     padding: 0 !important;
+    min-height: 100px !important;
+    max-height: 120px !important;
 }
 .dashboard-grid .card-dashboard.card-receita {
     border-color: #4ADE80 !important;
@@ -1095,28 +1097,30 @@ body.sgfp-light-sidebar .badge i[class^="fa"] {
     color: #FACC15 !important;
 }
 .dashboard-grid .card-dashboard .card-body {
-    padding: 19px 16px 14px 16px !important;
+    padding: 12px 16px !important;
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
     justify-content: space-between !important;
     position: relative !important;
+    min-height: 100px !important;
+    max-height: 120px !important;
 }
 .dashboard-grid .card-dashboard .card-title {
-    font-size: 0.8rem !important;
+    font-size: 0.85rem !important;
     font-weight: 600 !important;
     color: #b2bec3 !important;
     margin-bottom: 6px !important;
 }
 .dashboard-grid .card-dashboard .card-value {
-    font-size: 1.36rem !important;
+    font-size: 1.3rem !important;
     font-weight: 800 !important;
     margin-bottom: 3px !important;
     color: inherit !important;
     letter-spacing: -0.8px !important;
 }
 .dashboard-grid .card-dashboard .card-desc {
-    font-size: 0.76rem !important;
+    font-size: 0.75rem !important;
     color: #b2bec3 !important;
     margin-bottom: 0 !important;
 }
@@ -1125,8 +1129,7 @@ body.sgfp-light-sidebar .badge i[class^="fa"] {
     height: 32px !important;
     position: absolute !important;
     right: 10px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
+    top: 10px !important;
     background: rgba(255,255,255,0.10) !important;
     border-radius: 50% !important;
     display: flex !important;
@@ -1142,19 +1145,21 @@ body.sgfp-light-sidebar .badge i[class^="fa"] {
 @media (max-width: 900px) {
     .dashboard-grid .card-dashboard .card-body {
         padding: 13px 8px 10px 8px !important;
+        min-height: 80px !important;
+        max-height: 100px !important;
     }
     .dashboard-grid .card-dashboard .card-title {
-        font-size: 0.76rem !important;
-    }
-    .dashboard-grid .card-dashboard .card-value {
-        font-size: 0.88rem !important;
-    }
-    .dashboard-grid .card-dashboard .card-icon {
         font-size: 0.8rem !important;
     }
+    .dashboard-grid .card-dashboard .card-value {
+        font-size: 1.1rem !important;
+    }
+    .dashboard-grid .card-dashboard .card-icon {
+        font-size: 0.9rem !important;
+    }
     .dashboard-grid .card-dashboard .card-icon-bg {
-        width: 22px !important;
-        height: 22px !important;
+        width: 28px !important;
+        height: 28px !important;
     }
 }
 body.theme-light .dashboard-grid .card-dashboard {

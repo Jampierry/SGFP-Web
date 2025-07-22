@@ -25,40 +25,56 @@
     </form>
     <div class="row g-2 align-items-stretch mb-2" style="min-height:220px;">
         <div class="col-lg-3 col-md-12 mb-2 mb-lg-0">
-            <div class="card shadow h-100 p-2 d-flex flex-column justify-content-center" style="min-height:220px;">
-                <div class="card-body p-2">
-                    <h6 class="text-muted mb-1" style="font-size:0.95em;">Limite Total</h6>
-                    <h4 class="text-primary mb-2" style="font-size:1.3em;">{{ total_limite|br_currency }}</h4>
-                    <h6 class="text-muted mt-2 mb-1" style="font-size:0.95em;">Utilizado</h6>
-                    <h4 class="text-danger mb-2" style="font-size:1.3em;">{{ total_utilizado|br_currency }}</h4>
-                    <h6 class="text-muted mt-2 mb-1" style="font-size:0.95em;">Disponível</h6>
-                    <h4 class="text-success mb-0" style="font-size:1.3em;">{{ total_disponivel|br_currency }}</h4>
+            <div class="sgfp-card dashboard-card-saldo">
+                <div class="sgfp-card-header d-flex align-items-center justify-content-between">
+                    <span>Limite Total</span>
+                    <span class="dashboard-card-icon-bg"><i class="fas fa-credit-card dashboard-card-icon"></i></span>
+                </div>
+                <div class="sgfp-card-body">
+                    <div>
+                        <div class="dashboard-card-value text-primary">{{ total_limite|br_currency }}</div>
+                        <div class="dashboard-card-desc">Limite Total</div>
+                        <div class="dashboard-card-value text-danger mt-2">{{ total_utilizado|br_currency }}</div>
+                        <div class="dashboard-card-desc">Utilizado</div>
+                        <div class="dashboard-card-value text-success mt-2">{{ total_disponivel|br_currency }}</div>
+                        <div class="dashboard-card-desc">Disponível</div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-lg-6 col-md-7 mb-2 mb-lg-0">
-            <div class="card shadow h-100 p-3 d-flex flex-column justify-content-center" style="min-height:220px;">
-                <h6 class="text-muted mb-1" style="font-size:0.95em;">Evolução Temporal dos Gastos</h6>
-                <div class="d-flex align-items-center justify-content-between mb-1">
-                    <div></div>
-                    <div>
-                        <button id="linhaPrev" class="btn btn-sm btn-light me-1" title="Meses anteriores"><i class="fas fa-chevron-left"></i></button>
-                        <button id="linhaNext" class="btn btn-sm btn-light" title="Meses futuros"><i class="fas fa-chevron-right"></i></button>
+            <div class="sgfp-card dashboard-card-receita h-100 d-flex flex-column justify-content-center">
+                <div class="sgfp-card-header d-flex align-items-center justify-content-between">
+                    <span>Evolução Temporal dos Gastos</span>
+                    <span class="dashboard-card-icon-bg"><i class="fas fa-chart-line dashboard-card-icon"></i></span>
+                </div>
+                <div class="sgfp-card-body">
+                    <div class="flex-grow-1 w-100">
+                        <div class="d-flex align-items-center justify-content-between mb-1">
+                            <div></div>
+                            <div>
+                                <button id="linhaPrev" class="btn btn-sm btn-light me-1" title="Meses anteriores"><i class="fas fa-chevron-left"></i></button>
+                                <button id="linhaNext" class="btn btn-sm btn-light" title="Meses futuros"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                        <canvas id="graficoLinhaCartoes" style="height: 140px; max-height: 180px; width:100%;"></canvas>
                     </div>
                 </div>
-                <canvas id="graficoLinhaCartoes" style="height: 140px; max-height: 180px; width:100%;"></canvas>
             </div>
         </div>
         <div class="col-lg-3 col-md-5">
-            <div class="card shadow h-100 p-3 d-flex flex-column justify-content-center" style="min-height:220px;">
-                <div class="d-flex align-items-center mb-1" style="height: 28px;">
-                    <h6 class="text-muted mb-0" style="font-size:0.95em;">Evolução de Gastos com Cartões</h6>
+            <div class="sgfp-card dashboard-card-despesa">
+                <div class="sgfp-card-header d-flex align-items-center justify-content-between">
+                    <span>Evolução de Gastos com Cartões</span>
+                    <span class="dashboard-card-icon-bg"><i class="fas fa-chart-pie dashboard-card-icon"></i></span>
                 </div>
-                <div class="d-flex flex-row align-items-center justify-content-center flex-grow-1" style="gap: 24px; min-height: 160px; height: 180px;">
-                    <div style="width: 180px; display: flex; justify-content: center; align-items: center;">
-                        <canvas id="graficoGastosCartoes" style="height: 160px; max-height: 200px; width: 160px; max-width: 200px;"></canvas>
+                <div class="sgfp-card-body">
+                    <div class="flex-grow-1 w-100 d-flex flex-row align-items-center justify-content-center" style="gap: 24px; min-height: 160px; height: 180px;">
+                        <div style="width: 180px; display: flex; justify-content: center; align-items: center;">
+                            <canvas id="graficoGastosCartoes" style="height: 160px; max-height: 200px; width: 160px; max-width: 200px;"></canvas>
+                        </div>
+                        <div id="legendaGastosCartoes" class="small legenda-horizontal" style="justify-content: flex-start; margin-left: 0; min-width: 110px; max-width: 150px;"></div>
                     </div>
-                    <div id="legendaGastosCartoes" class="small legenda-horizontal" style="justify-content: flex-start; margin-left: 0; min-width: 110px; max-width: 150px;"></div>
                 </div>
             </div>
         </div>
@@ -472,76 +488,4 @@ function setupCartaoClickAjax() {
 }
 document.addEventListener('DOMContentLoaded', setupCartaoClickAjax);
 </script>
-
-<style>
-.card, .card-body, .card.shadow, .card.h-100 {
-    min-height: 220px;
-    height: 100%;
-}
-.cartao-card {
-    border-radius: 20px;
-    box-shadow: 0 2px 8px #0002;
-    border: 2px solid transparent;
-}
-.cartao-card-selecionado {
-    border: 2px solid #007bff !important;
-    box-shadow: 0 0 0 3px #007bff33 !important;
-    background: #e9f5ff !important;
-}
-.fatura-card {
-    border: 2px solid transparent;
-}
-.fatura-card.fatura-card-selecionada {
-    border: 2px solid #007bff !important;
-    box-shadow: 0 0 0 3px #007bff33 !important;
-    background: #e9f5ff !important;
-}
-.fatura-card.fatura-card-selecionada.bg-success {
-    border: 2px solid #28a745 !important;
-    box-shadow: 0 0 0 3px #28a74533 !important;
-    background: rgba(40, 167, 69, 0.1) !important;
-}
-.fatura-card.fatura-card-selecionada.bg-warning {
-    border: 2px solid #ffc107 !important;
-    box-shadow: 0 0 0 3px #ffc10733 !important;
-    background: rgba(255, 193, 7, 0.1) !important;
-}
-.fatura-card.fatura-card-selecionada.bg-danger {
-    border: 2px solid #dc3545 !important;
-    box-shadow: 0 0 0 3px #dc354533 !important;
-    background: rgba(220, 53, 69, 0.1) !important;
-}
-#legendaGastosCartoes.legenda-horizontal {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: nowrap;
-    margin-top: 0;
-    min-width: 110px;
-    max-width: 150px;
-}
-#legendaGastosCartoes.legenda-horizontal span.legenda-item {
-    display: flex;
-    align-items: center;
-    font-size: 1em;
-    text-align: left;
-    gap: 6px;
-    white-space: nowrap;
-    margin-bottom: 0;
-}
-#legendaGastosCartoes .legenda-cor {
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    border-radius: 3px;
-    margin-right: 6px;
-}
-.wallet-carrossel { min-height: 220px; }
-.wallet-cards { height: 220px; width: 100%; position: relative; }
-.wallet-card-container { top: 0; }
-.wallet-card { box-shadow: 0 4px 24px #0003; transition: box-shadow 0.3s, border 0.3s; border: 2px solid transparent; }
-.wallet-card-active { box-shadow: 0 8px 32px #0005; border: 2px solid #007bff; }
-</style>
 {% endblock %} 

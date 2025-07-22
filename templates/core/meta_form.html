@@ -3,19 +3,13 @@
 {% load br_filters %}
 
 {% block title %}{{ title }} - SGFP{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block page_greeting %}Defina suas metas financeiras{% endblock %}
+{% block page_icon %}<i class="fas fa-bullseye text-success"></i>{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h3 mb-0">{{ title }}</h1>
-            <p class="text-muted">Defina suas metas financeiras</p>
-        </div>
-        <a href="{% url 'core:meta_list' %}" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left me-2"></i>Voltar
-        </a>
-    </div>
+    <!-- Header removido daqui, agora está na navbar pelo page_title/page_greeting -->
 
     <div class="row justify-content-center">
         <div class="col-lg-8">
@@ -89,7 +83,7 @@
                                     <label for="{{ form.data_inicio.id_for_label }}" class="form-label">
                                         Data de Início <span class="text-danger">*</span>
                                     </label>
-                                    {{ form.data_inicio }}
+                                    <input type="date" name="{{ form.data_inicio.name }}" id="{{ form.data_inicio.id_for_label }}" class="form-control" value="{{ form.data_inicio.value|date:'Y-m-d' }}">
                                     {% if form.data_inicio.errors %}
                                     <div class="text-danger small">{{ form.data_inicio.errors.0 }}</div>
                                     {% endif %}
@@ -100,7 +94,7 @@
                                     <label for="{{ form.data_fim.id_for_label }}" class="form-label">
                                         Data de Conclusão <span class="text-danger">*</span>
                                     </label>
-                                    {{ form.data_fim }}
+                                    <input type="date" name="{{ form.data_fim.name }}" id="{{ form.data_fim.id_for_label }}" class="form-control" value="{{ form.data_fim.value|date:'Y-m-d' }}">
                                     {% if form.data_fim.errors %}
                                     <div class="text-danger small">{{ form.data_fim.errors.0 }}</div>
                                     {% endif %}
@@ -161,10 +155,10 @@
                         </div>
 
                         <div class="d-flex justify-content-end gap-2">
-                            <a href="{% url 'core:meta_list' %}" class="btn btn-secondary">
+                            <a href="{% url 'core:meta_list' %}" class="sgfp-btn sgfp-btn-outline">
                                 <i class="fas fa-times me-2"></i>Cancelar
                             </a>
-                            <button type="submit" class="btn btn-success">
+                            <button type="submit" class="sgfp-btn sgfp-btn-success">
                                 <i class="fas fa-save me-2"></i>Salvar Meta
                             </button>
                         </div>
@@ -195,8 +189,8 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="progress mb-3" style="height: 25px;">
-                        <div class="progress-bar bg-success" id="progressoBarra" role="progressbar" style="width: 0%"></div>
+                    <div class="sgfp-progress">
+                        <div class="sgfp-progress-bar sgfp-progress-bar-success" id="progressoBarra" role="progressbar" style="width: 0%"></div>
                     </div>
                     <div class="row text-center">
                         <div class="col-md-4">
