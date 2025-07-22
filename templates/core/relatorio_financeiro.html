@@ -211,10 +211,12 @@
                         <table class="table table-sm">
                             <thead>
                                 <tr>
-                                    <th>Descrição</th>
-                                    <th>Valor</th>
-                                    <th>Data</th>
-                                    <th>Categoria</th>
+                                    {% with sort=request.GET.sort_top_receitas|default:'valor' order=request.GET.order_top_receitas|default:'desc' %}
+                                    <th><a href="?sort_top_receitas=descricao&order_top_receitas={% if sort == 'descricao' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_top_receitas %}&per_page_top_receitas={{ request.GET.per_page_top_receitas }}{% endif %}">Descrição {% if sort == 'descricao' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+                                    <th><a href="?sort_top_receitas=valor&order_top_receitas={% if sort == 'valor' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_top_receitas %}&per_page_top_receitas={{ request.GET.per_page_top_receitas }}{% endif %}">Valor {% if sort == 'valor' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+                                    <th><a href="?sort_top_receitas=data&order_top_receitas={% if sort == 'data' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_top_receitas %}&per_page_top_receitas={{ request.GET.per_page_top_receitas }}{% endif %}">Data {% if sort == 'data' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+                                    <th><a href="?sort_top_receitas=categoria&order_top_receitas={% if sort == 'categoria' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_top_receitas %}&per_page_top_receitas={{ request.GET.per_page_top_receitas }}{% endif %}">Categoria {% if sort == 'categoria' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+                                    {% endwith %}
                                 </tr>
                             </thead>
                             <tbody>
@@ -284,10 +286,12 @@
                         <table class="table table-sm">
                             <thead>
                                 <tr>
-                                    <th>Descrição</th>
-                                    <th>Valor</th>
-                                    <th>Data</th>
-                                    <th>Categoria</th>
+                                    {% with sort=request.GET.sort_top_despesas|default:'valor' order=request.GET.order_top_despesas|default:'desc' %}
+                                    <th><a href="?sort_top_despesas=descricao&order_top_despesas={% if sort == 'descricao' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_top_despesas %}&per_page_top_despesas={{ request.GET.per_page_top_despesas }}{% endif %}">Descrição {% if sort == 'descricao' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+                                    <th><a href="?sort_top_despesas=valor&order_top_despesas={% if sort == 'valor' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_top_despesas %}&per_page_top_despesas={{ request.GET.per_page_top_despesas }}{% endif %}">Valor {% if sort == 'valor' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+                                    <th><a href="?sort_top_despesas=data&order_top_despesas={% if sort == 'data' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_top_despesas %}&per_page_top_despesas={{ request.GET.per_page_top_despesas }}{% endif %}">Data {% if sort == 'data' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+                                    <th><a href="?sort_top_despesas=categoria&order_top_despesas={% if sort == 'categoria' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_top_despesas %}&per_page_top_despesas={{ request.GET.per_page_top_despesas }}{% endif %}">Categoria {% if sort == 'categoria' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+                                    {% endwith %}
                                 </tr>
                             </thead>
                             <tbody>

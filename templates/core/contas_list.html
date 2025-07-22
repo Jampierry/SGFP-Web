@@ -19,12 +19,14 @@
                 <table class="table table-hover">
                     <thead class="table-light">
                         <tr>
-                            <th>Nome</th>
-                            <th>Saldo Atual</th>
-                            <th>Tipo</th>
+                            {% with sort=request.GET.sort|default:'nome' order=request.GET.order|default:'asc' %}
+                            <th><a href="?sort=nome&order={% if sort == 'nome' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}">Nome {% if sort == 'nome' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+                            <th><a href="?sort=saldo_atual&order={% if sort == 'saldo_atual' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}">Saldo Atual {% if sort == 'saldo_atual' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+                            <th><a href="?sort=tipo&order={% if sort == 'tipo' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}">Tipo {% if sort == 'tipo' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
                             <th>Cor</th>
                             <th>Ícone</th>
                             <th class="acoes-col">Ações</th>
+                            {% endwith %}
                         </tr>
                     </thead>
                     <tbody>

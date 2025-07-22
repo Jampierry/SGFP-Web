@@ -416,12 +416,14 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Descrição</th>
-                                    <th>Valor</th>
-                                    <th>Data</th>
-                                    <th>Categoria</th>
-                                    <th>Conta</th>
+                                    {% with sort=request.GET.sort_transacoes|default:'data' order=request.GET.order_transacoes|default:'desc' %}
+                                    <th><a href="?sort_transacoes=descricao&order_transacoes={% if sort == 'descricao' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_transacoes %}&per_page_transacoes={{ request.GET.per_page_transacoes }}{% endif %}">Descrição {% if sort == 'descricao' %}<i class='fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}'></i>{% endif %}</a></th>
+                                    <th><a href="?sort_transacoes=valor&order_transacoes={% if sort == 'valor' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_transacoes %}&per_page_transacoes={{ request.GET.per_page_transacoes }}{% endif %}">Valor {% if sort == 'valor' %}<i class='fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}'></i>{% endif %}</a></th>
+                                    <th><a href="?sort_transacoes=data&order_transacoes={% if sort == 'data' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_transacoes %}&per_page_transacoes={{ request.GET.per_page_transacoes }}{% endif %}">Data {% if sort == 'data' %}<i class='fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}'></i>{% endif %}</a></th>
+                                    <th><a href="?sort_transacoes=categoria&order_transacoes={% if sort == 'categoria' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_transacoes %}&per_page_transacoes={{ request.GET.per_page_transacoes }}{% endif %}">Categoria {% if sort == 'categoria' %}<i class='fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}'></i>{% endif %}</a></th>
+                                    <th><a href="?sort_transacoes=conta&order_transacoes={% if sort == 'conta' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_transacoes %}&per_page_transacoes={{ request.GET.per_page_transacoes }}{% endif %}">Conta {% if sort == 'conta' %}<i class='fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}'></i>{% endif %}</a></th>
                                     <th>Tipo</th>
+                                    {% endwith %}
                                 </tr>
                             </thead>
                             <tbody>

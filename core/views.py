@@ -697,6 +697,23 @@ def dashboard_classic(request):
 
     prazo_curto_limite = timezone.now().date() + timedelta(days=30)
 
+    sort_transacoes = request.GET.get('sort_transacoes', 'data')
+    order_transacoes = request.GET.get('order_transacoes', 'desc')
+    sort_map_transacoes = {
+        'descricao': 'descricao',
+        'valor': 'valor',
+        'data': 'data',
+        'categoria': lambda t: t['categoria'].nome if t['categoria'] else '',
+        'conta': lambda t: t['conta'].nome if t.get('conta') else '',
+    }
+    def get_sort_key(t):
+        key = sort_map_transacoes.get(sort_transacoes)
+        if callable(key):
+            return key(t)
+        return t.get(key)
+    reverse = (order_transacoes == 'desc')
+    transacoes_recentes = sorted(transacoes_recentes, key=get_sort_key, reverse=reverse)
+
     context = {
         'receitas_mes': receitas_mes,
         'despesas_mes': despesas_mes,
@@ -743,7 +760,16 @@ def dashboard_classic(request):
 # Views para Categorias
 @login_required
 def categoria_list(request):
-    categorias = Categoria.objects.filter(usuario=request.user, ativo=True)
+    sort = request.GET.get('sort', 'nome')
+    order = request.GET.get('order', 'asc')
+    sort_map = {
+        'nome': 'nome',
+        'tipo': 'tipo',
+    }
+    sort_field = sort_map.get(sort, 'nome')
+    if order == 'desc':
+        sort_field = f'-{sort_field}'
+    categorias = Categoria.objects.filter(usuario=request.user, ativo=True).order_by(sort_field)
     return render(request, 'core/categorias_list.html', {'categorias': categorias})
 
 @login_required
@@ -815,7 +841,17 @@ def categoria_atualizar_cor(request, pk):
 # Views para Contas
 @login_required
 def conta_list(request):
-    contas = Conta.objects.filter(usuario=request.user, ativo=True)
+    sort = request.GET.get('sort', 'nome')
+    order = request.GET.get('order', 'asc')
+    sort_map = {
+        'nome': 'nome',
+        'saldo_atual': 'saldo_atual',
+        'tipo': 'tipo',
+    }
+    sort_field = sort_map.get(sort, 'nome')
+    if order == 'desc':
+        sort_field = f'-{sort_field}'
+    contas = Conta.objects.filter(usuario=request.user, ativo=True).order_by(sort_field)
     for conta in contas:
         conta.atualizar_saldo()
     return render(request, 'core/contas_list.html', {'contas': contas})
@@ -889,7 +925,19 @@ def conta_atualizar_cor(request, pk):
 # Views para Receitas
 @login_required
 def receita_list(request):
-    receitas = Receita.objects.filter(usuario=request.user, ativo=True).order_by('-data')
+    sort = request.GET.get('sort', 'data')
+    order = request.GET.get('order', 'desc')
+    sort_map = {
+        'descricao': 'descricao',
+        'valor': 'valor',
+        'data': 'data',
+        'categoria': 'categoria__nome',
+        'conta': 'conta__nome',
+    }
+    sort_field = sort_map.get(sort, 'data')
+    if order == 'desc':
+        sort_field = f'-{sort_field}'
+    receitas = Receita.objects.filter(usuario=request.user, ativo=True).order_by(sort_field)
     form = ReceitaFiltroForm(request.GET or None, user=request.user)
     if form.is_valid():
         data_inicial = form.cleaned_data.get('data_inicial')
@@ -976,7 +1024,19 @@ def receita_delete(request, pk):
 # Views para Despesas
 @login_required
 def despesa_list(request):
-    despesas = Despesa.objects.filter(usuario=request.user, ativo=True).order_by('-data')
+    sort = request.GET.get('sort', 'data')
+    order = request.GET.get('order', 'desc')
+    sort_map = {
+        'descricao': 'descricao',
+        'valor': 'valor',
+        'data': 'data',
+        'categoria': 'categoria__nome',
+        'conta': 'conta__nome',
+    }
+    sort_field = sort_map.get(sort, 'data')
+    if order == 'desc':
+        sort_field = f'-{sort_field}'
+    despesas = Despesa.objects.filter(usuario=request.user, ativo=True).order_by(sort_field)
     form = DespesaFiltroForm(request.GET or None, user=request.user)
     if form.is_valid():
         data_inicial = form.cleaned_data.get('data_inicial')
@@ -1077,7 +1137,19 @@ def despesa_edit(request, pk):
 # Views para Transferências
 @login_required
 def transferencia_list(request):
-    transferencias = Transferencia.objects.filter(usuario=request.user, ativo=True).order_by('-data')
+    sort = request.GET.get('sort', 'data')
+    order = request.GET.get('order', 'desc')
+    sort_map = {
+        'descricao': 'descricao',
+        'valor': 'valor',
+        'data': 'data',
+        'conta_origem': 'conta_origem__nome',
+        'conta_destino': 'conta_destino__nome',
+    }
+    sort_field = sort_map.get(sort, 'data')
+    if order == 'desc':
+        sort_field = f'-{sort_field}'
+    transferencias = Transferencia.objects.filter(usuario=request.user, ativo=True).order_by(sort_field)
     
     # Aplicar filtros se fornecidos
     conta_origem = request.GET.get('conta_origem')
@@ -1143,7 +1215,22 @@ def transferencia_delete(request, pk):
 # Views para Metas
 @login_required
 def meta_list(request):
-    metas = Meta.objects.filter(usuario=request.user, ativo=True).order_by('data_fim')
+    sort = request.GET.get('sort', 'data_fim')
+    order = request.GET.get('order', 'desc')
+    sort_map = {
+        'titulo': 'titulo',
+        'valor_meta': 'valor_meta',
+        'valor_atual': 'valor_atual',
+        'data_inicio': 'data_inicio',
+        'data_fim': 'data_fim',
+        'tipo': 'tipo',
+        'categoria': 'categoria__nome',
+        'conta': 'conta__nome',
+    }
+    sort_field = sort_map.get(sort, 'data_fim')
+    if order == 'desc':
+        sort_field = f'-{sort_field}'
+    metas = Meta.objects.filter(usuario=request.user, ativo=True).order_by(sort_field)
     per_page = request.GET.get('per_page')
     from django.core.paginator import Paginator
     try:
@@ -1302,8 +1389,31 @@ def relatorio_financeiro(request):
     ).order_by('-total')
     
     # Top receitas e despesas
-    top_receitas = receitas.order_by('-valor')[:10]
-    top_despesas = despesas.order_by('-valor')[:10]
+    sort_top_receitas = request.GET.get('sort_top_receitas', 'valor')
+    order_top_receitas = request.GET.get('order_top_receitas', 'desc')
+    sort_map_receitas = {
+        'descricao': 'descricao',
+        'valor': 'valor',
+        'data': 'data',
+        'categoria': 'categoria__nome',
+    }
+    sort_field_receitas = sort_map_receitas.get(sort_top_receitas, 'valor')
+    if order_top_receitas == 'desc':
+        sort_field_receitas = f'-{sort_field_receitas}'
+    top_receitas = receitas.order_by(sort_field_receitas)[:10]
+
+    sort_top_despesas = request.GET.get('sort_top_despesas', 'valor')
+    order_top_despesas = request.GET.get('order_top_despesas', 'desc')
+    sort_map_despesas = {
+        'descricao': 'descricao',
+        'valor': 'valor',
+        'data': 'data',
+        'categoria': 'categoria__nome',
+    }
+    sort_field_despesas = sort_map_despesas.get(sort_top_despesas, 'valor')
+    if order_top_despesas == 'desc':
+        sort_field_despesas = f'-{sort_field_despesas}'
+    top_despesas = despesas.order_by(sort_field_despesas)[:10]
     
     # Dados para gráficos
     # Gráfico de Receitas vs Despesas (últimos 6 meses)
@@ -2381,7 +2491,22 @@ def despesas_fatura_ajax(request):
         if data_fim:
             filtros['data__lte'] = data_fim
         # Filtro para garantir apenas despesas de cartão de crédito
-        despesas_qs = Despesa.objects.filter(cartao__isnull=False, **filtros).order_by('-data')
+        sort = request.GET.get('sort', 'data')
+        order = request.GET.get('order', 'desc')
+        # Mapear colunas permitidas para ordenação
+        sort_map = {
+            'cartao': 'cartao__nome',
+            'data': 'data',
+            'descricao': 'descricao',
+            'categoria': 'categoria__nome',
+            'tipo': 'tipo_pagamento',
+            'parcela': 'parcela_atual',
+            'valor': 'valor',
+        }
+        sort_field = sort_map.get(sort, 'data')
+        if order == 'desc':
+            sort_field = f'-{sort_field}'
+        despesas_qs = Despesa.objects.filter(cartao__isnull=False, **filtros).order_by(sort_field)
         per_page = request.GET.get('per_page_despesas_cartao')
         try:
             per_page = int(per_page)

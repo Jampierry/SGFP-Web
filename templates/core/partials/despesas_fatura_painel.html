@@ -10,13 +10,15 @@
                     <table class="table table-striped mb-0">
                         <thead class="sticky-top bg-white" style="z-index: 10;">
                             <tr>
-                                <th>Cartão</th>
-                                <th>Data</th>
-                                <th>Descrição</th>
-                                <th>Categoria</th>
-                                <th>Tipo</th>
-                                <th>Parcela</th>
-                                <th>Valor</th>
+                                {% with sort=request.GET.sort|default:'data' order=request.GET.order|default:'desc' %}
+                                <th><a href="?sort=cartao&order={% if sort == 'cartao' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_despesas_cartao %}&per_page_despesas_cartao={{ request.GET.per_page_despesas_cartao }}{% endif %}">Cartão {% if sort == 'cartao' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+                                <th><a href="?sort=data&order={% if sort == 'data' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_despesas_cartao %}&per_page_despesas_cartao={{ request.GET.per_page_despesas_cartao }}{% endif %}">Data {% if sort == 'data' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+                                <th><a href="?sort=descricao&order={% if sort == 'descricao' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_despesas_cartao %}&per_page_despesas_cartao={{ request.GET.per_page_despesas_cartao }}{% endif %}">Descrição {% if sort == 'descricao' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+                                <th><a href="?sort=categoria&order={% if sort == 'categoria' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_despesas_cartao %}&per_page_despesas_cartao={{ request.GET.per_page_despesas_cartao }}{% endif %}">Categoria {% if sort == 'categoria' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+                                <th><a href="?sort=tipo&order={% if sort == 'tipo' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_despesas_cartao %}&per_page_despesas_cartao={{ request.GET.per_page_despesas_cartao }}{% endif %}">Tipo {% if sort == 'tipo' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+                                <th><a href="?sort=parcela&order={% if sort == 'parcela' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_despesas_cartao %}&per_page_despesas_cartao={{ request.GET.per_page_despesas_cartao }}{% endif %}">Parcela {% if sort == 'parcela' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+                                <th><a href="?sort=valor&order={% if sort == 'valor' and order == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.per_page_despesas_cartao %}&per_page_despesas_cartao={{ request.GET.per_page_despesas_cartao }}{% endif %}">Valor {% if sort == 'valor' %}<i class="fas fa-sort-{% if order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+                                {% endwith %}
                             </tr>
                         </thead>
                         <tbody>
