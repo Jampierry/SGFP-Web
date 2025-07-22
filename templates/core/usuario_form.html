@@ -1,21 +1,13 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %}{{ title }} - SGFP{% endblock %}
+{% block title %}Novo Usuário - SGFP{% endblock %}
+{% block page_icon %}<i class="fas fa-user"></i>{% endblock %}
+{% block page_title %}Novo Usuário{% endblock %}
+{% block page_greeting %}Gerencie os usuários do sistema{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h3 mb-0">{{ title }}</h1>
-            <p class="text-muted">Gerencie os usuários do sistema</p>
-        </div>
-        <a href="{% url 'core:usuario_list' %}" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left me-2"></i>Voltar
-        </a>
-    </div>
-
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card shadow">

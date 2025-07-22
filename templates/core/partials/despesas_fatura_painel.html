@@ -5,9 +5,8 @@
             <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
                 <h5 class="mb-0"><i class="fas fa-list me-2"></i>Despesas de Cartões</h5>
             </div>
-            <div class="card-body p-0" style="height: 320px; overflow: hidden;">
+            <div class="card-body p-0">
                 {% if despesas %}
-                <div class="table-responsive" style="height: 100%; overflow-y: auto;">
                     <table class="table table-striped mb-0">
                         <thead class="sticky-top bg-white" style="z-index: 10;">
                             <tr>
@@ -42,7 +41,39 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                </div>
+                    {% if is_paginated_despesas_cartao %}
+                    <nav class="mt-3">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj_despesas_cartao.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page_despesas_cartao={{ page_obj_despesas_cartao.previous_page_number }}&per_page_despesas_cartao={{ per_page_despesas_cartao }}" aria-label="Anterior">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&laquo;</span>
+                            </li>
+                            {% endif %}
+                            {% for num in paginator_despesas_cartao.page_range %}
+                            <li class="page-item {% if page_obj_despesas_cartao.number == num %}active{% endif %}">
+                                <a class="page-link" href="?page_despesas_cartao={{ num }}&per_page_despesas_cartao={{ per_page_despesas_cartao }}">{{ num }}</a>
+                            </li>
+                            {% endfor %}
+                            {% if page_obj_despesas_cartao.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page_despesas_cartao={{ page_obj_despesas_cartao.next_page_number }}&per_page_despesas_cartao={{ per_page_despesas_cartao }}" aria-label="Próxima">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&raquo;</span>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                    {% endif %}
                 {% else %}
                 <div class="p-4 text-center text-muted">Nenhuma despesa lançada nesta fatura.</div>
                 {% endif %}
@@ -98,3 +129,37 @@
 // Garante que o clique nas faturas funcione após AJAX
 if (typeof setupFaturaCardClickAjax === 'function') setupFaturaCardClickAjax();
 </script> 
+{% block extra_js %}
+<script>
+function calcularLinhasTabelaDespesasCartao() {
+    const alturaJanela = window.innerHeight;
+    const tabela = document.querySelector('.table');
+    if (!tabela) return 8;
+    const cabecalho = tabela.querySelector('thead');
+    const linhaExemplo = tabela.querySelector('tbody tr');
+    if (!linhaExemplo) return 8;
+    const alturaCabecalho = cabecalho ? cabecalho.offsetHeight : 40;
+    const alturaLinha = linhaExemplo.offsetHeight || 40;
+    const alturaExtra = 260;
+    const alturaDisponivel = alturaJanela - alturaExtra;
+    let linhas = Math.floor(alturaDisponivel / alturaLinha);
+    linhas = Math.max(4, Math.min(linhas - 1, 30));
+    return linhas;
+}
+function setPerPageIfNeededDespesasCartao() {
+    const url = new URL(window.location.href);
+    const perPageAtual = url.searchParams.get('per_page_despesas_cartao');
+    const linhas = calcularLinhasTabelaDespesasCartao();
+    if (perPageAtual === null || parseInt(perPageAtual) !== linhas) {
+        url.searchParams.set('per_page_despesas_cartao', linhas);
+        url.searchParams.set('page_despesas_cartao', 1);
+        window.location.replace(url.toString());
+    }
+}
+window.addEventListener('DOMContentLoaded', setPerPageIfNeededDespesasCartao);
+window.addEventListener('resize', function() {
+    clearTimeout(window._resizeTimeoutDespesasCartao);
+    window._resizeTimeoutDespesasCartao = setTimeout(setPerPageIfNeededDespesasCartao, 400);
+});
+</script>
+{% endblock %} 

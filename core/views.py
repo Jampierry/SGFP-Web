@@ -2370,48 +2370,56 @@ def despesas_fatura_ajax(request):
         data_inicio = request.GET.get('data_inicio')
         data_fim = request.GET.get('data_fim')
         filtros = {'ativo': True}
-        
         # Se uma fatura específica foi selecionada, filtrar apenas por ela
         if fatura_id:
             filtros['fatura_id'] = fatura_id
         # Caso contrário, filtrar por cartão (se especificado)
         elif cartao_id:
             filtros['cartao_id'] = cartao_id
-        
         if data_inicio:
             filtros['data__gte'] = data_inicio
         if data_fim:
             filtros['data__lte'] = data_fim
-        
         # Filtro para garantir apenas despesas de cartão de crédito
-        despesas = Despesa.objects.filter(cartao__isnull=False, **filtros)
+        despesas_qs = Despesa.objects.filter(cartao__isnull=False, **filtros).order_by('-data')
+        per_page = request.GET.get('per_page_despesas_cartao')
+        try:
+            per_page = int(per_page)
+            if per_page < 1 or per_page > 100:
+                per_page = 8
+        except (TypeError, ValueError):
+            per_page = 8
+        from django.core.paginator import Paginator
+        paginator = Paginator(despesas_qs, per_page)
+        page_number = request.GET.get('page_despesas_cartao')
+        page_obj = paginator.get_page(page_number)
+        despesas = page_obj.object_list
         fatura = Fatura.objects.filter(id=fatura_id).first() if fatura_id else None
-        
         # Dados do gráfico de evolução das faturas
         grafico_labels = []
         grafico_valores = []
         if fatura:
-            grafico_labels = [f'{fatura.get_mes_display}/{fatura.vencimento.year}']
+            grafico_labels = [f'{fatura.get_mes_display()}/{fatura.vencimento.year}']
             grafico_valores = [float(fatura.valor_calculado())]
         else:
-            # Se não houver fatura selecionada, mostrar pelo menos um ponto zerado
             grafico_labels = ["Sem Fatura"]
             grafico_valores = [0]
-        
         context = {
             'despesas': despesas,
             'grafico_labels': grafico_labels,
             'grafico_valores': grafico_valores,
             'fatura': fatura,
-            'fatura_id_selecionada': fatura_id,  # Adicionado para seleção visual
+            'fatura_id_selecionada': fatura_id,
+            'is_paginated_despesas_cartao': page_obj.has_other_pages(),
+            'page_obj_despesas_cartao': page_obj,
+            'paginator_despesas_cartao': paginator,
+            'per_page_despesas_cartao': per_page,
         }
+        from django.template.loader import render_to_string
         html = render_to_string('core/partials/despesas_fatura_painel.html', context, request=request)
         return JsonResponse({'html': html})
     except Exception as e:
-        import traceback
-        print(f"Erro em despesas_fatura_ajax: {e}")
-        print(traceback.format_exc())
-        return JsonResponse({'html': f'<div class="alert alert-danger">Erro: {str(e)}</div>'})
+        return JsonResponse({'error': str(e)}, status=500)
 
 class LoginViewCustom(LoginView):
     template_name = 'registration/login.html'

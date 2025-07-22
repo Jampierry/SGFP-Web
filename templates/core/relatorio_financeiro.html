@@ -201,14 +201,13 @@
     <div class="row">
         <!-- Top Receitas -->
         <div class="col-md-6">
-            <div class="card shadow" style="height: 320px; display: flex; flex-direction: column;">
+            <div class="card shadow">
                 <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-list me-2"></i>Top 10 Receitas
                     </h5>
                 </div>
-                <div class="card-body categorias-table-container">
-                    <div class="table-responsive" style="flex: 1 1 auto; overflow-y: auto; min-height: 0;">
+                <div class="card-body p-0">
                         <table class="table table-sm">
                             <thead>
                                 <tr>
@@ -237,21 +236,51 @@
                                 {% endfor %}
                             </tbody>
                         </table>
-                    </div>
+                    {% if is_paginated_top_receitas %}
+                    <nav class="mt-3">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj_top_receitas.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page_top_receitas={{ page_obj_top_receitas.previous_page_number }}&per_page_top_receitas={{ per_page_top_receitas }}" aria-label="Anterior">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&laquo;</span>
+                            </li>
+                            {% endif %}
+                            {% for num in paginator_top_receitas.page_range %}
+                            <li class="page-item {% if page_obj_top_receitas.number == num %}active{% endif %}">
+                                <a class="page-link" href="?page_top_receitas={{ num }}&per_page_top_receitas={{ per_page_top_receitas }}">{{ num }}</a>
+                            </li>
+                            {% endfor %}
+                            {% if page_obj_top_receitas.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page_top_receitas={{ page_obj_top_receitas.next_page_number }}&per_page_top_receitas={{ per_page_top_receitas }}" aria-label="Próxima">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&raquo;</span>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                    {% endif %}
                 </div>
             </div>
         </div>
-
         <!-- Top Despesas -->
         <div class="col-md-6">
-            <div class="card shadow" style="height: 320px; display: flex; flex-direction: column;">
+            <div class="card shadow">
                 <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-list me-2"></i>Top 10 Despesas
                     </h5>
                 </div>
-                <div class="card-body categorias-table-container">
-                    <div class="table-responsive" style="flex: 1 1 auto; overflow-y: auto; min-height: 0;">
+                <div class="card-body p-0">
                         <table class="table table-sm">
                             <thead>
                                 <tr>
@@ -280,7 +309,39 @@
                                 {% endfor %}
                             </tbody>
                         </table>
-                    </div>
+                    {% if is_paginated_top_despesas %}
+                    <nav class="mt-3">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj_top_despesas.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page_top_despesas={{ page_obj_top_despesas.previous_page_number }}&per_page_top_despesas={{ per_page_top_despesas }}" aria-label="Anterior">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&laquo;</span>
+                            </li>
+                            {% endif %}
+                            {% for num in paginator_top_despesas.page_range %}
+                            <li class="page-item {% if page_obj_top_despesas.number == num %}active{% endif %}">
+                                <a class="page-link" href="?page_top_despesas={{ num }}&per_page_top_despesas={{ per_page_top_despesas }}">{{ num }}</a>
+                            </li>
+                            {% endfor %}
+                            {% if page_obj_top_despesas.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page_top_despesas={{ page_obj_top_despesas.next_page_number }}&per_page_top_despesas={{ per_page_top_despesas }}" aria-label="Próxima">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&raquo;</span>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -490,6 +551,68 @@ document.addEventListener('DOMContentLoaded', function() {
             dataFim.disabled = true;
         }
     }
+});
+</script>
+<script>
+function calcularLinhasTabelaTopReceitas() {
+    const alturaJanela = window.innerHeight;
+    const tabela = document.querySelectorAll('.table')[0];
+    if (!tabela) return 8;
+    const cabecalho = tabela.querySelector('thead');
+    const linhaExemplo = tabela.querySelector('tbody tr');
+    if (!linhaExemplo) return 8;
+    const alturaCabecalho = cabecalho ? cabecalho.offsetHeight : 40;
+    const alturaLinha = linhaExemplo.offsetHeight || 40;
+    const alturaExtra = 260;
+    const alturaDisponivel = alturaJanela - alturaExtra;
+    let linhas = Math.floor(alturaDisponivel / alturaLinha);
+    linhas = Math.max(4, Math.min(linhas - 1, 30));
+    return linhas;
+}
+function setPerPageIfNeededTopReceitas() {
+    const url = new URL(window.location.href);
+    const perPageAtual = url.searchParams.get('per_page_top_receitas');
+    const linhas = calcularLinhasTabelaTopReceitas();
+    if (perPageAtual === null || parseInt(perPageAtual) !== linhas) {
+        url.searchParams.set('per_page_top_receitas', linhas);
+        url.searchParams.set('page_top_receitas', 1);
+        window.location.replace(url.toString());
+    }
+}
+window.addEventListener('DOMContentLoaded', setPerPageIfNeededTopReceitas);
+window.addEventListener('resize', function() {
+    clearTimeout(window._resizeTimeoutTopReceitas);
+    window._resizeTimeoutTopReceitas = setTimeout(setPerPageIfNeededTopReceitas, 400);
+});
+function calcularLinhasTabelaTopDespesas() {
+    const alturaJanela = window.innerHeight;
+    const tabela = document.querySelectorAll('.table')[1];
+    if (!tabela) return 8;
+    const cabecalho = tabela.querySelector('thead');
+    const linhaExemplo = tabela.querySelector('tbody tr');
+    if (!linhaExemplo) return 8;
+    const alturaCabecalho = cabecalho ? cabecalho.offsetHeight : 40;
+    const alturaLinha = linhaExemplo.offsetHeight || 40;
+    const alturaExtra = 260;
+    const alturaDisponivel = alturaJanela - alturaExtra;
+    let linhas = Math.floor(alturaDisponivel / alturaLinha);
+    linhas = Math.max(4, Math.min(linhas - 1, 30));
+    return linhas;
+}
+function setPerPageIfNeededTopDespesas() {
+    const url = new URL(window.location.href);
+    const perPageAtual = url.searchParams.get('per_page_top_despesas');
+    const linhas = calcularLinhasTabelaTopDespesas();
+    if (perPageAtual === null || parseInt(perPageAtual) !== linhas) {
+        url.searchParams.set('per_page_top_despesas', linhas);
+        url.searchParams.set('page_top_despesas', 1);
+        window.location.replace(url.toString());
+    }
+}
+window.addEventListener('DOMContentLoaded', setPerPageIfNeededTopDespesas);
+window.addEventListener('resize', function() {
+    clearTimeout(window._resizeTimeoutTopDespesas);
+    window._resizeTimeoutTopDespesas = setTimeout(setPerPageIfNeededTopDespesas, 400);
 });
 </script>
 {% endblock %} 

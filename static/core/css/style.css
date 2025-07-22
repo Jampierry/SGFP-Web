@@ -1803,24 +1803,13 @@ body.dark-mode .transaction-meta {
 .sgfp-card-header {
     font-weight: 600;
     font-size: 1.08rem;
-    padding: 0.5rem 0 0.4rem 0;
-    margin-bottom: 0;
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.7rem;
     border-bottom: 1px solid #e0e0e0;
     background: none;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 38px;
-}
-.dashboard-card-icon-bg {
-    margin-left: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: rgba(0,0,0,0.10);
 }
 .sgfp-card-body {
     display: flex;
@@ -1828,6 +1817,16 @@ body.dark-mode .transaction-meta {
     align-items: center;
     justify-content: space-between;
     padding: 0;
+}
+.dashboard-card-icon-bg {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.10);
 }
 .dashboard-card-icon {
     font-size: 1.35rem;
