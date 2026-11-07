@@ -34,3 +34,12 @@ Alertas de saldo negativo, meta vencendo e despesas elevadas (`Notificacao.criar
 
 ## Isolamento por usuário
 Hoje: filtro `usuario=request.user` nas views (sem garantia no banco). Alvo: RLS no Postgres.
+
+## Decisões do esquema Postgres (Fase 2, `supabase/migrations/0001_schema.sql`)
+Testes: `cd supabase/tests && npm install && npm test` (PGlite, Postgres real em WASM; 11 testes).
+- **Isolamento:** toda tabela tem `user_id` + RLS "dono" (forçada). FKs compostas `(id, user_id)` impedem apontar para conta/categoria/cartão de outro usuário.
+- **Saldo** é a view `contas_saldo` (calculada), então excluir recalcula sozinho (corrige o quirk do `delete`). A taxa de transferência continua fora do saldo, igual ao Django, para a conferência da Fase 3 bater. **Decisão pendente do usuário:** debitar a taxa da conta de origem?
+- **Cartão:** sem CVV; só `ultimos4`.
+- **Parcelamento:** função `criar_despesa_cartao` (atômica, RLS do chamador) implementa a regra pretendida: `round(valor/n,2)`, resto na última, uma fatura por mês, `data` da parcela = vencimento da fatura, `data_compra` guarda a data real. Arredondamento: Postgres arredonda meio para cima; Python `round` em Decimal arredonda para par (diferença só em casos de meio centavo exato).
+- **Fatura:** valor = `valor_ajustado` se houver, senão soma das despesas ligadas por `fatura_id` (não mais o ciclo "fechamento − 30 dias"; pode diferir de faturas antigas, a conferir na Fase 3).
+- **Novo usuário:** trigger cria `configuracoes`. Categorias/conta padrão do cadastro antigo: a decidir na Fase 4.
