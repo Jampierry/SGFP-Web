@@ -1035,9 +1035,10 @@ body.theme-light .tipo-receita {
 }
 
 .wallet-card-active { 
-    box-shadow: 0 8px 32px #0005; 
-    border: 2px solid #007bff; 
-} 
+    box-shadow: 0 8px 32px #0005;
+    border: 2px solid transparent;
+    outline: none;
+}
 
 /* ===== TEMPLATES DE LISTAGEM ===== */
 
