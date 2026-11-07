@@ -65,13 +65,13 @@ urlpatterns = [
     # Backup
     path('backup/exportar/', views.exportar_backup, name='exportar_backup'),
     path('backup/importar/', views.importar_backup, name='importar_backup'),
-    path('backup/listar/', views.listar_backups, name='listar_backups'),
-    path('backup/baixar/<str:filename>/', views.baixar_backup, name='baixar_backup'),
-    path('backup/excluir/<str:filename>/', views.excluir_backup, name='excluir_backup'),
-    path('backup/importar-arquivo/<str:filename>/', views.importar_backup_arquivo, name='importar_backup_arquivo'),
+    # DESATIVADO (seguranca, ver docs): path('backup/listar/', views.listar_backups, name='listar_backups'),
+    # DESATIVADO (seguranca, ver docs): path('backup/baixar/<str:filename>/', views.baixar_backup, name='baixar_backup'),
+    # DESATIVADO (seguranca, ver docs): path('backup/excluir/<str:filename>/', views.excluir_backup, name='excluir_backup'),
+    # DESATIVADO (seguranca, ver docs): path('backup/importar-arquivo/<str:filename>/', views.importar_backup_arquivo, name='importar_backup_arquivo'),
     path('excluir_dados_ficticios/', views.excluir_dados_ficticios, name='excluir_dados_ficticios'),
-    path('exportar_banco_completo/', views.exportar_banco_completo, name='exportar_banco_completo'),
-    path('importar_banco_completo/', views.importar_banco_completo, name='importar_banco_completo'),
+    # DESATIVADO (seguranca, ver docs): path('exportar_banco_completo/', views.exportar_banco_completo, name='exportar_banco_completo'),
+    # DESATIVADO (seguranca, ver docs): path('importar_banco_completo/', views.importar_banco_completo, name='importar_banco_completo'),
     
     # Cartões de Crédito
     path('cartoes/', views.cartao_credito_list, name='cartao_credito_list'),

@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 .venv/
-=======
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -181,4 +179,12 @@ node_modules/
 # Compiled CSS/JS
 *.css.map
 *.js.map
->>>>>>> 21e0b758bc48dfe9be832b03bdf16988eef6b5be
+
+# Dados pessoais e segredos
+db.sqlite3
+*.sqlite3
+logs/
+backup/
+staticfiles/
+superuser_*.txt
+.env
