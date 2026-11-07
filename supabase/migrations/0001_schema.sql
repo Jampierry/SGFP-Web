@@ -207,14 +207,14 @@ end $$;
 
 -- ===== Saldos e faturas (calculados, nunca gravados) ==========================
 -- saldo = inicial + receitas - despesas + transferências recebidas - enviadas (só ativos).
--- Fiel ao Django: a taxa da transferência NÃO entra (decisão pendente, ver docs/regras.md).
+-- Decisão: a taxa da transferência é debitada da conta de ORIGEM (o Django a ignorava).
 create view public.contas_saldo with (security_invoker = true) as
 select c.*,
   c.saldo_inicial
   + coalesce((select sum(valor) from public.receitas r where r.conta_id = c.id and r.ativo), 0)
   - coalesce((select sum(valor) from public.despesas d where d.conta_id = c.id and d.ativo), 0)
   + coalesce((select sum(valor) from public.transferencias t where t.conta_destino_id = c.id and t.ativo), 0)
-  - coalesce((select sum(valor) from public.transferencias t where t.conta_origem_id = c.id and t.ativo), 0)
+  - coalesce((select sum(valor + taxa) from public.transferencias t where t.conta_origem_id = c.id and t.ativo), 0)
   as saldo_atual
 from public.contas c;
 

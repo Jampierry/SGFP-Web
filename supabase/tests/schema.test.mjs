@@ -81,7 +81,7 @@ test('integridade: B não consegue apontar para conta/categoria do A', async () 
   });
 });
 
-test('saldo: receitas, despesas e transferências (taxa ignorada, como no Django)', async () => {
+test('saldo: receitas, despesas e transferências (taxa debitada da origem)', async () => {
   const db = await novoBanco();
   const x = await base(db, A);
   await como(db, A, async () => {
@@ -91,7 +91,7 @@ test('saldo: receitas, despesas e transferências (taxa ignorada, como no Django
     await db.query(`insert into transferencias(descricao,valor,taxa,data,conta_origem_id,conta_destino_id) values ('t',100,5,'2025-01-11',$1,$2)`, [x.c1, x.c2]);
     const s = await q(db, 'select nome, saldo_atual::text from contas_saldo order by nome');
     assert.deepEqual(s, [
-      { nome: 'Corrente', saldo_atual: '1049.50' },
+      { nome: 'Corrente', saldo_atual: '1044.50' },
       { nome: 'Poupança', saldo_atual: '100.00' },
     ]);
   });

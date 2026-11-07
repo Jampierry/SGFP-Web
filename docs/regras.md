@@ -38,8 +38,22 @@ Hoje: filtro `usuario=request.user` nas views (sem garantia no banco). Alvo: RLS
 ## Decisões do esquema Postgres (Fase 2, `supabase/migrations/0001_schema.sql`)
 Testes: `cd supabase/tests && npm install && npm test` (PGlite, Postgres real em WASM; 11 testes).
 - **Isolamento:** toda tabela tem `user_id` + RLS "dono" (forçada). FKs compostas `(id, user_id)` impedem apontar para conta/categoria/cartão de outro usuário.
-- **Saldo** é a view `contas_saldo` (calculada), então excluir recalcula sozinho (corrige o quirk do `delete`). A taxa de transferência continua fora do saldo, igual ao Django, para a conferência da Fase 3 bater. **Decisão pendente do usuário:** debitar a taxa da conta de origem?
+- **Saldo** é a view `contas_saldo` (calculada), então excluir recalcula sozinho (corrige o quirk do `delete`). **Decisão (minha, revisável):** a taxa de transferência passa a ser debitada da conta de origem (o Django a ignorava). A conferência da Fase 3 já desconta essa diferença esperada.
 - **Cartão:** sem CVV; só `ultimos4`.
 - **Parcelamento:** função `criar_despesa_cartao` (atômica, RLS do chamador) implementa a regra pretendida: `round(valor/n,2)`, resto na última, uma fatura por mês, `data` da parcela = vencimento da fatura, `data_compra` guarda a data real. Arredondamento: Postgres arredonda meio para cima; Python `round` em Decimal arredonda para par (diferença só em casos de meio centavo exato).
 - **Fatura:** valor = `valor_ajustado` se houver, senão soma das despesas ligadas por `fatura_id` (não mais o ciclo "fechamento − 30 dias"; pode diferir de faturas antigas, a conferir na Fase 3).
 - **Novo usuário:** trigger cria `configuracoes`. Categorias/conta padrão do cadastro antigo: a decidir na Fase 4.
+
+## Migração dos dados (Fase 3, `supabase/etl/django_para_sql.mjs`)
+```
+python manage.py dumpdata auth.user core configuracoes --indent 1 > dump.json
+# usuarios.json: { "username_django": "uuid-do-usuario-no-supabase-auth" }  (crie os usuários no Supabase antes)
+node supabase/etl/django_para_sql.mjs dump.json usuarios.json carga.sql
+# rode carga.sql no SQL Editor do Supabase (papel postgres ignora RLS); depois confira com conferirSaldos()
+```
+Nunca commitar `dump.json`, `usuarios.json` nem `carga.sql` (dados pessoais).
+- IDs UUID preservados; `Fatura` (pk inteira) ganha uuid determinístico. CVV é descartado; do número do cartão só vão os 4 últimos dígitos.
+- Cor inválida vira a cor padrão; frequência vazia vira nulo.
+- **Compras parceladas antigas** (gravadas com valor cheio pelo bug) são mantidas como estão e listadas como AVISO na saída do script. Corrigir à mão, caso a caso, se importar.
+- `conferirSaldos(db, dump)` compara `saldo_atual` do Django com a view `contas_saldo`; `diferenca_inesperada` ≠ 0 indica saldo defasado no Django (quirk do `delete`) ou erro de carga: investigar conta a conta.
+- Testado só com dump sintético (`supabase/tests/etl.test.mjs`); não foi executado contra dados reais.
